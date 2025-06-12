@@ -1,7 +1,3 @@
-
-(* Plural: many items, same line. *)
-(*   List: many items, many lines. *)
-
 (* SOURCE CODE ORGANIZATION OF NEO PROGRAM *)
 
 NeoProgram = OneLinerProgram | SourceCodeProgram .
