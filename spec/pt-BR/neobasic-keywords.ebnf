@@ -1,0 +1,344 @@
+(* IDENTIFICATION DIVISION *)
+
+MODULE = "module" .
+ALGORITHM = "algorithm" .
+NOTABENE = "notabene" .
+
+(* ENVIRONMENT DIVISION *)
+
+IMPORT = "import" .
+AS = "as" .
+FROM = "from" .
+INTERFACE = "interface" .
+INCLUDE = "include" .
+MIXIN = "mixin" .
+RPC = "rpc" .
+EXTERN = "extern" .
+
+(* API TYPES *)
+
+SOCKET = "socket" .
+HTTP = "http" .
+HTTPS = "https" .
+REST = "rest" .
+SOAP = "soap" .
+GRPC = "grpc" .
+AMQP = "amqp" .
+FTP = "ftp" .
+SMTP = "smtp" .
+IMAP = "imap" .
+POP3 = "pop3" .
+
+(* MAGIC COMMENT: TWEET TRACING *)
+
+TRACE = "trace" .
+DEBUG = "debug" .
+INFO = "info" .
+WARN = "warn" .
+ERROR = "error" .
+FATAL = "fatal" .
+
+(* MAGIC COMMENT: TEST *)
+
+UNIT = "unit" .
+FROM = "from" .
+ONCE = "once" .
+DATA = "data" .
+CALL = "call" .
+HIDE = "hide" .
+SHOW = "show" .
+INTO = "into" .
+PASS = "pass" .
+PAST = "past" .
+FAIL = "fail" .
+
+(* TOP LEVEL SENTENCES *)
+
+TYPE = "type" .
+FACT = "fact" .
+MODIF = "modif" .
+DEF = "def" .
+VAR = "var" .
+CONST = "const" .
+FUNC = "func" .
+SUB = "sub" .
+EVENT = "event" .
+MONAD = "monad" .
+ENUM = "enum" .
+STRUCT = "struct" .
+PROTO = "proto" .
+TRAIT = "trait" .
+CLASS = "class" .
+
+(* CONSOLE COMMANDS *)
+
+ASK = "ask" .
+PUT = "put" .
+CLS = "cls" .
+ALERT = "alert" .
+ENTRY = "entry" .
+PLAY = "play" .
+TILL = "till" .
+REPEAT = "repeat" .
+CLEAR = "clear" .
+
+(* STATEMENTS AND BLOCKS *)
+
+DEFER = "defer" .
+WITH = "with" .
+IF = "if" .
+ELSE = "else" .
+UNLESS = "unless" .
+CASE = "case" .
+MATCH = "match" .
+LIKE = "like" .
+TRY = "try" .
+LOOP = "loop" .
+TIMES = "times" .
+FOR = "for" .
+EACH = "each" .
+STEP = "step" .
+WHILE = "while" .
+UNTIL = "until" .
+WHILST = "whilst" .
+NEXT = "next" .
+REDO = "redo" .
+BREAK = "break" .
+RETRY = "retry" .
+FALLTHROUGH = "fallthrough" .
+CONTINUE = "continue" .
+RETURN = "return" .
+YIELD = "yield" .
+INVAR = "invar" .
+RAISE = "raise" .
+DO = "do" .
+GO = "go" .
+TO = "to" .
+ASYNC = "async" .
+THREAD = "thread" .
+TASK = "task" .
+NODE = "node" .
+AWAIT = "await" .
+ALL = "all" .
+SWITCH = "switch" .
+WHEN = "when" .
+DEFAULT = "default" .
+
+(* PREDECLARED VALUES AND VARIABLES *)
+
+THIS = "this" .
+SELF = "self" .
+SUPER = "super" .
+IT = "it" .
+NTH = "nth" .
+ONE = "one" .
+END = "end" .
+IOTA = "iota" .
+IN = "in" .
+OUT = "out" .
+
+(* FACT MODIFIERS *)
+
+ALL = "all" .
+ANY = "any" .
+ONE = "one" .
+TWO = "two" .
+NIL = "nil" .
+
+(* EXPRESSIONS *)
+
+LET = "let" .
+GET = "get" .
+SET = "set" .
+
+(* OPERATORS *)
+
+TYPEOF = "typeof" .
+INSTANCEOF = "instanceof" .
+BITOF = "bitof" .
+BYTEOF = "byteof" .
+SIZEOF = "sizeof" .
+NEW = "new" .
+DEL = "del" .
+NOT = "not" .
+AND = "and" .
+NAND = "nand" .
+XOR = "xor" .
+OR = "or" .
+NOR = "nor" .
+ALSO = "also" .
+IS = "is" .
+IN = "in" .
+BETWEEN = "between" .
+
+(* SYMBOL DATA TYPE *)
+
+ATOM = "atom" .
+
+(* MISCELLANEOUS DATA TYPES *)
+
+VOID = "void" .
+ANY = "any" .
+
+(* BOOLEAN DATA TYPES *)
+
+BOOL8 = "bool8" .
+BOOL16 = "bool16" .
+BOOL32 = "bool32" .
+BOOL64 = "bool64" .
+BOOL128 = "bool128" .
+BOOL = "bool" .
+
+(* NUMERIC DIGITS *)
+
+DIG = "dig" .
+BIT = "bit" .
+OCT = "oct" .
+HEX = "hex" .
+NIBBLE = "nibble" .
+
+(* NATURAL NUMBERS *)
+
+WORD8 = "word8" .
+WORD16 = "word16" .
+WORD32 = "word32" .
+WORD64 = "word64" .
+WORD128 = "word128" .
+BYTE = "byte" .
+ASCII = "ascii" .
+UNICODE = "unicode" .
+NUMBER = "number" .
+
+(* NUMERIC INTEGERS *)
+
+INT8 = "int8" .
+INT16 = "int16" .
+INT32 = "int32" .
+INT64 = "int64" .
+INT128 = "int128" .
+INT = "int" .
+BIGINT = "bigint" .
+
+(* NUMERIC DECIMALS *)
+
+DEC1 = "dec1" .
+DEC2 = "dec2" .
+DEC3 = "dec3" .
+DEC4 = "dec4" .
+DEC5 = "dec5" .
+DEC6 = "dec6" .
+DEC7 = "dec7" .
+DEC8 = "dec8" .
+DEC = "dec" .
+MONEY = "money" .
+BIGDEC = "bigdec" .
+
+(* NUMERIC REALS *)
+
+REAL8 = "real8" .
+REAL16 = "real16" .
+REAL32 = "real32" .
+REAL64 = "real64" .
+REAL128 = "real128" .
+REAL = "real" .
+BIGREAL = "bigreal" .
+
+(* NUMERIC RATIOS *)
+
+RATIO16 = "ratio16" .
+RATIO32 = "ratio32" .
+RATIO64 = "ratio64" .
+RATIO128 = "ratio128" .
+RATIO = "ratio" .
+
+(* NUMERIC COMPLEXES *)
+
+COMPLEX16 = "complex16" .
+COMPLEX32 = "complex32" .
+COMPLEX64 = "complex64" .
+COMPLEX128 = "complex128" .
+COMPLEX = "complex" .
+
+(* NUMERIC QUATERNIONS *)
+
+QUATERN32 = "quatern32" .
+QUATERN64 = "quatern64" .
+QUATERN128 = "quatern128" .
+QUATERN256 = "quatern256" . 
+QUATERN = "quatern" .
+
+(* TEMPORAL DATA TYPES *)
+
+DATE = "date" .
+ELAPSE = "elapse" .
+
+(* ELAPSE FRACTIONS *)
+
+YEARS = "years" .
+MONTHS = "months" .
+DAYS = "days" .
+WEEKS = "weeks" .
+WORKDAYS = "workdays" .
+HOURS = "hours" .
+MINUTES = "minutes" .
+SECONDS = "seconds" .
+MILLIS = "millis" .
+MICROS = "micros" .
+NANOS = "nanos" .
+TICKS = "ticks" .
+TZONE = "tzone" .
+
+(* SEQUENTIAL DATA TYPES *)
+
+STRING = "string" .
+REGEX = "regex" .
+BINARY = "binary" .
+
+(* COMPOSITE DATA TYPES *)
+
+RANGE = "range" .
+PAIR = "pair" .
+INET = "inet" .
+URI = "uri" .
+PATH = "path" .
+FILE = "file" .
+
+(* COLLECTION DATA TYPES *)
+
+ARRAY = "array" .
+TUP = "tup" .
+VEC = "vec" .
+MAT = "mat" .
+SET = "set" .
+LKL = "lkl" .
+QUE = "que" .
+DEQ = "deq" .
+MAP = "map" .
+XML = "xml" .
+TAB = "tab" .
+MEM = "mem" .
+CHAN = "chan" .
+
+(* MONAD DATA CONSTRUCTORS *)
+
+TRUE = "True" .
+FALSE = "False" .
+NONZERO = "Nonzero" .
+ZERO = "Zero" .
+NAN = "NaN" .
+MINIMUM = "Minimum" .
+MAXIMUM = "Maximum" .
+POSITIVEINFINITY = "PositiveInfinity" .
+NEGATIVEINFINITY = "NegativeInfinity" .
+BLANK = "Blank" .
+NONBLANK = "Nonblank" .
+SOME = "Some" .
+NONE = "None" .
+YEA = "Yea" .
+NAY = "Nay" .
+DATA = "Data" .
+EOT = "EoT" .
+OK = "Ok" .
+NO = "No" .
+
+(* ------------------------------------------------------------------------- *)
