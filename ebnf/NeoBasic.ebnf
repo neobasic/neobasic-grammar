@@ -1,3 +1,20 @@
+(*
+The MIT License (MIT)
+Copyright (c) 2025 [WE THE DEVS].
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *)
+
+(*
+ * Project      : ANTLR4 lexer grammar for NeoBASIC programming language.
+ *                https://github.com/neobasic
+ * Developed by : Raul Bras, @teknolista.
+ *)
+
 (* SOURCE CODE ORGANIZATION OF NEO PROGRAM *)
 
 NeoProgram = OneLinerProgram | SourceCodeProgram .
@@ -56,39 +73,54 @@ NotabeneVersion = NumberLiteral .
 
 EnvironmentDivision = { EnvironmentStatement EOL } .
 
-EnvironmentStatement = ImportSentence
+EnvironmentStatement = UseSentence
                      | InterfaceSentence
+                     | IncludeSentence
                      | CommentedStatement .
 
 
-(* IMPORT SENTENCE *)
+(* USE SENTENCE *)
 
-ImportSentence = IMPORT ( ImportDeclares | ImportSuite ) .
+UseSentence = USE ( UseDeclares | UseSuite ) .
 
-ImportSuite = EOL Indent ImportDeclaresList Dedent .
+UseSuite = EOL Indent UseDeclaresList Dedent .
 
-ImportDeclaresList = ImportDeclares { EOL ImportDeclares } .
+UseDeclaresList = UseDeclares { EOL UseDeclares } .
 
-ImportDeclares = ImportDeclare { "," ImportDeclare } .
+UseDeclares = UseDeclare { "," UseDeclare } .
 
-ImportDeclare = ModuleName
-              | ModuleMember
-              | AsClause
-              | FromClause .
+UseDeclare = ModuleName
+           | ModuleMember
+           | ModuleAsClause
+           | ModuleOfClause .
 
-ModuleMember = QualifiedIdentifier .
+ModuleMember = NamespaceIdentifier .
 
-AsClause = ModuleName AS Identifier .
+ModuleAsClause = ModuleName AS Identifier .
 
-FromClause = Identifiers FROM ModuleName .
+ModuleOfClause = Identifiers OF ModuleName . 
+
+
+(* INCLUDE SENTENCE *)
+
+IncludeSentence = INCLUDE ( IncludeDeclares | IncludeSuite ) . 
+
+IncludeSuite = EOL Indent IncludeDeclaresList Dedent .
+
+IncludeDeclaresList = IncludeDeclares { EOL IncludeDeclares } . 
+
+IncludeDeclares = IncludeDeclare { "," IncludeDeclare } .
+
+IncludeDeclare = ShellExpression
+               | IncludeAsClause .
+
+IncludeAsClause = ShellExpression AS Identifier .
 
 
 (* INTERFACE SENTENCE *)
 
-InterfaceSentence = INTERFACE SymbolIdentifier ( IncludeClause | ApiClause )
+InterfaceSentence = INTERFACE SymbolIdentifier ( ApiClause | MixinSentence )
                     InterfaceBody .
-
-IncludeClause = INCLUDE Expressions .
 
 ApiClause = ":" ApiType StringLiteral .
 
@@ -104,7 +136,7 @@ InterfaceMemberDeclare = MixinSentence
                        | RpcMethodDeclare
                        | ExternMethodDeclare .
 
-MixinSentence = MIXIN Types .
+MixinSentence = '<>' Types .
 
 RpcMethodDeclare = RPC SymbolIdentifier RpcParameters RpcResult .
 
@@ -118,7 +150,7 @@ ExternParameters = "(" [ Types ] ")" .
 
 ExternResult = Type .
 
-ExternBind = "=>>" Identifier .
+ExternBind = MonadBindOperador Identifier .
 
 
 (* ------------------------------------------------------------------------- *)
@@ -201,7 +233,11 @@ BlockCommentBegin = Comment Comment .
 BlockCommentEnd   = BlockCommentBegin .
 BlockComment      = BlockCommentBegin { UnicodePrintable | EOL } BlockCommentEnd .
 
-CommentContent = LineComment | BlockComment .
+DocumentationCommentBegin = Comment Comment Comment .
+DocumentationCommentEnd   = DocumentationCommentBegin .
+DocumentationComment      = DocumentationCommentBegin { UnicodePrintable | EOL } DocumentationCommentEnd .
+
+CommentContent = LineComment | BlockComment | DocumentationComment .
 
 CommentStatement = CommentContent 
                  | Statement CommentContent .
@@ -303,9 +339,13 @@ TopLevelSentence = StereotypesList TopLevelSentence
                  | FactSentence
                  | ModifSentence
                  | DefSentence
-                 | VarSentence
+                 | DefnSentence
+                 | UndefSentence
                  | ConstSentence
+                 | ValSentence
+                 | VarSentence
                  | FuncSentence
+                 | GenfnSentence
                  | SubSentence
                  | EventSentence
                  | MonadSentence
@@ -324,15 +364,14 @@ TypeSuite = EOL Indent TypeDeclareList Dedent .
 
 TypeDeclareList = TypeDeclare { EOL TypeDeclare } .
 
-TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS ] Type [ "=" TypeName ] .
+TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator ] Type [ "=" TypeName ] .
 
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters LogicImpliesOperator Expression .
+FactSentence = FACT SymbolIdentifier TypeParameters InlineAssignmentOperator Expression .
 
-
-(* MODIF SENTENCE *)
+(* MODIF Inline Assignment
 
 ModifSentence = MODIF SymbolIdentifier Type ( GuardsExpressions | AS Type ProcBody ) .
 
@@ -345,7 +384,39 @@ DefSuite = EOL Indent DefDeclareList Dedent .
 
 DefDeclareList = DefDeclare { EOL DefDeclare } .
 
-DefDeclare = Identifier Expression .
+DefDeclare = Identifier [ InlineAssignmentOperator Expression ] .
+
+
+(* DEFN SENTENCE *)
+
+DefnSentence = DEFN ( DefnDeclare | DefnSuite ) .
+
+DefnSuite = EOL Indent DefnDeclareList Dedent .
+
+DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
+
+DefnDeclare = Identifier ProcParameters InlineAssignmentOperator Expression .
+
+
+(* UNDEF SENTENCE *)
+
+UndefSentence = UNDEF ( UndefDeclare | UndefSuite ) .
+
+UndefSuite = EOL Indent UndefDeclareList Dedent .
+
+UndefDeclareList = UndefDeclare { EOL UndefDeclare } . 
+
+UndefDeclare = Identifier .
+
+
+(* CONST SENTENCE *)
+
+ConstSentence = CONST ( VarDeclares | VarSuite ) .
+
+
+(* VAL SENTENCE *)
+
+ValSentence = VAL ( VarDeclares | VarSuite ) . 
 
 
 (* VAR SENTENCE *)
@@ -358,32 +429,14 @@ VarDeclaresList = VarDeclares { EOL VarDeclares } .
 
 VarDeclares = VarDeclare { "," VarDeclare } .
 
-VarDeclare = SymbolIdentifiers [ Type ] [ SingleAssignmentOperator Expressions ] .
-
-
-(* CONST SENTENCE *)
-
-ConstSentence = CONST ( VarDeclares | VarSuite ) .
+VarDeclare = SymbolIdentifiers [ Type ] [ [ SingleAssignmentOperator | InlineAssignmentOperator ] Expressions ] .
 
 
 (* FUNC SENTENCE *) 
 
-FuncSentence = FUNC ( FunctionDeclare | FunctionSuite ) .
+FuncSentence = FUNC FunctionName [ GenericTypes ] ProcParameters ProcResults ( GuardsSuite | ProcBody ) .
 
-FunctionSuite = EOL Indent FunctionPatternMatching Dedent .
-
-FunctionPatternMatching = FunctionSignature EOL 
-                          ( RecursionsExpressions | GuardsExpressions ) .
-
-RecursionsExpressions = RecursionExpression { EOL RecursionExpression } .
-
-RecursionExpression = Identifier Expressions LambdaImpliesOperator Expression .
-
-FunctionDeclare = FunctionSignature ProcBody .
-
-FunctionSignature = FunctionName [ GenericTypes ] ProcParameters ProcResults .
-
-FunctionName = SymbolIdentifier [ "->" Identifier ] .
+FunctionName = SymbolIdentifier [ SubtypeOperator Identifier ] .
 
 ProcParameters = "(" [ ParmDeclares ] ")" .
 
@@ -403,9 +456,16 @@ ResultDeclare = [ ResultIdentifiers ] Type .
 
 ResultIdentifiers = Identifiers .
 
+GuardsSuite = EOL GuardsClause .
+
 ProcBody = LambdaImpliesOperator Expressions
          | LambdaImpliesOperator StatementSuite
          | StatementSuite .
+
+
+(* GENFN SENTENCE *) 
+
+GenfnSentence = GENFN ( FunctionDeclare | FunctionSuite ) .
 
 
 (* SUB SENTENCE *)
@@ -422,7 +482,7 @@ EventParameters = "[" [ ParmDeclares ] "]" .
 
 (* MONAD SENTENCE *)
 
-MonadSentence = MONAD SymbolIdentifier [ GenericTypes ] MonadBody .
+MonadSentence = MONAD SymbolIdentifier [ GenericTypes ] [ MixinSentence ] MonadBody .
 
 MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
 
@@ -439,7 +499,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* ENUM SENTENCE *)
 
-EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] EnumBody .
+EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] [ MixinSentence ] EnumBody .
 
 EnumBody = EOL Indent EnumMemberDeclaresList Dedent .
 
@@ -460,7 +520,7 @@ EnumArguments = "(" Expressions ")" .
 
 (* STRUCT SENTENCE *)
 
-StructSentence = STRUCT SymbolIdentifier [ GenericTypes ] StructBody .
+StructSentence = STRUCT SymbolIdentifier [ GenericTypes ] [ MixinSentence ] StructBody .
 
 StructBody = EOL Indent StructMemberDeclaresList Dedent .
 
@@ -498,7 +558,7 @@ AbstractMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] .
 
 (* TRAIT SENTENCE *)
 
-TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Implements ] TraitBody .
+TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Implements | MixinSentence ] TraitBody .
 
 TraitBody = EOL Indent TraitMemberDeclaresList Dedent .
 
@@ -515,11 +575,13 @@ TraitMemberDeclare = MixinSentence
 
 (* CLASS SENTENCE *)
 
-ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Inherits ] [ Implements ] ClassBody .
 
-Inherits = TypeName .
 
-Implements = "->" Types .
+ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
+
+Extends = SubtypeOperator Type .
+
+Implements = SubtypeOperator Types .
 
 ClassBody = EOL Indent ClassMemberDeclaresList Dedent .
 
@@ -598,45 +660,59 @@ EmptyStatement = EllipsisOperator .
 
 (* CONSOLE COMMANDS *)
 
-ConsoleStatement = AskCmd
-                 | PutCmd
-                 | ClsCmd
+ConsoleStatement = EnterCmd
+                 | PrintCmd
                  | AlertCmd
                  | EntryCmd
-                 | PlayCmd
                  | TillCmd
-                 | RepeatCmd
-                 | ClearCmd .
+                 | SinceCmd
+                 | TimelyCmd
+                 | CancelCmd
+                 | PlayCmd
+                 | ClsCmd .
 
-AskCmd = ASK StringSingleValue .
+EnterCmd = ENTER StringSingleValue .
 
-PutCmd = PUT StringMultiValue .
+PrintCmd = PRINT ( PrintSuite | PrintExpression ) .
 
-ClsCmd = CLS .
+PrintSuite = EOL Indent PrintExpressions Dedent .
+
+PrintExpressions = PrintExpression { EOL PrintExpression } .
+
+PrintExpression = [ CollectionLiteralValue ] StringMultiValue .
 
 AlertCmd = ALERT StringSingleValue .
 
 EntryCmd = ENTRY StringSingleValue .
 
+TillCmd = TILL Expression .
+
+SinceCmd = SINCE AtomIdentifier .
+
+TimelyCmd = TIMELY Expression Expression [ Expression ] .
+
+CancelCmd = CANCEL [ Expression ] .
+
 PlayCmd = PLAY { AtomLiteral } . 
 
-TillCmd = TILL Expression [ Expression ] .
-
-RepeatCmd = REPEAT Expression Expression .
-
-ClearCmd = CLEAR [ Expression ] .
+ClsCmd = CLS .
 
 
 (* CONTROL FLOW STATEMENTS *)
 
 ControlFlowStatement = DeferSentence
-                     | WithSentence .
+                     | WithSentence
+                     | OrElseSentence .
 
 DeferSentence = DEFER ( Statement | StatementSuite ) .
 
 (* WITH SENTENCE *)
 
 WithSentence = WITH Expressions StatementSuite.
+
+(* ORELSE SENTENCE *)
+
+OrElseSentence = Statement ORELSE ( Statement | StatementSuite ) .
 
 
 (* CONDITIONAL STATEMENTS *)
@@ -674,20 +750,23 @@ CaseClause = CASE Expression StatementSuite
 (* MATCH-LIKE-ELSE SENTENCE *)
 
 MatchSentence = MatchClause
-                LikeClause
+                GuardsClause
                 [ ElseClause ] .
 
 MatchClause = MATCH Expression [ EOL ] .
 
-LikeClause = LIKE Expressions StatementSuite
-             { LIKE Expressions StatementSuite } .
+GuardsClause = { GuardsExpressions ( LambdaImpliesOperator Expression | StatementSuite) }+ .
 
-(* TRY-ELSE SENTENCE *)
+
+(* TRY-CATCH SENTENCE *)
 
 TrySentence = TryClause 
-              [ ElseClause ] .
+              CatchClause
+              { EOL CatchClause } .
 
-TryClause = TRY Expression StatementSuite .
+TryClause = TRY ( Statement | StatementSuite ) .
+
+CatchClause = CATCH [ VarDeclares ] StatementSuite . 
 
 
 (* LOOPING STATEMENTS *)
@@ -832,7 +911,7 @@ TypeExpression = Type ( "&" | "|" ) Type .
 
 TypeLiteral = CollectionLiteralType | CompositeLiteralType | FactType | FunctionType | EventType .
 
-TypeName = Identifier | QualifiedIdentifier .
+TypeName = Identifier | NamespaceIdentifier .
 
 GenericTypes = "<" Types ">" .   // TypeParameters
 
@@ -842,7 +921,7 @@ Types = Type { "," Type } .
 
 CollectionLiteralType = [ CollectionSize ] ( CollectionType | ElementType ) .
 
-CollectionType = ParameterizedType . (* array, tup, vec, mat, set, lkl, que, deq, map, xml, tab, mem, chan *)
+CollectionType = ParameterizedType . (* array, list, dict, chan, tup, vec, mat, set, que, deq, xml, tab, mem *) 
 
 ElementType = Type .
 
@@ -911,7 +990,7 @@ SymbolType = ATOM .
 
 (* MISCELLANEOUS DATA TYPES *)
 
-MiscellaneousType = VOID | ANY
+MiscellaneousType = VOID_TYPE | ANY_TYPE
                    | MODULE | INTERFACE
                    | TYPE | FACT | MODIF
                    | FUNC | SUB | EVENT 
@@ -931,7 +1010,7 @@ NumericType = NumericDigit | NaturalNumber | NumericInteger
 
 NumericDigit = DIG | BIT | OCT | HEX | NIBBLE .
 
-NaturalNumber = WORD8 | WORD16 | WORD32 | WORD64 | WORD128 | BYTE | ASCII | UNICODE | NUMBER .
+NaturalNumber = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | BYTE | NAT | ASCII | UNICODE .
 
 NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT | BIGINT .
 
@@ -950,10 +1029,10 @@ NumericQuaternion = QUATERN32 | QUATERN64 | QUATERN128 | QUATERN256 | QUATERN .
 
 TemporalType = DATE | ELAPSE .
 
-ElapseFraction = YEARS | MONTHS | DAYS | WEEKS | WORKDAYS
-               | HOURS | MINUTES | SECONDS
-               | MILLIS | MICROS | NANOS | TICKS
-               | TZONE .
+ElapseFraction = YEAR | MONTH | DAY | WEEK | WORKDAY
+               | HOUR | MINUTE | SECOND
+               | MILLI | MICRO | NANO | TICK
+               | TZONE | ZULU .
 
 
 (* SEQUENTIAL DATA TYPES *)
@@ -963,12 +1042,12 @@ SequenceType = STRING | REGEX | BINARY .
 
 (* COMPOSITE DATA TYPES *)
 
-Compositeype = RANGE | PAIR | INET | URI | PATH | FILE .
+Compositeype = RANGE | MAP | INET | URI | PATH | FILE .
 
 
 (* COLLECTION DATA TYPES *)
 
-CollectionType = ARRAY | TUP | VEC | MAT | SET | LKL | QUE | DEQ | MAP | XML | TAB | MEM | CHAN .
+CollectionType = ARRAY | LIST | DICT | CHAN | TUP | VEC | MAT | SET_TYPE | QUE | DEQ | XML | TAB | MEM . 
 
 
 (* MONAD DATA CONSTRUCTORS *)
@@ -978,7 +1057,7 @@ MonadData = BooleanData | NumericData | SequenceData
 
 BooleanData = TRUE | FALSE .
 
-NumericData = NONZERO | ZERO | NAN | MINIMUM | MAXIMUM | POSITIVEINFINITY | NEGATIVEINFINITY .
+NumericData = NONZERO | ZERO | MINIMUM | MAXIMUM | NAN | POSITIVEINFINITY | NEGATIVEINFINITY .
 
 SequenceData = BLANK | NONBLANK .
 
@@ -1001,8 +1080,7 @@ Expression = UnaryExpression | BinaryExpression | LetExpression | GetExpression 
 
 Expressions = Expression { "," Expression } .
 
-PredeclaredValue = THIS | SELF | SUPER | IT | NTH | ONE | END
-                 | IOTA | IN | OUT .
+PredeclaredValue = THIS | SELF | SUPER | IT | NTH | ONE | END | IOTA.
 
 FactModifier = ALL | ANY | ONE | TWO | NIL .
 
@@ -1014,7 +1092,8 @@ LetExpression = LET Expression .
 
 GetExpression = GET Expression Expression .
 
-FactExpression = [ FactModifier ";" ] Identifier Expressions .
+FactExpression = [ FactModifier "`" ] Identifier Expressions
+               | Expression IS [NOT] [ FactModifier "`" ] Identifier .
 
 EagerEvaluateExpression = UnaryEvaluate "(" Expression ")" .
 
@@ -1022,7 +1101,7 @@ UnaryExpression = PrimaryExpression
                 | PrefixUnaryOperator UnaryExpression 
                 | UnaryExpression PosfixUnaryOperator .
 
-FactIdentifier  = Identifier | QualifiedIdentifier .
+FactIdentifier  = Identifier | NamespaceIdentifier .
 
 PrimaryExpression = Operand
                   | Modifier ";" Operand
@@ -1037,7 +1116,7 @@ PrimaryExpression = Operand
 
 Operand = Literal | PredeclaredValue | OperandName [ GenericTypes ] | ShellExpression | "(" Expression ")" .
 
-OperandName = Identifier | QualifiedIdentifier .
+OperandName = Identifier | NamespaceIdentifier .
 
 Modifier = Identifier .
 
@@ -1062,10 +1141,10 @@ FunctionArguments = "(" [ NamedExpressionList [ "," ] ] ")" .
 NamedExpressionList = [ Identifier = ] Expression { "," [ Identifier = ] Expression } .
 
 ErrorHandling = "!"  [ Expression ] 
-              | "!!" ( Expression | Statement )
+              | "!!" Expression
+              | "!?" Expression
               | "?"
-              | "??" Expression
-              | "!?" ( Expression | Statement ) .
+              | "??" Expression .
 
 CondicionalExpression = IfExpression | UnlessExpression | ForGuardExpression .
 
@@ -1086,7 +1165,7 @@ PipelinesExpressions = { PipelineOperator Expression }+ .
 
 ForGuardExpression = FOR [ Expressions ] GuardsExpressions .
 
-GuardsExpressions = "|" GuardExpression { "|" GuardExpression  } "|" .
+GuardsExpressions = "|" GuardExpression { "|" GuardExpression  } [ "|" Expression ] .
 
 GuardExpression = Expressions LambdaImpliesOperator Expression .
 
@@ -1121,15 +1200,18 @@ UnaryClone      = "="   /* Shallow copy */
                 .
 
 UnaryMiscellaneous = TYPEOF     /* Type (string) of a var */
-                   | INSTANCEOF /* Check if an object is an instance of a class */
                    | BITOF      /* Number of bits (bytes*8) required for a var or data structure */
                    | BYTEOF     /* Number of bytes required for a var or data structure */
-                   | SIZEOF     /* Length of a data structure or string converted value */
-                   | EACH       /* Generate an iterator of a iterable var (for loops), */
-                                  /* or a value converted to text, if not iterable, */
-                                  /* Generate pipeline with itens of a collection */
-                   | NEW        /* New instance of a data structure */
-                   | DEL        /* Delete an item of a data structure */
+                   | SIZEOF     /* Length of a data structure or string converted value (a.k.a. len function) */
+                   | LIMITOF    /* Capacity of a data structure (a.k.a. cap function) */ 
+                   | INSTANCEOF /* Check if an object is an instance of a class */
+                   | EACH       /* Generate an iterator of a iterable var (for loops),
+                                   or a value converted to text, if not iterable,
+                                   Generate pipeline with itens of a collection */
+                   | NEW        /* Insert a new item (before other) in a data structure or space in a string */
+                   | DEL        /* Delete an item of a data structure or a char of a string */
+                   | EXISTS     /* not-exception operador, test value-constructors is not @Exception */
+                   | NO         /* Not-Okay operador, test value-constructors is @Exception */
                    .
 
 PrefixUnaryOperator  = UnaryBoolean | UnaryEvaluate | UnaryArithmetic | UnaryBitwise
@@ -1154,8 +1236,8 @@ ArithmeticAddOperator = "+" /* Addition of numbers, interpolation of strings */
                       | "-" /* Subtraction */
                       .
 
-PercentageOperator = "%?" /* Percentage Calculation */
-                   | "%!" /* Percentage Application */
+PercentageOperator = "%/" /* Percentage Calculation */
+                   | "%*" /* Percentage Application */
                    | "%+" /* Percentage Increase */
                    | "%-" /* Percentage Decrease */
                    | "%^" /* Percentage Variation */
@@ -1169,26 +1251,22 @@ BitwiseShiftOperator = "<<"  /* Left shift */
                      .
 
 BitwiseMultOperator = "&"  /* Bitwise AND */
-                    | "&^" /* Bitwise bit clear (AND NOT) */
+                    | "&^" /* Bitwise bit Cancel (AND NOT) */
                     .
 
 BitwiseAddOperator = "|" /* Bitwise OR */
                    | "^" /* Bitwise XOR */
                    .
 
-ComparatorOperator = "%%"  /* Evenly Divisible comparison */
+ComparatorOperator = "?%"  /* Evenly Divisible comparison */
+                   | "!%"  /* Not Divisible comparison */
                    | "<=>" /* Three-way comparison */
-                   | "<>"  /* Diamond comparison  */
                    | "?:"  /* Elvis comparison */
                    .
 
 ConcatenationOperator = "." . (* String concatenation *)
 
-MatchingOperator = "==~" /* Pattern Match Operator */
-                 | "!=~" /* Negated Pattern Match Operator */
-                 | "~<>" /* Diamond Pattern Match Operator */
-                 | "!<>" /* Negated Diamond Pattern Match Operator */
-                 .
+MatchingOperator = LIKE .  (* Pattern Match Operator *)
 
 RelationalOperator = "==" /* Equality */
                    | "!=" /* Inequality */
@@ -1198,27 +1276,22 @@ RelationalOperator = "==" /* Equality */
                    | ">=" /* Greater than or equal */
                    .
 
-BinaryBoolean   = AND  /* Logical AND */
-                | NAND /* Logical NAND */
-                | XOR  /* Logical XOR */
-                | OR   /* Logical OR */
-                | NOR  /* Logical NOR */
-                | ALSO /* Implicit logical AND */
+BinaryBoolean   = AND   /* Logical AND */
+                | OR    /* Logical OR */
+                | XOR   /* Logical XOR */
+                | NAND  /* Logical NAND */
+                | NOR   /* Logical NOR */
+                | NXOR  /* Logical NXOR */ 
                 .
 
 IdentityOperator = IS        /* Identity Operator */
                  | IN        /* Membership Operator */
                  | BETWEEN   /* Range Operator */
-                 | INSTANCEOF /* Instanceof Operator */
                  .
 
 CoalescingOperator = "!!" /* Error coalescing */
-                   | "??" /* None coalescing */
+                   | "??" /* Exception coalescing */
                    .
-
-PushpullOperator = "->"  /* Push */
-                 | "->>" /* Push all */
-                 .
 
 PipelineOperator = "|>" . (* Pipeline sequence *)
 
@@ -1231,7 +1304,7 @@ BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAdd
                 | BitwiseShiftOperator | BitwiseMultOperator | BitwiseAddOperator
                 | ComparatorOperator | ConcatenationOperator | MatchingOperator
                 | RelationalOperator | BinaryBoolean   | IdentityOperator
-                | CoalescingOperator | PushpullOperator | PipelineOperator
+                | CoalescingOperator | PipelineOperator
                 | MonadBindOperador | FunctorInfixOperador .
 
 
@@ -1256,7 +1329,7 @@ CompoundAssignmentOperator = "**="  /* Exponentiation Compound assignment */
                            | ">>="  /* Right shift Compound assignment */
                            | ">>>=" /* Unsigned right shift Compound assignment */
                            | "&="   /* Bitwise AND Compound assignment */
-                           | "&^="  /* Bitwise bit clear (AND NOT) Compound assignment */
+                           | "&^="  /* Bitwise bit Cancel (AND NOT) Compound assignment */
                            | "^="   /* Bitwise XOR Compound assignment */
                            | "|="   /* Bitwise OR Compound assignment */
                            | ".="   /* String concatenation Compound assignment */
@@ -1267,7 +1340,9 @@ AssignmentOperator = SingleAssignmentOperator | CompoundAssignmentOperator .
 
 (* IMPLICATION OPERATORS *)
 
-LogicImpliesOperator  = ":-" . (* Logical implication operator *) 
+InlineAssignmentOperator  = "::" . (* Inline Assignment operator *) 
+
+SubtypeOperator = "->" . (* Subtype / Extends operator *)
 
 LambdaImpliesOperator = "=>" . (* Lambda Implies operator | Implicit return *)
 
@@ -1308,7 +1383,7 @@ OptionalModifier       = "!"   /* ResultOption wrapper declaration */
                        | "!|>" /* ResultOption wrapper of StreamOption wrapper declaration */
                        .  
 
-ShallowInitialModifier = "=" .
+ShallowInitialModifier = "=" | "===".
 
 PosfixTypeModifier     = OptionalModifier | ShallowInitialModifier .
 
@@ -1357,13 +1432,13 @@ NumericLiteral = NumberLiteral | IntegerLiteral | DecLiteral | RealLiteral
 
 RangeLiteral = Expression [ ">" ] ".." [ "<" ] Expression .
 
-PairLiteral = Expression ":" Expression .
+MapLiteral = Expression ":" Expression .
 
 ArithmeticComprehension = BinaryOperator "{" Expressions { ComprehensionClause } "}" .
 
-ComprehensionClause = FOR Identifiers EACH Expression [ IF Expression ] .
+ComprehensionClause = LoopForEachClause [ IF Expression ] .
 
-EscalarLiteral = NumericLiteral | RangeLiteral | PairLiteral
+EscalarLiteral = NumericLiteral | RangeLiteral | MapLiteral
                | AsciiLiteral | UnicodeLiteral | StringLiteral | RawLiteral | RegexLiteral
                | XmlElement | AtomLiteral | PromptLiteral | ArithmeticComprehension .
 
@@ -1403,7 +1478,7 @@ RealLiteral     = [ "+" | "-" ] ( DecimalReal | HexReal ) .
 
 (* IMAGINARY LITERALS *)
 
-ImaginaryUnit    = "i" .
+ImaginaryUnit    = "i" | "j" | "k" .
 ImaginaryLiteral = ( IntegerLiteral | RealLiteral ) ImaginaryUnit .
 
 
@@ -1520,21 +1595,21 @@ Identifiers = Identifier { "," Identifier } .
 
 NamespaceIdentifier = Identifier { "." Identifier } .
 
-QualifiedIdentifier = NamespaceIdentifier "::" Identifier .
-
 AtomIdentifier = UnicodeAtom Identifier .
 
 ShellIdentifier = UnicodeShell { Alphanumeric } /* UnicodeShell Identifier */
 	            | UnicodeShell                  /* Object shell */
-	            | UnicodeShell UnicodeShell            /* Process ID (PID) of the NeoBASIC program */
+	            | UnicodeShell UnicodeShell     /* Process ID (PID) of the NeoBASIC program */
 	            | UnicodeShell "*"              /* All the arguments in a single string */
 	            | UnicodeShell "%"              /* Number of arguments */
 	            | UnicodeShell "?"              /* Exit status of the last process */
-	            | UnicodeShell UnicodeShell "?"        /* Process number of the last background command */
+	            | UnicodeShell UnicodeShell "?" /* Process number of the last background command */
 	            | UnicodeShell "!"              /* Last exception raised (Error object) */
                 .
 
-ShellExpression = ShellIdentifier | FileSystemShell .
+ShellExpression = ( ShellIdentifier | FileSystemShell ) [ ';' Type ] .
+
+ShellExpressions = ShellExpression { "," ShellExpression } .
 
 SymbolIdentifier = AtomStereotypes SymbolIdentifier
                  | PrefixSymbolModifier SymbolIdentifier
