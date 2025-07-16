@@ -34,6 +34,7 @@ VAR : 'var';
 
 // CONSOLE COMMANDS
 
+AT    : 'at';
 ENTER : 'enter';
 PRINT : 'print';
 TILL  : 'till';
@@ -47,7 +48,6 @@ DO : 'do';
 IF : 'if';
 UNLESS : 'unless';
 ORELSE : 'orelse';
-RAISE : 'raise';
 
 // PREDECLARED VALUES AND VARIABLES
 
@@ -59,7 +59,6 @@ IOTA : 'iota';
 TYPEOF : 'typeof';
 INSTANCEOF : 'instanceof';
 IS : 'is';
-BYTEOF : 'byteof';
 SIZEOF : 'sizeof';
 BETWEEN : 'between';
 LIKE : 'like';
@@ -73,9 +72,9 @@ NXOR : 'nxor';
 
 // MISCELLANEOUS DATA TYPES
 
-NUMBER_TYPE : 'Number';
-ANY_TYPE : 'Any';
-ATOM_TYPE : 'Atom';
+NUMBER : 'Number';
+TANY : 'Any';
+ATOM : 'Atom';
 
 // BOOLEAN DATA TYPES
 
@@ -169,23 +168,6 @@ QUATERN : 'Quatern';
 DATE : 'Date';
 ELAPSE : 'Elapse';
 
-// ELAPSE FRACTIONS
-
-YEAR : 'year';
-MONTH : 'month';
-DAY : 'day';
-WEEK : 'week';
-WORKDAY : 'workday';
-HOUR : 'hour';
-MINUTE : 'minute';
-SECOND : 'second';
-MILLI : 'milli';
-MICRO : 'micro';
-NANO : 'nano';
-TICK : 'tick';
-TZONE : 'tzone';
-ZULU : [zZ];
-
 // SEQUENTIAL DATA TYPES
 
 STRING : 'Str';
@@ -207,11 +189,23 @@ MAXIMUM : 'Maximum';
 NAN : 'NaN';
 POSITIVEINFINITY : 'PositiveInfinity';
 NEGATIVEINFINITY : 'NegativeInfinity';
+LOCALDATE : 'LocalDate';
+LOCALDATETIME : 'LocalDateTime';
+OFFSETDATE : 'OffsetDate';
+OFFSETDATETIME : 'OffsetDateTime';
+ZONEDDATE : 'ZonedDate';
+ZONEDDATETIME : 'ZonedDateTime';
+TOMORROW : 'Tomorrow';
+NOW : 'Now';
+TODAY : 'Today';
+YESTERDAY : 'Yesterday';
+EON : 'Eon';
+EPOCH : 'Epoch';
 BLANK : 'Blank';
 NONBLANK : 'Nonblank';
 SOME : 'Some';
 NONE : 'None';
-OK : 'Ok';
-ERR : 'Err';
+OKAY : 'Okay';
+FAIL : 'Fail';
 
 // -------------------------------------------------------------------------

@@ -57,8 +57,8 @@ AMPERSAND         : '&';    //
 ASTERISK          : '*';    // Multiplication
 SLASH             : '/';    // Real Division, Regular expression literal
 DIVISION          : '÷';    // Integer Division
-PERCENT           : '%';    // Modulo, Percentage
-BACKSLASH         : '\\';   // Integer Division
+PERCENT           : '%';    // Modulo, Integer Division, Percentage
+BACKSLASH         : '\\';   //
 TILDE             : '~';    // 
 CARET             : '^';    //  
 PIPE              : '|';    // 
@@ -70,14 +70,14 @@ MINUS             : '-';    //
 
 // POSFIX TYPE MODIFIERS
 
-OptionalModifier
+OPTIONAL_MODIFIER
     : EXCLAMATION                   // ResultOption wrapper declaration
     | QUESTION                      // MaybeOption wrapper declaration
     | EXCLAMATION QUESTION          // ResultOption wrapper of MaybeOption wrapper declaration
     ;
 
-PosfixTypeModifier
-    : OptionalModifier
+POSFIX_TYPE_MODIFIER
+    : OPTIONAL_MODIFIER
     ;
 
 
@@ -101,7 +101,7 @@ SUBTRACTION       : MINUS;
 MULTIPLICATION    : ASTERISK;
 REAL_DIVISION     : SLASH;
 RATIONAL_FRACTION : SLASH SLASH;
-INTEGER_DIVISION  : BACKSLASH | DIVISION ;
+INTEGER_DIVISION  : PERCENT PERCENT | DIVISION ;
 MODULO            : PERCENT;
 EXPONENTIATION    : SQUARE_POWER;
 NTH_ROOT          : SQUARE_ROOT;
@@ -165,7 +165,7 @@ LOGICAL_NXOR : NXOR;  // NEGATION OF EXCLUSIVE DISJUNCTION: NOT (X OR B)
 
 INTERPOLATION : POSITIVE;
 REPETITION    : MULTIPLICATION;
-MATCHING      : LIKE;       // Matching Operator (RETURNS BOOLEAN)
+MATCHING      : LIKE;         // Matching Operator (RETURNS BOOLEAN)
 NOT_MATCHING  : NOT LIKE;     // Negation of Matching Operator (RETURNS BOOLEAN)
 
 
@@ -178,19 +178,19 @@ ERROR_TO_NONE_CONVERTION          : QUESTION;
 EXCEPTION_COALESCING              : QUESTION QUESTION;
 EXCEPTION_STATEMENT               : ORELSE; 
 
-// ASSIGNMENT OPERATORS
-
-// Basic Assignment
-SIMPLE_ASSIGNMENT        : EQUAL;
+// Single Assignment Operators
+        
+BASIC_ASSIGNMENT        : EQUAL;
 DESTRUCTURING_ASSIGNMENT : COLON EQUAL;
 INLINE_ASSIGNMENT        : COLON COLON;
 
-// Compound Assignment
+// Compound Assignment Operators
+
 ADDITION_ASSIGNMENT             : PLUS EQUAL;
 SUBTRACTION_ASSIGNMENT          : MINUS EQUAL;
 MULTIPLICATION_ASSIGNMENT       : ASTERISK EQUAL;
 REAL_DIVISION_ASSIGNMENT        : SLASH EQUAL;
-INTEGER_DIVISION_ASSIGNMENT     : DIVISION  EQUAL | BACKSLASH EQUAL;
+INTEGER_DIVISION_ASSIGNMENT     : DIVISION EQUAL | PERCENT PERCENT EQUAL;
 MODULO_ASSIGNMENT               : PERCENT EQUAL;
 EXPONENTIATION_ASSIGNMENT       : ASTERISK ASTERISK EQUAL;
 NTH_ROOT_ASSIGNMENT             : ASTERISK SLASH  EQUAL;
@@ -245,6 +245,24 @@ NUMBER_LIT
     | NAN
     | POSITIVEINFINITY
     | NEGATIVEINFINITY
+    ;
+
+
+// Temporal literals
+
+TIME_LIT
+    : LOCALDATE
+    | LOCALDATETIME
+    | OFFSETDATE
+    | OFFSETDATETIME
+    | ZONEDDATE
+    | ZONEDDATETIME
+    | TOMORROW
+    | NOW
+    | TODAY
+    | YESTERDAY
+    | EON
+    | EPOCH
     ;
 
 
@@ -352,6 +370,17 @@ fragment REGEX_CLASS_CHAR
 fragment REGEX_FLAG : [digmsuvy];
 
 
+// HereDoc Literals
+
+HEREDOC_LITERAL : LEFT_ANGLE LEFT_ANGLE HEREDOC_CONTENT ;
+
+HEREDOC_CONTENT
+   : '\'' EOL? TEMPLATE_STRING_CONTENT EOL? '\''
+   | '"' EOL? VERBATIM_STRING_CONTENT EOL? '"'
+   | IDENTIFIER EOL? VERBATIM_STRING_CONTENT EOL? IDENTIFIER
+   ;
+
+
 // String and Character literals
 
 STRING_LIT
@@ -363,16 +392,16 @@ STRING_LIT
     | NONBLANK
     ;
 
-VERBATIM_STRING_LIT : '"' ~["]* '"';
+VERBATIM_STRING_LIT : '"' VERBATIM_STRING_CONTENT '"' ;
 
-TEMPLATE_STRING_LIT
-    : '\'' ( ASCII_ESCAPED_VALUE
-           | UNICODE_ESCAPED_VALUE
-           | '{' STRING_PLACEHOLDER '}'
-           | ~['\\]
-           )*
-      '\''
-    ; 
+fragment VERBATIM_STRING_CONTENT : ~["]* ;
+
+TEMPLATE_STRING_LIT : '\'' TEMPLATE_STRING_CONTENT '\'' ;
+
+fragment TEMPLATE_STRING_CONTENT : ( ASCII_ESCAPED_VALUE
+                                   | UNICODE_ESCAPED_VALUE
+                                   | '{' STRING_PLACEHOLDER '}'
+                                   | ~['\\] )* ; 
 
 STRING_PLACEHOLDER : ~['\\];
 
@@ -421,7 +450,7 @@ fragment ALPHANUMERIC : UNICODE_ALPHANUMERIC | '_';
 
 ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
 
-DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | KEYWORD);
+DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
 
 
 // MUSICAL ALPHABET
@@ -457,20 +486,21 @@ fragment ASCII_CHAR : [\u0020-\u007E];
 
 // Magic Comments
 
-SHEBANG_LINE : {this.IsStartOfFile()}? BOM? '#!' ~[\n\r\u0085\u2028\u2029]*; // only allowed at start
+SHEBANG : '#!' ;
 
-DIRECTIVE_LINE : {this.IsNotStartOfFile()}? '#!' ~[\n\r\u0085\u2028\u2029]*;
+SHEBANG_LINE : {this.IsStartOfFile()}? BOM? SHEBANG ~[\n\r\u0085\u2028\u2029]*; // only allowed at start
 
-PRAGMA_LINE : '#?' ~[\n\r\u0085\u2028\u2029]*;
+DIRECTIVE_LINE : {this.IsNotStartOfFile()}? SHEBANG ~[\n\r\u0085\u2028\u2029]*;
 
-CANARY_TESTING_LINE  : '#>' ~[\n\r\u0085\u2028\u2029]*;
-CANARY_TESTING_BLOCK : '##>' .*? '##';
+WOODSTOCK : '#>' ;
+
+CANARY_TESTING_LINE  : WOODSTOCK ~[\n\r\u0085\u2028\u2029]*;
 
 // RUBBER DUCK DEBUGGING
 RUBBERDUCK : '@' ALPHANUMERIC* '=';
 
 // TWEETER TRACING
-TWEETER : '@' ALPHANUMERIC* '>';
+TWEETER : '@' (LOGGING_LEVEL | ALPHANUMERIC*)? '>';
 
 LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
 

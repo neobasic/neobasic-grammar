@@ -92,6 +92,7 @@ CLASS = "class" .
 
 (* CONSOLE COMMANDS *)
 
+AT = "at" .
 ENTER = "enter" .
 PRINT = "print" .
 ALERT = "alert" .
@@ -133,7 +134,6 @@ CONTINUE = "continue" .
 RETURN = "return" .
 YIELD = "yield" .
 INVAR = "invar" .
-RAISE = "raise" .
 GO = "go" .
 TO = "to" .
 ASYNC = "async" .
@@ -175,8 +175,6 @@ SET = "set" .
 
 TYPEOF = "typeof" .
 INSTANCEOF = "instanceof" .
-BITOF = "bitof" .
-BYTEOF = "byteof" .
 SIZEOF = "sizeof" .
 NEW = "new" .
 DEL = "del" .
@@ -196,10 +194,13 @@ LIKE = "like" .
 
 (* MISCELLANEOUS DATA TYPES *)
 
-NUMBER_TYPE = "Number" .
-ANY_TYPE = "Any" .
-ATOM_Type = "Atom" .
-VOID_TYPE = "Void" .
+NUMBER = "Number" .
+TANY = "Any" .
+ATOM = "Atom" .
+VOID = "Void" .
+URI = "Uri" .
+PATH = "Path" .
+FILE = "File" .
 
 (* BOOLEAN DATA TYPES *)
 
@@ -293,23 +294,6 @@ QUATERN = "Quatern" .
 DATE = "Date" .
 ELAPSE = "Elapse" .
 
-(* ELAPSE FRACTIONS *)
-
-YEAR = "year" .
-MONTH = "month" .
-DAY = "day" .
-WEEK = "week" .
-WORKDAY = "workday" .
-HOUR = "hour" .
-MINUTE = "minute" .
-SECOND = "second" .
-MILLI = "milli" .
-MICRO = "micro" .
-NANO = "nano" .
-TICK = "tick" .
-TZONE = "tzone" .
-ZULU = 'z' | 'Z';
-
 (* SEQUENTIAL DATA TYPES *)
 
 STRING = "Str" .
@@ -321,11 +305,8 @@ BINARY = "Binary" .
 RANGE = "Range" .
 MAP = "Map" .
 INET = "Inet" .
-URI = "Uri" .
-PATH = "Path" .
-FILE = "File" .
 
-(* COLLECTION DATA TYPES *)
+(* ARRAY DATA TYPES *)
 
 ARRAY = "Array" .
 LIST = "List" .
@@ -334,7 +315,7 @@ CHAN = "Chan" .
 TUP = "Tup" .
 VEC = "Vec" .
 MAT = "Mat" .
-SET_TYPE = "Set" .
+TSET = "Set" .
 QUE = "Que" .
 DEQ = "Deq" .
 XML = "Xml" .
@@ -352,6 +333,18 @@ MAXIMUM = "Maximum" .
 NAN = "NaN" .
 POSITIVEINFINITY = "PositiveInfinity" .
 NEGATIVEINFINITY = "NegativeInfinity" .
+LOCALDATE = "LocalDate" .
+LOCALDATETIME = "LocalDateTime" .
+OFFSETDATE = "OffsetDate" .
+OFFSETDATETIME = "OffsetDateTime" .
+ZONEDDATE = "ZonedDate" .
+ZONEDDATETIME = "ZonedDateTime" .
+TOMORROW = "Tomorrow" .
+NOW = "Now" .
+TODAY = "Today" .
+YESTERDAY = "Yesterday" .
+EON = "Eon" .
+EPOCH = "Epoch" .
 BLANK = "Blank" .
 NONBLANK = "Nonblank" .
 SOME = "Some" .
@@ -360,7 +353,7 @@ YEA = "Yea" .
 NAY = "Nay" .
 DATA = "Data" .
 EOT = "EoT" .
-OK = "Ok" .
-ERR = "Err" .
+OKAY = "Okay" .
+FAIL = "Fail" .
 
 (* ------------------------------------------------------------------------- *)

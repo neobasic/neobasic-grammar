@@ -38,8 +38,7 @@ IdentificationDivision = { IdentificationStatement EOL } .
 IdentificationStatement = IdentityStatement 
                         | CommentedStatement .
 
-IdentityStatement = [ ShebangInterpreter ]
-                    [ PragmaI18n ]
+IdentityStatement = { DirectiveStatement }
                     ( ModuleSentence | AlgorithmSentence | NotabeneSentence ) .
 
 
@@ -218,7 +217,6 @@ TaggedValuePair = [ Identifier "=" ] Expression .
 
 CommentedStatement = CommentStatement
                    | DirectiveStatement
-                   | PragmaStatement
                    | LookupStatement
                    | TestStatement
                    .
@@ -247,24 +245,16 @@ CommentStatement = CommentContent
 
 Shebang = Comment "!" .
 
-DirectiveStatement = Shebang Statement
-                   | Shebang "(" Statement
-                   | Shebang ")" .
-
 ShebangInterpreter = Shebang InterpreterPath [ InterpreterArguments ] .
 
 InterpreterPath = FileSystemPath .
 
 InterpreterArguments = { UnicodePrintable } .
 
+PragmaStatement = Shebang { UnicodePrintable } .
 
-(* MAGIC COMMENT: PRAGMA *)
-
-Pragma = Comment "?" .
-
-PragmaStatement = Pragma { UnicodePrintable } .
-
-PragmaI18n = Pragma Identifier .
+DirectiveStatement = ShebangInterpreter
+                   | PragmaStatement .
 
 
 (* MAGIC COMMENT: SHELL LOOKUP *)
@@ -276,14 +266,13 @@ LookupStatement = ShellLookup Expressions .
 
 (* MAGIC COMMENT: CANARY TESTING *)
 
-CanaryTesting = Comment ">" .
-BlockCanaryTesting = Comment Comment ">" .
+Woodstock = Comment "?" .
 
-AssertionTest = CanaryTesting AssertionExpression .
+AssertionTest = Woodstock AssertionExpression .
 
 AssertionExpression = ( Expressions | Statement ) [ "!" [ Expression ] ] .
 
-UnitTest = BlockCanaryTesting TestSentence BlockCommentEnd .
+UnitTest = Woodstock TestSentence .
 
 TestSentence = [ TestDiretives ]
                UnitClause
@@ -429,7 +418,9 @@ VarDeclaresList = VarDeclares { EOL VarDeclares } .
 
 VarDeclares = VarDeclare { "," VarDeclare } .
 
-VarDeclare = SymbolIdentifiers [ Type ] [ [ SingleAssignmentOperator | InlineAssignmentOperator ] Expressions ] .
+VarDeclare = SymbolIdentifiers [ Type ] [ DeclareAssignment | HeredocLiteral ] .
+
+DeclareAssignment = [ SingleAssignmentOperator | InlineAssignmentOperator ] Expressions .
 
 
 (* FUNC SENTENCE *) 
@@ -499,7 +490,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* ENUM SENTENCE *)
 
-EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] [ MixinSentence ] EnumBody .
+EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] [ GenericTypes ] ProcParameters [ MixinSentence ] EnumBody .
 
 EnumBody = EOL Indent EnumMemberDeclaresList Dedent .
 
@@ -508,8 +499,8 @@ EnumMemberDeclaresList = EnumMemberDeclares { EOL EnumMemberDeclares } .
 EnumMemberDeclares = EnumMemberDeclare { "," EnumMemberDeclare } .
 
 EnumMemberDeclare = MixinSentence
-                  | TopLevelSentence
                   | CompositeEnumerationDeclare
+                  | TopLevelSentence
                   | CompositeAttributeDeclare
                   | CompositeMethodDeclare .
 
@@ -534,7 +525,7 @@ StructMemberDeclare = MixinSentence
                     | CompositeMethodDeclare .
 
 CompositeAttributeDeclare = SymbolIdentifiers Type [ AttributeTag ] [ "=" Expressions ]
-                          | SymbolIdentifier [ CollectionSize ] STRUCT StructBody .
+                          | SymbolIdentifier [ ArraySize ] STRUCT StructBody .
 
 AttributeTag = StringLiteral .
 
@@ -574,8 +565,6 @@ TraitMemberDeclare = MixinSentence
 
 
 (* CLASS SENTENCE *)
-
-
 
 ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
 
@@ -660,7 +649,8 @@ EmptyStatement = EllipsisOperator .
 
 (* CONSOLE COMMANDS *)
 
-ConsoleStatement = EnterCmd
+ConsoleStatement = AtCmd
+                 | EnterCmd
                  | PrintCmd
                  | AlertCmd
                  | EntryCmd
@@ -671,6 +661,8 @@ ConsoleStatement = EnterCmd
                  | PlayCmd
                  | ClsCmd .
 
+AtCmd = AT AtomLiteral .
+
 EnterCmd = ENTER StringSingleValue .
 
 PrintCmd = PRINT ( PrintSuite | PrintExpression ) .
@@ -679,7 +671,7 @@ PrintSuite = EOL Indent PrintExpressions Dedent .
 
 PrintExpressions = PrintExpression { EOL PrintExpression } .
 
-PrintExpression = [ CollectionLiteralValue ] StringMultiValue .
+PrintExpression = [ ArrayLiteralValue ] StringMultiValue .
 
 AlertCmd = ALERT StringSingleValue .
 
@@ -833,12 +825,9 @@ YieldSentence = YIELD Expressions .
 
 (* ERROR HANDLING STATEMENTS *)
 
-ErrorHandlingStatement = InvarSentence
-                       | RaiseSentence .
+ErrorHandlingStatement = InvarSentence .
 
 InvarSentence = INVAR [ SymbolIdentifier ] GuardsExpressions .
-
-RaiseSentence = RAISE Expression .
 
 
 (* CONCURRENCY STATEMENTS *)
@@ -909,7 +898,7 @@ TypeDeclare = Types Type.
 
 TypeExpression = Type ( "&" | "|" ) Type .
 
-TypeLiteral = CollectionLiteralType | CompositeLiteralType | FactType | FunctionType | EventType .
+TypeLiteral = ArrayLiteralType | CompositeLiteralType | FactType | FunctionType | EventType .
 
 TypeName = Identifier | NamespaceIdentifier .
 
@@ -917,15 +906,15 @@ GenericTypes = "<" Types ">" .   // TypeParameters
 
 Types = Type { "," Type } .
 
-(* Collections *)
+(* Arrays *)
 
-CollectionLiteralType = [ CollectionSize ] ( CollectionType | ElementType ) .
+ArrayLiteralType = [ ArraySize ] ( ArrayType | ElementType ) .
 
-CollectionType = ParameterizedType . (* array, list, dict, chan, tup, vec, mat, set, que, deq, xml, tab, mem *) 
+ArrayType = ParameterizedType . (* array, list, dict, chan, tup, vec, mat, set, que, deq, xml, tab, mem *) 
 
 ElementType = Type .
 
-CollectionSize = "[" Expression | RationalLiteral "]" .
+ArraySize = "[" Expression | RationalLiteral "]" .
 
 (* Composites *)
 
@@ -945,15 +934,15 @@ EventType = EVENT EventParameters ProcResults .
 
 (* COMPOUND LITERALS *)
 
-CompoundLiteral = CollectionLiteral | CompositeLiteral .
+CompoundLiteral = ArrayLiteral | CompositeLiteral .
 
-(* Collections *)
+(* Arrays *)
 
-CollectionLiteral = [ CollectionLiteralType ] CollectionLiteralValue
-                  | CollectionAosToSoaLiteral 
-                  | XmlLiteral | ListComprehension.
+ArrayLiteral = [ ArrayLiteralType ] ArrayLiteralValue
+               | ArrayAosToSoaLiteral 
+               | XmlLiteral | ListComprehension.
 
-CollectionLiteralValue = "[" { Element [ "," ] } "]" | "[" "]" .
+ArrayLiteralValue = "[" { Element [ "," ] } "]" | "[" "]" .
 
 Element = [ ElementKey ":" ] ElementValue . 
 
@@ -961,7 +950,7 @@ ElementKey = Expression | EscalarLiteral .
 
 ElementValue = Expression | Literal .
 
-CollectionAosToSoaLiteral = "[" "]" Expression .
+ArrayAosToSoaLiteral = "[" "]" Expression .
 
 ListComprehension = "[" Expressions { ComprehensionClause } "]" .
 
@@ -980,7 +969,7 @@ NeoNativeType = SymbolType | EscalarType | CompoundType | MiscellaneousType .
 
 EscalarType = BooleanType | NumericType | TemporalType | SequenceType .
 
-CompoundType = Compositeype | CollectionType .
+CompoundType = Compositeype | ArrayType .
 
 
 (* SYMBOL DATA TYPE *)
@@ -990,7 +979,7 @@ SymbolType = ATOM .
 
 (* MISCELLANEOUS DATA TYPES *)
 
-MiscellaneousType = VOID_TYPE | ANY_TYPE
+MiscellaneousType = VOID | TANY | URI | PATH | FILE
                    | MODULE | INTERFACE
                    | TYPE | FACT | MODIF
                    | FUNC | SUB | EVENT 
@@ -1029,11 +1018,6 @@ NumericQuaternion = QUATERN32 | QUATERN64 | QUATERN128 | QUATERN256 | QUATERN .
 
 TemporalType = DATE | ELAPSE .
 
-ElapseFraction = YEAR | MONTH | DAY | WEEK | WORKDAY
-               | HOUR | MINUTE | SECOND
-               | MILLI | MICRO | NANO | TICK
-               | TZONE | ZULU .
-
 
 (* SEQUENTIAL DATA TYPES *)
 
@@ -1042,22 +1026,25 @@ SequenceType = STRING | REGEX | BINARY .
 
 (* COMPOSITE DATA TYPES *)
 
-Compositeype = RANGE | MAP | INET | URI | PATH | FILE .
+Compositeype = RANGE | MAP | INET .
 
 
-(* COLLECTION DATA TYPES *)
+(* ARRAY DATA TYPES *)
 
-CollectionType = ARRAY | LIST | DICT | CHAN | TUP | VEC | MAT | SET_TYPE | QUE | DEQ | XML | TAB | MEM . 
+ArrayType = ARRAY | LIST | DICT | CHAN | TUP | VEC | MAT | TSET | QUE | DEQ | XML | TAB | MEM . 
 
 
 (* MONAD DATA CONSTRUCTORS *)
 
-MonadData = BooleanData | NumericData | SequenceData
+MonadData = BooleanData | NumericData | TemporalData | SequenceData
           | MaybeOption | EitherOption | StreamOption | ResultOption .
 
 BooleanData = TRUE | FALSE .
 
 NumericData = NONZERO | ZERO | MINIMUM | MAXIMUM | NAN | POSITIVEINFINITY | NEGATIVEINFINITY .
+
+TemporalData = LOCALDATE | LOCALDATETIME | OFFSETDATE | OFFSETDATETIME | ZONEDDATE | ZONEDDATETIME
+             | TOMORROW | NOW | TODAY | YESTERDAY | EON | EPOCH .
 
 SequenceData = BLANK | NONBLANK .
 
@@ -1067,7 +1054,7 @@ EitherOption = YEA | NAY .
 
 StreamOption = DATA | EOT .
 
-ResultOption = OK | NO .
+ResultOption = OKAY | FAIL .
 
 
 (* ------------------------------------------------------------------------- *)
@@ -1086,7 +1073,10 @@ FactModifier = ALL | ANY | ONE | TWO | NIL .
 
 Literal = EscalarLiteral | CompoundLiteral | LambdaLiteral .
 
-BinaryExpression = Expression ( BinaryOperator | AssignmentOperator ) Expression .
+BinaryExpression = Expression BinaryOperator Expression .
+
+AssignmentExpression = Identifiers AssignmentOperator Expressions
+                     | Identifier HeredocLiteral .
 
 LetExpression = LET Expression .
 
@@ -1104,7 +1094,7 @@ UnaryExpression = PrimaryExpression
 FactIdentifier  = Identifier | NamespaceIdentifier .
 
 PrimaryExpression = Operand
-                  | Modifier ";" Operand
+                  | Operand ";" Modifier 
                   | ConsoleCmd
                   | Conversion
                   | MethodExpression
@@ -1200,14 +1190,12 @@ UnaryClone      = "="   /* Shallow copy */
                 .
 
 UnaryMiscellaneous = TYPEOF     /* Type (string) of a var */
-                   | BITOF      /* Number of bits (bytes*8) required for a var or data structure */
-                   | BYTEOF     /* Number of bytes required for a var or data structure */
-                   | SIZEOF     /* Length of a data structure or string converted value (a.k.a. len function) */
+                   | SIZEOF     /* Number of bytes required for a var or data structure */
                    | LIMITOF    /* Capacity of a data structure (a.k.a. cap function) */ 
                    | INSTANCEOF /* Check if an object is an instance of a class */
                    | EACH       /* Generate an iterator of a iterable var (for loops),
                                    or a value converted to text, if not iterable,
-                                   Generate pipeline with itens of a collection */
+                                   Generate pipeline with itens of an array */
                    | NEW        /* Insert a new item (before other) in a data structure or space in a string */
                    | DEL        /* Delete an item of a data structure or a char of a string */
                    | EXISTS     /* not-exception operador, test value-constructors is not @Exception */
@@ -1312,8 +1300,8 @@ BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAdd
 
 SingleAssignmentOperator = "="   /* Simple assignment */
                          | ":="  /* Destructuring assignment  */
-                         | "<-"  /* Pull assignment */
-                         | "<<-" /* Pull all assignment */
+                         | "<-"  /* Pull/pop assignment */
+                         | "<<-" /* Pull/pop all assignment */
                          | "<|"  /* Pipe assignment */
                          .
 
@@ -1321,7 +1309,7 @@ CompoundAssignmentOperator = "**="  /* Exponentiation Compound assignment */
                            | "*/="  /* Nth root Compound assignment */
                            | "*="   /* Multiplication Compound assignment */
                            | "/="   /* Real Division Compound assignment */
-                           | "\="   /* Quotient Compound assignment */
+                           | "%%="  /* Quotient Compound assignment */
                            | "%="   /* Remainder Compound assignment */
                            | "+="   /* Addition Compound assignment */
                            | "-="   /* Subtraction Compound assignment */
@@ -1367,11 +1355,11 @@ PrefixParmModifier   = ReferenceModifier .
 
 (* PREFIX TYPE MODIFIERS *)
 
-CollectionModifier = "[" [ Expression ] "]" . (* Collection variable declaration *) 
+ArrayModifier = "[" [ Expression ] "]" . (* Array variable declaration *) 
 
 VariadicModifier   = "..." . (* Variadic variable declaration *)
 
-PrefixTypeModifier = CollectionModifier | VariadicModifier .
+PrefixTypeModifier = ArrayModifier | VariadicModifier .
 
 
 (* POSFIX TYPE MODIFIERS *)
@@ -1411,7 +1399,7 @@ LambdaParmDeclares = LambdaParmDeclare { "," LambdaParmDeclare } .
 LambdaParmDeclare = Identifiers [ Type ] .
 
 
-(* XML COLLECTION LITERALS *)
+(* XML ARRAY LITERALS *)
 
 XmlElement = "<" XmlTagName [ XmlAttributes ] ">" [ XmlChildren ] "</" XmlTagName ">"
            | "<" XmlTagName "/>" .
@@ -1561,6 +1549,15 @@ RawMultiValue  = { UnicodePrintable | EOL } .
 RawLiteral = '"' RawSingleValue '"' | '"""' RawMultiValue '"""' .
 
 
+(* HEREDOC LITERALS *)
+
+HeredocContent = "'" [ EOL ] StringMultiValue [ EOL ] "'" 
+               | '"' [ EOL ] RawMultiValue [ EOL ] '"' 
+               | Identifier [ EOL ] RawMultiValue [ EOL ] Identifier .
+
+HeredocLiteral = "<<" HeredocContent .
+
+
 (* REGULAR EXPRESSION LITERALS *)
 
 RegexLiteral = "/" { UnicodeValue } "/" [ { UnicodeValue } ] . 
@@ -1570,13 +1567,16 @@ RegexLiteral = "/" { UnicodeValue } "/" [ { UnicodeValue } ] .
 
 AtomDotLiteral = UnicodeAtom IntegerLiteral { "." IntegerLiteral } .
 
+AtomCsiLiteral = UnicodeAtom IntegerLiteral { "." IntegerLiteral } "." AsciiPrintable
+               | UnicodeAtom AsciiPrintable . 
+
 AtomMusicLiteral = UnicodeAtom MusicAlphabet { "." MusicAlphabet } .
 
 AtomElapseLiteral = UnicodeAtom DotFractionValue { "." DotFractionValue } .
 
-DotFractionValue = IntegerLiteral "." ElapseFraction .
+DotFractionValue = IntegerLiteral "." Identifier .
 
-AtomLiteral = AtomDotLiteral | AtomElapseLiteral | AtomMusicLiteral .
+AtomLiteral = AtomDotLiteral | AtomCsiLiteral | AtomElapseLiteral | AtomMusicLiteral .
 
 
 (* PROMPT LITERAL *)
