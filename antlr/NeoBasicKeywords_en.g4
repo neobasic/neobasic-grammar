@@ -59,6 +59,7 @@ IOTA : 'iota';
 TYPEOF : 'typeof';
 INSTANCEOF : 'instanceof';
 IS : 'is';
+IN : 'in';
 SIZEOF : 'sizeof';
 BETWEEN : 'between';
 LIKE : 'like';
@@ -171,7 +172,7 @@ QUATERN : 'Quatern';
 DATE : 'Date';
 ELAPSE : 'Elapse';
 
-// SEQUENTIAL DATA TYPES
+// SEQUENCE DATA TYPES
 
 STRING : 'Str';
 REGEX : 'Regex';

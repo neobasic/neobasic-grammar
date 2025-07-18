@@ -90,7 +90,7 @@ PROTO = "proto" .
 TRAIT = "trait" .
 CLASS = "class" .
 
-(* CONSOLE COMMANDS *)
+(* CONSOLE MACROS *)
 
 AT = "at" .
 ENTER = "enter" .
@@ -171,7 +171,7 @@ LET = "let" .
 GET = "get" .
 SET = "set" .
 
-(* OPERATORS *)
+(* MISCELLANEOUS OPERATORS *)
 
 TYPEOF = "typeof" .
 INSTANCEOF = "instanceof" .
@@ -180,6 +180,13 @@ NEW = "new" .
 DEL = "del" .
 EXISTS = "exists" .
 NO = "no" .
+IS = "is" .
+IN = "in" .
+BETWEEN = "between" .
+LIKE = "like" .
+
+(* LOGICAL OPERATORS *)
+
 NOT = "not" .
 AND = "and" .
 NAND = "nand" .
@@ -187,10 +194,6 @@ OR = "or" .
 NOR = "nor" .
 XOR = "xor" .
 NXOR = "nxor" .
-IS = "is" .
-IN = "in" .
-BETWEEN = "between" .
-LIKE = "like" .
 
 (* MISCELLANEOUS DATA TYPES *)
 
@@ -198,6 +201,9 @@ NUMBER = "Number" .
 TANY = "Any" .
 ATOM = "Atom" .
 VOID = "Void" .
+
+(* SHELL DATA TYPES *)
+
 URI = "Uri" .
 PATH = "Path" .
 FILE = "File" .
@@ -294,7 +300,7 @@ QUATERN = "Quatern" .
 DATE = "Date" .
 ELAPSE = "Elapse" .
 
-(* SEQUENTIAL DATA TYPES *)
+(* SEQUENCE DATA TYPES *)
 
 STRING = "Str" .
 REGEX = "Regex" .
@@ -312,20 +318,23 @@ ARRAY = "Array" .
 LIST = "List" .
 DICT = "Dict" .
 CHAN = "Chan" .
-TUP = "Tup" .
+TUP = "Tuple" .
 VEC = "Vec" .
 MAT = "Mat" .
 TSET = "Set" .
-QUE = "Que" .
-DEQ = "Deq" .
+QUE = "Queue" .
+DEQ = "Deque" .
 XML = "Xml" .
-TAB = "Tab" .
-MEM = "Mem" .
+TAB = "Table" .
+MEM = "Memo" .
 
-(* MONAD VALUE CONSTRUCTORS *)
+(* MONAD LOGIC VALUE CONSTRUCTORS *)
 
 TRUE = "True" .
 FALSE = "False" .
+
+(* MONAD NUMERIC VALUE CONSTRUCTORS *)
+
 NONZERO = "Nonzero" .
 ZERO = "Zero" .
 MINIMUM = "Minimum" .
@@ -333,6 +342,9 @@ MAXIMUM = "Maximum" .
 NAN = "NaN" .
 POSITIVEINFINITY = "PositiveInfinity" .
 NEGATIVEINFINITY = "NegativeInfinity" .
+
+(* MONAD TEMPORAL VALUE CONSTRUCTORS *)
+
 LOCALDATE = "LocalDate" .
 LOCALDATETIME = "LocalDateTime" .
 OFFSETDATE = "OffsetDate" .
@@ -345,14 +357,29 @@ TODAY = "Today" .
 YESTERDAY = "Yesterday" .
 EON = "Eon" .
 EPOCH = "Epoch" .
+
+(* MONAD SEQUENCE VALUE CONSTRUCTORS *)
+
 BLANK = "Blank" .
 NONBLANK = "Nonblank" .
+
+(* MONAD OPTION VALUE CONSTRUCTORS *)
+
 SOME = "Some" .
 NONE = "None" .
+
+(* MONAD EITHER VALUE CONSTRUCTORS *)
+
 YEA = "Yea" .
 NAY = "Nay" .
+
+(* MONAD STREAM VALUE CONSTRUCTORS *)
+
 DATA = "Data" .
 EOT = "EoT" .
+
+(* MONAD RESULT VALUE CONSTRUCTORS *)
+
 OKAY = "Okay" .
 FAIL = "Fail" .
 

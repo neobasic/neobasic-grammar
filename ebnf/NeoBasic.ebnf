@@ -229,16 +229,21 @@ LineComment      = LineCommentBegin { UnicodePrintable } LineCommentEnd .
 
 BlockCommentBegin = Comment Comment .
 BlockCommentEnd   = BlockCommentBegin .
-BlockComment      = BlockCommentBegin { UnicodePrintable | EOL } BlockCommentEnd .
+BlockComment      = BlockCommentBegin { Hashtag | UnicodePrintable | EOL } BlockCommentEnd .
 
 DocumentationCommentBegin = Comment Comment Comment .
 DocumentationCommentEnd   = DocumentationCommentBegin .
-DocumentationComment      = DocumentationCommentBegin { UnicodePrintable | EOL } DocumentationCommentEnd .
+DocumentationComment      = DocumentationCommentBegin { Hashtag | UnicodePrintable | EOL } DocumentationCommentEnd .
 
 CommentContent = LineComment | BlockComment | DocumentationComment .
 
 CommentStatement = CommentContent 
                  | Statement CommentContent .
+
+
+(* MAGIC COMMENT: HASHTAG *)
+
+Hashtag = Comment Identifier .
 
 
 (* MAGIC COMMENT: DIRECTIVE *)

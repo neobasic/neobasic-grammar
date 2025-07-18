@@ -210,9 +210,14 @@ UNSIGNED_RIGHT_SHIFT_ASSIGNMENT : RIGHT_ANGLE RIGHT_ANGLE RIGHT_ANGLE EQUAL;
 NONE_COALESCING_ASSIGNMENT      : QUESTION QUESTION EQUAL;
 
 
-// Optional Literals
+// Option Literals
 
-OPTIONAL_LIT : NONE | SOME;
+OPTION_LIT : NONE | SOME;
+
+
+// Result Literals
+
+RESULT_LIT : OKAY | FAIL;
 
 
 // Range Literals
@@ -392,11 +397,17 @@ STRING_LIT
     | NONBLANK
     ;
 
-VERBATIM_STRING_LIT : '"' VERBATIM_STRING_CONTENT '"' ;
+VERBATIM_STRING_LIT
+    : '"' VERBATIM_STRING_CONTENT '"'
+    | '"""' VERBATIM_STRING_CONTENT '"""'
+    ;
 
 fragment VERBATIM_STRING_CONTENT : ~["]* ;
 
-TEMPLATE_STRING_LIT : '\'' TEMPLATE_STRING_CONTENT '\'' ;
+TEMPLATE_STRING_LIT
+    : '\'' TEMPLATE_STRING_CONTENT '\''
+    | '\'\'\'' TEMPLATE_STRING_CONTENT '\'\'\''
+    ;
 
 fragment TEMPLATE_STRING_CONTENT : ( ASCII_ESCAPED_VALUE
                                    | UNICODE_ESCAPED_VALUE
@@ -465,6 +476,13 @@ PITCH_SHARP    : 's';
 
 // UNICODE CHARACTERS
 
+fragment UNICODE_ALPHANUMERIC
+    : UNICODE_LETTER
+    | UNICODE_DIGIT
+    | [\p{Mn}]   // Unicode category for Nonspacing Mark
+    | [\p{Pc}]   // Unicode category for Connector Punctuation
+    ;
+
 // Any unicode code points that are categorized as (L) Letter.
 //[\p{L}] matches any kind of letter from any language.
 fragment UNICODE_LETTER: [\p{L}];
@@ -473,36 +491,33 @@ fragment UNICODE_LETTER: [\p{L}];
 //[\p{Nd}] matches a digit zero through nine in any script except ideographic scripts
 fragment UNICODE_DIGIT: [\p{Nd}];
 
-fragment UNICODE_ALPHANUMERIC
-    : UNICODE_LETTER
-    | UNICODE_DIGIT
-    | [\p{Mn}]   // Unicode category for Nonspacing Mark
-    | [\p{Pc}]   // Unicode category for Connector Punctuation
-    ;
-
 // Unicode code points from U+0000 to U+007F except categorized as Cc (Control)
 fragment ASCII_CHAR : [\u0020-\u007E];
 
 
 // Magic Comments
 
-SHEBANG : '#!' ;
+SHEBANG : HASH EXCLAMATION ;
 
 SHEBANG_LINE : {this.IsStartOfFile()}? BOM? SHEBANG ~[\n\r\u0085\u2028\u2029]*; // only allowed at start
 
 DIRECTIVE_LINE : {this.IsNotStartOfFile()}? SHEBANG ~[\n\r\u0085\u2028\u2029]*;
 
-WOODSTOCK : '#>' ;
+WOODSTOCK : HASH QUESTION ;
 
 CANARY_TESTING_LINE  : WOODSTOCK ~[\n\r\u0085\u2028\u2029]*;
 
 // RUBBER DUCK DEBUGGING
-RUBBERDUCK : '@' ALPHANUMERIC* '=';
+RUBBERDUCK : AT ALPHANUMERIC* EQUAL;
 
 // TWEETER TRACING
-TWEETER : '@' (LOGGING_LEVEL | ALPHANUMERIC*)? '>';
+TWEETER : AT (LOGGING_LEVEL | ALPHANUMERIC*)? RIGHT_ANGLE;
 
 LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
+
+// HASHTAGS
+
+HASHTAG : HASH ALPHANUMERIC* WSP? ~[\n\r\u0085\u2028\u2029]*;
 
 
 // SPECIAL TOKENS
