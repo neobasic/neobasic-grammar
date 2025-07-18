@@ -32,7 +32,7 @@ CONST : 'const';
 VAL : 'val';
 VAR : 'var';
 
-// CONSOLE COMMANDS
+// CONSOLE MACROS
 
 AT    : 'at';
 ENTER : 'enter';
@@ -54,7 +54,7 @@ ORELSE : 'orelse';
 THIS : 'this';
 IOTA : 'iota';
 
-// OPERATORS
+// MISCELLANEOUS OPERATORS
 
 TYPEOF : 'typeof';
 INSTANCEOF : 'instanceof';
@@ -62,6 +62,9 @@ IS : 'is';
 SIZEOF : 'sizeof';
 BETWEEN : 'between';
 LIKE : 'like';
+
+// LOGICAL OPERATORS
+
 NOT : 'not';
 AND : 'and';
 OR : 'or';
