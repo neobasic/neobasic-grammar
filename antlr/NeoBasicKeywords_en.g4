@@ -181,10 +181,13 @@ BINARY : 'Binary';
 
 RANGE : 'Range';
 
-// MONAD VALUE CONSTRUCTORS
+// MONAD LOGIC VALUE CONSTRUCTORS
 
 TRUE : 'True';
 FALSE : 'False';
+
+// MONAD NUMERIC VALUE CONSTRUCTORS
+
 NONZERO : 'Nonzero';
 ZERO : 'Zero';
 MINIMUM : 'Minimum';
@@ -192,6 +195,9 @@ MAXIMUM : 'Maximum';
 NAN : 'NaN';
 POSITIVEINFINITY : 'PositiveInfinity';
 NEGATIVEINFINITY : 'NegativeInfinity';
+
+// MONAD TEMPORAL VALUE CONSTRUCTORS
+
 LOCALDATE : 'LocalDate';
 LOCALDATETIME : 'LocalDateTime';
 OFFSETDATE : 'OffsetDate';
@@ -204,10 +210,19 @@ TODAY : 'Today';
 YESTERDAY : 'Yesterday';
 EON : 'Eon';
 EPOCH : 'Epoch';
+
+// MONAD SEQUENCE VALUE CONSTRUCTORS
+
 BLANK : 'Blank';
 NONBLANK : 'Nonblank';
+
+// MONAD OPTION VALUE CONSTRUCTORS
+
 SOME : 'Some';
 NONE : 'None';
+
+// MONAD RESULT VALUE CONSTRUCTORS
+
 OKAY : 'Okay';
 FAIL : 'Fail';
 
