@@ -365,7 +365,8 @@ TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator ] Type [ 
 
 FactSentence = FACT SymbolIdentifier TypeParameters InlineAssignmentOperator Expression .
 
-(* MODIF Inline Assignment
+
+(* MODIF SENTENCE *)
 
 ModifSentence = MODIF SymbolIdentifier Type ( GuardsExpressions | AS Type ProcBody ) .
 
@@ -434,7 +435,8 @@ FuncSentence = FUNC FunctionName [ GenericTypes ] ProcParameters ProcResults ( G
 
 FunctionName = SymbolIdentifier [ SubtypeOperator Identifier ] .
 
-ProcParameters = "(" [ ParmDeclares ] ")" .
+ProcParameters = "(" [ ParmDeclares ] ")"
+               | ParmDeclare "=>" { ParmDeclare "=>" } .
 
 ParmDeclares = ParmDeclare { "," ParmDeclare } .
 
@@ -1221,7 +1223,7 @@ ArithmeticExpOperator = "**" /* Exponentiation */
 
 ArithmeticMultOperator = "*" /* Multiplication of numbers and strings */
                        | "/" /* Real Division of numbers, join of paths */
-                       | "\" /* Quotient (Integer division of numbers) */
+                       | "\\" /* Quotient (Integer division of numbers) */
                        | "%" /* Remainder (Integer division of numbers) */
                        .
 
@@ -1395,7 +1397,7 @@ AsynchronousThreadOperator = "&&" . (* Asynchronous Execution *)
 
 (* LAMBDA FUNCTION LITERALS *)
 
-LambdaLiteral = "(\" LambdaBody ")" .
+LambdaLiteral = "(\\" LambdaBody ")" .
 
 LambdaBody = [ LambdaParmDeclares LambdaImpliesOperator ] ( Statement | StatementSuite ) . 
 
@@ -1482,7 +1484,7 @@ RationalLiteral = IntegerLiteral "//" IntegerLiteral .
 
 (* ASCII CHARACTER LITERALS *)
 
-AsciiEscapedControl  = "\" ( "0" /* 0x00 NULL (NUL) */
+AsciiEscapedControl  = "\\" ( "0" /* 0x00 NULL (NUL) */
                            | "a" /* 0x07 Bell (BEL) */
                            | "b" /* 0x08 Backspace (BS) */
                            | "c" /* 0x03 End of Text (ETX) = Ctrl+C = SIGINT (Interrupt Signal) */
@@ -1498,16 +1500,16 @@ AsciiEscapedControl  = "\" ( "0" /* 0x00 NULL (NUL) */
                            | "z" /* 0x1A Substitute (SUB) = Ctrl+Z = SIGTSTP (Terminal Stop Signal) */
                            ) .
 
-AsciiEscapedSequence = "\" ( '"' /* 0x22 Double Quote */
-                           | "'" /* 0x27 Single Quote */
-                           | "\" /* 0x5C Backslash */
-                           | "`" /* 0x60 Backtick */
-                           ) .
-AsciiEscapedDecimal = "\" DecimalDigit DecimalDigit DecimalDigit .
-AsciiEscapedBinary  = "\" "b" BinaryDigit BinaryDigit BinaryDigit BinaryDigit 
+AsciiEscapedSequence = "\\" ( '"' /* 0x22 Double Quote */
+                            | "'" /* 0x27 Single Quote */
+                            | "\\" /* 0x5C Backslash */
+                            | "`" /* 0x60 Backtick */
+                            ) .
+AsciiEscapedDecimal = "\\" DecimalDigit DecimalDigit DecimalDigit .
+AsciiEscapedBinary  = "\\" "b" BinaryDigit BinaryDigit BinaryDigit BinaryDigit 
                               BinaryDigit BinaryDigit BinaryDigit BinaryDigit .
-AsciiEscapedOctal   = "\" "o" OctalDigit OctalDigit OctalDigit .
-AsciiEscapedHex     = "\" "x" HexDigit HexDigit .
+AsciiEscapedOctal   = "\\" "o" OctalDigit OctalDigit OctalDigit .
+AsciiEscapedHex     = "\\" "x" HexDigit HexDigit .
 
 AsciiValue   = AsciiPrintable | AsciiEscapedControl | AsciiEscapedSequence
              | AsciiEscapedDecimal | AsciiEscapedBinary | AsciiEscapedOctal | AsciiEscapedHex .
@@ -1519,8 +1521,8 @@ AsciiLiteral = NumberLiteral
 
 (* UNICODE CHARACTER LITERALS *)
 
-UnicodeEscapedShort = "\" "u" HexDigit HexDigit HexDigit HexDigit .
-UnicodeEscapedLong  = "\" "U" [ HexDigit HexDigit ] HexDigit HexDigit 
+UnicodeEscapedShort = "\\" "u" HexDigit HexDigit HexDigit HexDigit .
+UnicodeEscapedLong  = "\\" "U" [ HexDigit HexDigit ] HexDigit HexDigit 
                                 HexDigit HexDigit   HexDigit HexDigit .
 
 UnicodeEscaped = AsciiEscapedControl | AsciiEscapedSequence | AsciiEscapedDecimal
@@ -1631,7 +1633,7 @@ FileSystemShell = UnicodeShell FileSystemPath .
 
 FileSystemPath = AbsolutePath | RelativePath | TildePath | Path .
 
-AbsolutePath = ( "\\" | Letter ":\" | PathSeparator ) Path .
+AbsolutePath = ( "\\" | Letter ":\\" | PathSeparator ) Path .
 
 RelativePath = ( "." PathSeparator  | ".." PathSeparator ) ( { ".." PathSeparator [ Path ] } | Path ) .
 
@@ -1643,7 +1645,7 @@ File = PathChar { PathChar } .
 
 PathChar = UnicodeFilepath | UnicodeEscaped .
 
-PathSeparator = "/" | "\" . 
+PathSeparator = "/" | "\\" . 
 
 
 (* MUSICAL ALPHABET *) 
@@ -1696,17 +1698,17 @@ UnicodeChar = /* Unicode code points from U+0000 to U+10FFFF */ .
 UnicodeLetter = /* Unicode code point categorized as (L) Letter */ .
 UnicodeDigit  = /* Unicode code point categorized as (Nd) Decimal Number */ .
 
-AsciiPrintable   = /* Unicode code points from U+0000 to U+00FF,
-                      except categorized as Cc (Control) */ .
+AsciiPrintable   = (* Unicode code points from U+0000 to U+00FF,
+                      except categorized as Cc (Control) *) .
 
-UnicodePrintable = /* Unicode code points from U+0000 to U+10FFFF,
+UnicodePrintable = (* Unicode code points from U+0000 to U+10FFFF,
                       except categorized as Cc (Control), Cf (Format), 
-                      Cs (Surrogate), Co (Private Use), Cn (Unassigned) */ .
+                      Cs (Surrogate), Co (Private Use), Cn (Unassigned) *) .
 
-UnicodeFilepath  = /* Unicode code points from U+0000 to U+10FFFF,
+UnicodeFilepath  = (* Unicode code points from U+0000 to U+10FFFF,
                       except categorized as Cc (Control), Cf (Format), 
                       Cs (Surrogate), Co (Private Use), Cn (Unassigned) 
-                      and except these 11 chars   / \ | < > : ? * " ' `   */ . 
+                      and except these 11 chars   / \\ | < > : ? * " ' `   *) . 
 
 
 (* UNICODE END-OF-LINE AND END-OF-FILE SEPARATORS *) 
@@ -1731,9 +1733,9 @@ EOL = UnicodeCR UnicodeLF /* Windows, DOS */
 
 (* End-of-File *)
 
-EOF = UnicodeSUB /* Windows, DOS, Legacy only */
-    | UnicodeEOT /* Unix terminal input */
-    | EOL        /* End-of-Line */
+EOF = UnicodeSUB (* Windows, DOS, Legacy only *)
+    | UnicodeEOT (* Unix terminal input *)
+    | EOL        (* End-of-Line *)
     .
 
 
@@ -1743,7 +1745,7 @@ Indent = UnicodeSP UnicodeSP UnicodeSP UnicodeSP .
 
 Dedent = UnicodeBS UnicodeBS UnicodeBS UnicodeBS .
 
-WSP = UnicodeSP     /* White Space */
+WSP = UnicodeSP     (* White Space *)
     | UnicodeHT
     | UnicodeVT
     | UnicodeFF
