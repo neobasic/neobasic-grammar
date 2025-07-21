@@ -45,15 +45,6 @@ SMTP = "smtp" .
 IMAP = "imap" .
 POP3 = "pop3" .
 
-(* MAGIC COMMENT: TWEET TRACING *)
-
-TRACE = "trace" .
-DEBUG = "debug" .
-INFO = "info" .
-WARN = "warn" .
-ERROR = "error" .
-FATAL = "fatal" .
-
 (* MAGIC COMMENT: TEST *)
 
 UNIT = "unit" .
@@ -74,14 +65,13 @@ DEF = "def" .
 DEFN = "defn" .
 UNDEF = "undef" .
 TYPE = "type" .
-MONAD = "monad" .
 CONST = "const" .
 VAL = "val" .
 VAR = "var" .
 FACT = "fact" .
-MODIF = "modif" .
+FEED = "feed" .
+FMAP = "fmap" .
 FUNC = "func" .
-GENFN = "genfn" .
 SUB = "sub" .
 EVENT = "event" .
 ENUM = "enum" .
@@ -90,26 +80,13 @@ PROTO = "proto" .
 TRAIT = "trait" .
 CLASS = "class" .
 
-(* CONSOLE MACROS *)
-
-AT = "at" .
-ENTER = "enter" .
-PRINT = "print" .
-ALERT = "alert" .
-ENTRY = "entry" .
-TILL = "till" .
-SINCE = "since" .
-TIMELY = "timely" .
-CANCEL = "cancel" .
-PLAY = "play" .
-CLS = "cls" .
-
 (* STATEMENTS AND BLOCKS *)
 
 DEFER = "defer" .
 WITH = "with" .
 DO = "do" .
 IF = "if" .
+THEN = "then" .
 ELSE = "else" .
 UNLESS = "unless" .
 CASE = "case" .
@@ -126,7 +103,6 @@ EACH = "each" .
 STEP = "step" .
 WHILE = "while" .
 UNTIL = "until" .
-WHILST = "whilst" .
 NEXT = "next" .
 REDO = "redo" .
 BREAK = "break" .
@@ -178,8 +154,6 @@ INSTANCEOF = "instanceof" .
 SIZEOF = "sizeof" .
 NEW = "new" .
 DEL = "del" .
-EXISTS = "exists" .
-NO = "no" .
 IS = "is" .
 IN = "in" .
 BETWEEN = "between" .
@@ -306,27 +280,32 @@ STRING = "Str" .
 REGEX = "Regex" .
 BINARY = "Binary" .
 
+(* SHELL DATA TYPES *)
+
+PATH = "Path" .
+URI = "Uri" .
+INET = "Inet" .
+
 (* COMPOSITE DATA TYPES *)
 
 RANGE = "Range" .
 MAP = "Map" .
-INET = "Inet" .
 
 (* ARRAY DATA TYPES *)
 
 ARRAY = "Array" .
-LIST = "List" .
-DICT = "Dict" .
-CHAN = "Chan" .
-TUP = "Tuple" .
-VEC = "Vec" .
-MAT = "Mat" .
-TSET = "Set" .
-QUE = "Queue" .
-DEQ = "Deque" .
-XML = "Xml" .
-TAB = "Table" .
-MEM = "Memo" .
+TUPLE = "Tuple" .
+LIST  = "List" .
+DICT  = "Dict" .
+CHAN  = "Chan" .
+VEC   = "Vec" .
+MAT   = "Mat" .
+TSET  = "Set" .
+QUEUE = "Queue" .
+DEQUE = "Deque" .
+XML   = "Xml" .
+TABLE = "Table" .
+MEMO  = "Memo" .
 
 (* MONAD LOGIC VALUE CONSTRUCTORS *)
 
@@ -337,8 +316,8 @@ FALSE = "False" .
 
 NONZERO = "Nonzero" .
 ZERO = "Zero" .
-MINIMUM = "Minimum" .
-MAXIMUM = "Maximum" .
+MINVALUE = "MinValue" .
+MAXVALUE = "MaxValue" .
 NAN = "NaN" .
 POSITIVEINFINITY = "PositiveInfinity" .
 NEGATIVEINFINITY = "NegativeInfinity" .
@@ -363,7 +342,28 @@ EPOCH = "Epoch" .
 BLANK = "Blank" .
 NONBLANK = "Nonblank" .
 
-(* MONAD OPTION VALUE CONSTRUCTORS *)
+(* MONAD PATH VALUE CONSTRUCTORS *)
+
+FOLDER = "Folder" .
+FILE = "File" .
+LINKLINKFILE = "LinkFile" .
+PIPEFILE = "PipeFile" .
+SOCKETFILE = "SocketFile" .
+BLOCKDEVICE = "BlockDevice" .
+CHARDEVICE = "CharDevice" .
+NULLDEVICE = "NullDevice" .
+
+(* MONAD URI VALUE CONSTRUCTORS *)
+
+URL = "Url" .
+URN = "Urn" .
+
+(* MONAD INET VALUE CONSTRUCTORS *)
+
+IPV4 = "Ipv4" .
+IPV6 = "Ipv6" .
+
+(* MONAD MAYBE VALUE CONSTRUCTORS *)
 
 SOME = "Some" .
 NONE = "None" .
@@ -384,3 +384,26 @@ OKAY = "Okay" .
 FAIL = "Fail" .
 
 (* ------------------------------------------------------------------------- *)
+
+(* CONSOLE MACROS *)
+
+AT = "at" .
+ENTER = "enter" .
+PRINT = "print" .
+ALERT = "alert" .
+ENTRY = "entry" .
+TILL = "till" .
+SINCE = "since" .
+TIMELY = "timely" .
+CANCEL = "cancel" .
+PLAY = "play" .
+CLS = "cls" .
+
+(* MAGIC COMMENT: TWEET TRACING *)
+
+TRACE = "trace" .
+DEBUG = "debug" .
+INFO = "info" .
+WARN = "warn" .
+ERROR = "error" .
+FATAL = "fatal" .

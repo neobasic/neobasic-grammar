@@ -330,8 +330,6 @@ TestStatement = AssertionTest | UnitTest .
 
 TopLevelSentence = StereotypesList TopLevelSentence
                  | TypeSentence
-                 | FactSentence
-                 | ModifSentence
                  | DefSentence
                  | DefnSentence
                  | UndefSentence
@@ -339,10 +337,11 @@ TopLevelSentence = StereotypesList TopLevelSentence
                  | ValSentence
                  | VarSentence
                  | FuncSentence
-                 | GenfnSentence
+                 | FactSentence
+                 | FmapSentence
+                 | FeedSentence
                  | SubSentence
                  | EventSentence
-                 | MonadSentence
                  | StructSentence
                  | EnumSentence
                  | ProtoSentence
@@ -358,17 +357,24 @@ TypeSuite = EOL Indent TypeDeclareList Dedent .
 
 TypeDeclareList = TypeDeclare { EOL TypeDeclare } .
 
-TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator ] Type [ "=" TypeName ] .
+TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator | '<>' ] Type [ "=" TypeName ] [ MonadBody ] .
+
+MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
+
+MonadMemberDeclaresList = MonadMemberDeclares { EOL MonadMemberDeclares } .
+
+MonadMemberDeclares = MonadMemberDeclare { "," MonadMemberDeclare } .
+
+MonadMemberDeclare = MixinSentence
+                   | TopLevelSentence
+                   | MonadicValueDeclare .
+
+MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expression ] .
 
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters InlineAssignmentOperator Expression .
-
-
-(* MODIF SENTENCE *)
-
-ModifSentence = MODIF SymbolIdentifier Type ( GuardsExpressions | AS Type ProcBody ) .
+FactSentence = FACT SymbolIdentifier TypeParameters MacroAssignmentOperator Expression .
 
 
 (* DEF SENTENCE *)
@@ -379,7 +385,7 @@ DefSuite = EOL Indent DefDeclareList Dedent .
 
 DefDeclareList = DefDeclare { EOL DefDeclare } .
 
-DefDeclare = Identifier [ InlineAssignmentOperator Expression ] .
+DefDeclare = Identifier [ MacroAssignmentOperator Expression ] .
 
 
 (* DEFN SENTENCE *)
@@ -390,7 +396,7 @@ DefnSuite = EOL Indent DefnDeclareList Dedent .
 
 DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
 
-DefnDeclare = Identifier ProcParameters InlineAssignmentOperator Expression .
+DefnDeclare = Identifier ProcParameters MacroAssignmentOperator Expression .
 
 
 (* UNDEF SENTENCE *)
@@ -426,7 +432,7 @@ VarDeclares = VarDeclare { "," VarDeclare } .
 
 VarDeclare = SymbolIdentifiers [ Type ] [ DeclareAssignment | HeredocLiteral ] .
 
-DeclareAssignment = [ SingleAssignmentOperator | InlineAssignmentOperator ] Expressions .
+DeclareAssignment = [ SingleAssignmentOperator | MacroAssignmentOperator ] Expressions .
 
 
 (* FUNC SENTENCE *) 
@@ -461,9 +467,14 @@ ProcBody = LambdaImpliesOperator Expressions
          | StatementSuite .
 
 
-(* GENFN SENTENCE *) 
+(* FEED SENTENCE *) 
 
-GenfnSentence = GENFN ( FunctionDeclare | FunctionSuite ) .
+FeedSentence = FEED FunctionName [ GenericTypes ] ProcParameters ( GuardsSuite | ProcBody ) .
+
+
+(* FMAP SENTENCE *) 
+
+FmapSentence = FMAP FunctionName [ GenericTypes ] ProcParameters [ "=>>" ProcResults ] ( GuardsSuite | ProcBody ) .
 
 
 (* SUB SENTENCE *)
@@ -478,28 +489,12 @@ EventSentence = EVENT SymbolIdentifier EventParameters [ ProcResults ] ProcBody 
 EventParameters = "[" [ ParmDeclares ] "]" .
 
 
-(* MONAD SENTENCE *)
-
-MonadSentence = MONAD SymbolIdentifier [ GenericTypes ] [ MixinSentence ] MonadBody .
-
-MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
-
-MonadMemberDeclaresList = MonadMemberDeclares { EOL MonadMemberDeclares } .
-
-MonadMemberDeclares = MonadMemberDeclare { "," MonadMemberDeclare } .
-
-MonadMemberDeclare = MixinSentence
-                   | TopLevelSentence
-                   | MonadicValueDeclare .
-
-MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expression ] .
-
-
 (* ENUM SENTENCE *)
 
 EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] [ GenericTypes ] ProcParameters [ MixinSentence ] EnumBody .
 
-EnumBody = EOL Indent EnumMemberDeclaresList Dedent .
+EnumBody = EOL Indent EnumMemberDeclaresList Dedent
+         | ":" EnumMemberDeclares .
 
 EnumMemberDeclaresList = EnumMemberDeclares { EOL EnumMemberDeclares } .
 
@@ -520,7 +515,8 @@ EnumArguments = "(" Expressions ")" .
 
 StructSentence = STRUCT SymbolIdentifier [ GenericTypes ] [ MixinSentence ] StructBody .
 
-StructBody = EOL Indent StructMemberDeclaresList Dedent .
+StructBody = EOL Indent StructMemberDeclaresList Dedent
+           | ":" StructMemberDeclares .
 
 StructMemberDeclaresList = StructMemberDeclares { EOL StructMemberDeclares } .
 
@@ -543,7 +539,8 @@ CompositeMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] ProcBod
 
 ProtoSentence = PROTO SymbolIdentifier [ GenericTypes ] [ Implements ] ProtoBody .
 
-ProtoBody = EOL Indent ProtoMethodDeclaresList Dedent .
+ProtoBody = EOL Indent ProtoMethodDeclaresList Dedent
+          | ProtoMethodDeclares .
 
 ProtoMethodDeclaresList = ProtoMethodDeclares { EOL ProtoMethodDeclares } .
 
@@ -558,7 +555,8 @@ AbstractMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] .
 
 TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Implements | MixinSentence ] TraitBody .
 
-TraitBody = EOL Indent TraitMemberDeclaresList Dedent .
+TraitBody = EOL Indent TraitMemberDeclaresList Dedent
+          | TraitMemberDeclares .
 
 TraitMemberDeclaresList = TraitMemberDeclares { EOL TraitMemberDeclares } .
 
@@ -579,7 +577,8 @@ Extends = SubtypeOperator Type .
 
 Implements = SubtypeOperator Types .
 
-ClassBody = EOL Indent ClassMemberDeclaresList Dedent .
+ClassBody = EOL Indent ClassMemberDeclaresList Dedent
+          | ":" ClassMemberDeclares .
 
 ClassMemberDeclaresList = ClassMemberDeclares { EOL ClassMemberDeclares } .
 
@@ -622,7 +621,7 @@ TweetTracingStatement = TweetTracing
 
 StatementSuite = "(" StatementSuite ")"
                | EOL Indent StatementBlock Dedent
-               | Statement .
+               | ":" Statement .
 
 StatementBlock = Statement { EOL Statement } .
 
@@ -634,7 +633,6 @@ Statement      = "(" Statement ")"
                | Label Statement
                | ExpressionStatement
                | EmptyStatement
-               | ConsoleStatement
                | ControlFlowStatement
                | ConditionalStatement
                | LoopingStatement
@@ -652,49 +650,6 @@ Label = AtomIdentifier .
 ExpressionStatement = Expressions .
 
 EmptyStatement = EllipsisOperator .
-
-
-(* CONSOLE COMMANDS *)
-
-ConsoleStatement = AtCmd
-                 | EnterCmd
-                 | PrintCmd
-                 | AlertCmd
-                 | EntryCmd
-                 | TillCmd
-                 | SinceCmd
-                 | TimelyCmd
-                 | CancelCmd
-                 | PlayCmd
-                 | ClsCmd .
-
-AtCmd = AT AtomLiteral .
-
-EnterCmd = ENTER StringSingleValue .
-
-PrintCmd = PRINT ( PrintSuite | PrintExpression ) .
-
-PrintSuite = EOL Indent PrintExpressions Dedent .
-
-PrintExpressions = PrintExpression { EOL PrintExpression } .
-
-PrintExpression = [ ArrayLiteralValue ] StringMultiValue .
-
-AlertCmd = ALERT StringSingleValue .
-
-EntryCmd = ENTRY StringSingleValue .
-
-TillCmd = TILL Expression .
-
-SinceCmd = SINCE AtomIdentifier .
-
-TimelyCmd = TIMELY Expression Expression [ Expression ] .
-
-CancelCmd = CANCEL [ Expression ] .
-
-PlayCmd = PLAY { AtomLiteral } . 
-
-ClsCmd = CLS .
 
 
 (* CONTROL FLOW STATEMENTS *)
@@ -724,19 +679,22 @@ ConditionalStatement = IfSentence
 
 (* IF-ELSE SENTENCE *)
 
-IfSentence = IfClause
+IfSentence = IfThenClause | IfElseClause .
+
+IfThenClause = IF Expression THEN Statement .
+
+IfElseClause = IfClause
              [ ElseClause ] .
 
 IfClause   = IF Expression StatementSuite .
 
 ElseClause = ELSE StatementSuite .
 
-(* UNLESS-ELSE SENTENCE *)
+(* UNLESS SENTENCE *)
 
-UnlessSentence = UnlessClause
-                 [ ElseClause ] .
+UnlessSentence = UnlessClause .
 
-UnlessClause = UNLESS Expression StatementSuite .
+UnlessClause = Statement UNLESS Expression .
 
 (* CASE-ELSE SENTENCE *)
 
@@ -749,12 +707,15 @@ CaseClause = CASE Expression StatementSuite
 (* MATCH-LIKE-ELSE SENTENCE *)
 
 MatchSentence = MatchClause
-                GuardsClause
+                BranchsClause
                 [ ElseClause ] .
 
 MatchClause = MATCH Expression [ EOL ] .
 
-GuardsClause = { GuardsExpressions ( LambdaImpliesOperator Expression | StatementSuite) }+ .
+BranchClauses = BranchClause
+                { BranchClause } .
+
+BranchClause = Expressions StatementSuite .
 
 
 (* TRY-CATCH SENTENCE *)
@@ -781,9 +742,9 @@ LoopSequence = Statement [ LoopCheckFirst ] .
 LoopBlock = [ LoopCheckFirst | LoopCStyleClause ] StatementSuite
           | StatementSuite [ LoopCheckLast ] .
 
-LoopCheckFirst = LoopTimesClause | LoopForEachClause | LoopWhileClause | LoopUntilClause | LoopWhilstClause .
+LoopCheckFirst = LoopTimesClause | LoopForEachClause | LoopWhileClause | LoopUntilClause .
 
-LoopCheckLast = LoopWhileClause | LoopUntilClause | LoopWhilstClause .
+LoopCheckLast = LoopWhileClause | LoopUntilClause .
 
 LoopCStyleClause = Expressions ";" Expression ";" Expressions .
 
@@ -794,8 +755,6 @@ LoopForEachClause = FOR Identifiers EACH Expression [ STEP Expression ] .
 LoopWhileClause = WHILE Expression .
 
 LoopUntilClause = UNTIL Expression .
-
-LoopWhilstClause = WHILST Expression . 
 
 
 (* ITERATION STATEMENTS *)
@@ -990,7 +949,7 @@ MiscellaneousType = VOID | TANY | URI | PATH | FILE
                    | MODULE | INTERFACE
                    | TYPE | FACT | MODIF
                    | FUNC | SUB | EVENT 
-                   | MONAD | ENUM | STRUCT
+                   | ENUM | STRUCT
                    | PROTO | TRAIT | CLASS .
 
 (* BOOLEAN DATA TYPES *)
@@ -1038,22 +997,29 @@ Compositeype = RANGE | MAP | INET .
 
 (* ARRAY DATA TYPES *)
 
-ArrayType = ARRAY | LIST | DICT | CHAN | TUP | VEC | MAT | TSET | QUE | DEQ | XML | TAB | MEM . 
+ArrayType = ARRAY | LIST | DICT | CHAN | TUPLE | VEC | MAT | TSET | QUEUE | DEQUE | XML | TABLE | MEMO . 
 
 
-(* MONAD DATA CONSTRUCTORS *)
+(* MONAD VALUE CONSTRUCTORS *)
 
-MonadData = BooleanData | NumericData | TemporalData | SequenceData
-          | MaybeOption | EitherOption | StreamOption | ResultOption .
+MonadValue = BooleanData | NumericData | TemporalData | SequenceData
+           | MaybeOption | EitherOption | StreamOption | ResultOption .
 
 BooleanData = TRUE | FALSE .
 
-NumericData = NONZERO | ZERO | MINIMUM | MAXIMUM | NAN | POSITIVEINFINITY | NEGATIVEINFINITY .
+NumericData = NONZERO | ZERO | MINVALUE | MAXVALUE | NAN | POSITIVEINFINITY | NEGATIVEINFINITY .
 
 TemporalData = LOCALDATE | LOCALDATETIME | OFFSETDATE | OFFSETDATETIME | ZONEDDATE | ZONEDDATETIME
              | TOMORROW | NOW | TODAY | YESTERDAY | EON | EPOCH .
 
 SequenceData = BLANK | NONBLANK .
+
+PathData = FOLDER | FILE | LINKLINKFILE | PIPEFILE | SOCKETFILE
+         | BLOCKDEVICE | CHARDEVICE | NULLDEVICE .
+
+UriData = URL | URN .
+
+InetData = IPV4 | IPV6 .
 
 MaybeOption = SOME | NONE .
 
@@ -1102,7 +1068,6 @@ FactIdentifier  = Identifier | NamespaceIdentifier .
 
 PrimaryExpression = Operand
                   | Operand ";" Modifier 
-                  | ConsoleCmd
                   | Conversion
                   | MethodExpression
                   | PrimaryExpression Selector
@@ -1198,15 +1163,12 @@ UnaryClone      = "="   /* Shallow copy */
 
 UnaryMiscellaneous = TYPEOF     /* Type (string) of a var */
                    | SIZEOF     /* Number of bytes required for a var or data structure */
-                   | LIMITOF    /* Capacity of a data structure (a.k.a. cap function) */ 
                    | INSTANCEOF /* Check if an object is an instance of a class */
                    | EACH       /* Generate an iterator of a iterable var (for loops),
                                    or a value converted to text, if not iterable,
                                    Generate pipeline with itens of an array */
                    | NEW        /* Insert a new item (before other) in a data structure or space in a string */
                    | DEL        /* Delete an item of a data structure or a char of a string */
-                   | EXISTS     /* not-exception operador, test value-constructors is not @Exception */
-                   | NO         /* Not-Okay operador, test value-constructors is @Exception */
                    .
 
 PrefixUnaryOperator  = UnaryBoolean | UnaryEvaluate | UnaryArithmetic | UnaryBitwise
@@ -1335,7 +1297,7 @@ AssignmentOperator = SingleAssignmentOperator | CompoundAssignmentOperator .
 
 (* IMPLICATION OPERATORS *)
 
-InlineAssignmentOperator  = "::" . (* Inline Assignment operator *) 
+MacroAssignmentOperator  = "::" . (* Macro Assignment operator *) 
 
 SubtypeOperator = "->" . (* Subtype / Extends operator *)
 

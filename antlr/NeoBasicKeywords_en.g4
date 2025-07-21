@@ -17,35 +17,16 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 lexer grammar NeoBasicKeywords_en;
 
-// MAGIC COMMENT: TWEET TRACING
-
-TRACE : 'trace';
-DEBUG : 'debug';
-INFO  : 'info';
-WARN  : 'warn';
-ERROR : 'error';
-FATAL : 'fatal';
-
 // TOP LEVEL SENTENCES
 
 CONST : 'const';
 VAL : 'val';
 VAR : 'var';
 
-// CONSOLE MACROS
-
-AT    : 'at';
-ENTER : 'enter';
-PRINT : 'print';
-TILL  : 'till';
-SINCE : 'since';
-PLAY  : 'play';
-CLS   : 'cls';
-
 // STATEMENTS AND BLOCKS
 
-DO : 'do';
 IF : 'if';
+THEN : 'then';
 UNLESS : 'unless';
 ORELSE : 'orelse';
 
@@ -58,9 +39,9 @@ IOTA : 'iota';
 
 TYPEOF : 'typeof';
 INSTANCEOF : 'instanceof';
+SIZEOF : 'sizeof';
 IS : 'is';
 IN : 'in';
-SIZEOF : 'sizeof';
 BETWEEN : 'between';
 LIKE : 'like';
 
@@ -191,8 +172,8 @@ FALSE : 'False';
 
 NONZERO : 'Nonzero';
 ZERO : 'Zero';
-MINIMUM : 'Minimum';
-MAXIMUM : 'Maximum';
+MINVALUE : 'MinValue';
+MAXVALUE : 'MaxValue';
 NAN : 'NaN';
 POSITIVEINFINITY : 'PositiveInfinity';
 NEGATIVEINFINITY : 'NegativeInfinity';
@@ -217,7 +198,7 @@ EPOCH : 'Epoch';
 BLANK : 'Blank';
 NONBLANK : 'Nonblank';
 
-// MONAD OPTION VALUE CONSTRUCTORS
+// MONAD MAYBE VALUE CONSTRUCTORS
 
 SOME : 'Some';
 NONE : 'None';
@@ -228,3 +209,22 @@ OKAY : 'Okay';
 FAIL : 'Fail';
 
 // -------------------------------------------------------------------------
+
+// CONSOLE MACROS
+
+AT    : 'at';
+ENTER : 'enter';
+PRINT : 'print';
+TILL  : 'till';
+SINCE : 'since';
+PLAY  : 'play';
+CLS   : 'cls';
+
+// MAGIC COMMENT: TWEET TRACING
+
+TRACE : 'trace';
+DEBUG : 'debug';
+INFO  : 'info';
+WARN  : 'warn';
+ERROR : 'error';
+FATAL : 'fatal';
