@@ -87,8 +87,6 @@ NAT64 : 'Nat64';
 NAT128 : 'Nat128';
 BYTE : 'Byte';
 NAT : 'Nat';
-ASCII : 'Ascii';
-CHAR : 'Char';
 
 // NUMERIC INTEGERS
 
@@ -153,6 +151,11 @@ QUATERN : 'Quatern';
 DATE : 'Date';
 ELAPSE : 'Elapse';
 
+// CHARACTER DATA TYPES
+
+ASCII : 'Ascii';
+CHAR : 'Char';
+
 // SEQUENCE DATA TYPES
 
 STRING : 'Str';
@@ -210,7 +213,7 @@ FAIL : 'Fail';
 
 // -------------------------------------------------------------------------
 
-// CONSOLE MACROS
+// BUILT-IN CONSOLE MACROS
 
 AT    : 'at';
 ENTER : 'enter';
@@ -219,6 +222,27 @@ TILL  : 'till';
 SINCE : 'since';
 PLAY  : 'play';
 CLS   : 'cls';
+
+// BUILT-IN SHELL MACROS
+
+CD : 'cd';
+PWD : 'pwd';
+LS : 'ls';
+MKDIR : 'mkdir';
+RMDIR : 'rmdir';
+TOUCH : 'touch';
+RM : 'rm';
+CP : 'cp';
+MV : 'mv';
+RENAME : 'rename';
+CHMOD : 'chmod';
+CHOWN : 'chown';
+CHGRP : 'chgrp';
+
+// BUILT-IN ERROR-HANDLING MACROS
+
+RAISE : 'raise';
+PANIC : 'panic';
 
 // MAGIC COMMENT: TWEET TRACING
 
