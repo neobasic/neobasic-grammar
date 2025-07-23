@@ -82,6 +82,7 @@ BIT : 'Bit';
 OCT : 'Oct';
 HEX : 'Hex';
 NIBBLE : 'Nibble';
+BYTE : 'Byte';
 
 // NATURAL NUMBERS
 
@@ -90,8 +91,8 @@ NAT16 : 'Nat16';
 NAT32 : 'Nat32';
 NAT64 : 'Nat64';
 NAT128 : 'Nat128';
-BYTE : 'Byte';
 NAT : 'Nat';
+BIGNAT : 'Bignat';
 
 // NUMERIC INTEGERS
 
@@ -102,6 +103,16 @@ INT64 : 'Int64';
 INT128 : 'Int128';
 INT : 'Int';
 BIGINT : 'Bigint';
+
+// NUMERIC REALS
+
+REAL8 : 'Real8';
+REAL16 : 'Real16';
+REAL32 : 'Real32';
+REAL64 : 'Real64';
+REAL128 : 'Real128';
+REAL : 'Real';
+BIGREAL : 'Bigreal';
 
 // NUMERIC DECIMALS
 
@@ -116,16 +127,6 @@ DEC8 : 'Dec8';
 DEC : 'Dec';
 MONEY : 'Money';
 BIGDEC : 'Bigdec';
-
-// NUMERIC REALS
-
-REAL8 : 'Real8';
-REAL16 : 'Real16';
-REAL32 : 'Real32';
-REAL64 : 'Real64';
-REAL128 : 'Real128';
-REAL : 'Real';
-BIGREAL : 'Bigreal';
 
 // NUMERIC RATIOS
 
@@ -209,31 +210,42 @@ DIGIT : 'Digit';
 PUNCTUATION : 'Punctuation';
 SYMBOL : 'Symbol';
 SEPARATOR : 'Separator';
-NONPRINTABLE : 'NonPrintable';
 OTHER : 'Other';
+NONPRINTABLE : 'NonPrintable';
+NULL : 'Null';
 
 // MONAD SEQUENCE VALUE CONSTRUCTORS
 
 BLANK : 'Blank';
 NONBLANK : 'Nonblank';
 
-// MONAD MAYBE VALUE CONSTRUCTORS
+// MONAD RESULT ! VALUE CONSTRUCTORS
+
+OKAY : 'Okay';
+FAIL : 'Fail';
+
+// MONAD MAYBE ? VALUE CONSTRUCTORS
 
 SOME : 'Some';
 NONE : 'None';
 
-// MONAD RESULT VALUE CONSTRUCTORS
+// MONAD EITHER ?? VALUE CONSTRUCTORS
 
-OKAY : 'Okay';
-FAIL : 'Fail';
+YEA : 'Yea';
+NAY : 'Nay';
+
+// MONAD STREAM |> VALUE CONSTRUCTORS
+
+DATA : 'Data';
+EOT : 'EoT';
 
 // -------------------------------------------------------------------------
 
 // BUILT-IN CONSOLE MACROS
 
 AT    : 'at';
-ENTER : 'enter';
-PRINT : 'print';
+SCAN  : 'scan';
+ECHO  : 'echo';
 TILL  : 'till';
 SINCE : 'since';
 PLAY  : 'play';

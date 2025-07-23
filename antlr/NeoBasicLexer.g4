@@ -200,13 +200,11 @@ FRACTION : SLASH SLASH;
 
 // --- LITERALS -----------------------------------------------------
 
-// Numeric values and literals
-
-NUMBER_VAL : LEFT_PARENTHESIS NUMBER_LIT RIGHT_PARENTHESIS;
+// Numeric literals
 
 NUMBER_LIT : INTEGER_NUMBER
-           | DECIMAL_NUMBER
            | REAL_NUMBER
+           | DECIMAL_NUMBER
            | RATIONAL_NUMBER
            | IMAGINARY_NUMBER
            ;
@@ -283,21 +281,11 @@ fragment BIN_DIGIT : [01];
 
 // Temporal values
 
-TIME_VAL : LEFT_PARENTHESIS TIME_LIT RIGHT_PARENTHESIS;
-
 TIME_LIT : ATOM_DOT_LIT
          | NUMBER_LIT
-         | TOMORROW
-         | TODAY
-         | NOW
-         | YESTERDAY
-         | EON
-         | EPOCH
          ;
 
 // Sequence literals
-
-SEQUENCE_VAL : LEFT_PARENTHESIS SEQUENCE_LIT RIGHT_PARENTHESIS;
 
 SEQUENCE_LIT : STRING_LIT
              | REGULAR_EXPRESSION_LIT
@@ -353,11 +341,7 @@ fragment REGEX_CLASS_CHAR
 
 fragment REGEX_FLAG : [digmsuvy];
 
-// String values and literals
-
-STRING_VAL : BLANK
-           | NONBLANK
-           ;
+// String literals
 
 STRING_LIT : VERBATIM_STRING_LIT
            | TEMPLATE_STRING_LIT
@@ -383,8 +367,6 @@ fragment TEMPLATE_STRING_CONTENT : ( ASCII_ESCAPED_VALUE
 STRING_PLACEHOLDER : ~['\\];
 
 // Character literals
-
-CHAR_VAL : LEFT_PARENTHESIS CHAR_LIT RIGHT_PARENTHESIS;
 
 CHAR_LIT
     : ASCII_LIT     
@@ -418,14 +400,6 @@ fragment UNICODE_ESCAPED_VALUE
 ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
 
 DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
-
-// Maybe values
-
-MAYBE_VAL : NONE | SOME;
-
-// Result values
-
-RESULT_VAL : OKAY | FAIL;
 
 // Range Literals
 

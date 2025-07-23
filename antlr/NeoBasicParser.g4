@@ -319,12 +319,13 @@ nativeType : escalarType
            | miscellaneousType
            ;
 
-posfixTypeModifier : EXCLAMATION                   // ResultOption wrapper declaration
-                   | QUESTION                      // MaybeOption wrapper declaration
-                   | EXCLAMATION QUESTION          // ResultOption wrapper of MaybeOption wrapper declaration
-                   | QUESTION QUESTION             // EitherOption wrapper declaration
-                   | PIPE RIGHT_ANGLE              // StreamOption warpper declaration
-                   | EXCLAMATION PIPE RIGHT_ANGLE  // StreamOption warpper declaration
+posfixTypeModifier : EXCLAMATION                    // ResultOption wrapper declaration
+                   | QUESTION                       // MaybeOption  wrapper declaration
+                   | QUESTION QUESTION              // EitherOption wrapper declaration
+                   | PIPE RIGHT_ANGLE               // StreamOption warpper declaration
+                   | EXCLAMATION QUESTION           // ResultOption wrapper of MaybeOption wrapper declaration
+                   | EXCLAMATION QUESTION QUESTION  // ResultOption wrapper of EitherOption wrapper declaration
+                   | EXCLAMATION PIPE RIGHT_ANGLE   // ResultOption wrapper of StreamOption warpper declaration
                    ;
 
 prefixTypeModifier : ELLIPSIS;  // Variadic parameter declaration
@@ -349,8 +350,8 @@ booleanType : BOOL8
 numericType : numericDigit
             | numericNatural
             | numericInteger
-            | numericDecimal
             | numericReal
+            | numericDecimal
             | numericRatio
             | numericComplex
             | numericQuaternion
@@ -362,6 +363,7 @@ numericDigit : DIG
              | OCT
              | HEX
              | NIBBLE
+             | BYTE
              ;
 
 numericNatural : NAT8
@@ -369,10 +371,8 @@ numericNatural : NAT8
                | NAT32
                | NAT64
                | NAT128
-               | BYTE
                | NAT
-               | ASCII
-               | CHAR
+               | BIGNAT
                ;
 
 numericInteger : INT8
@@ -383,6 +383,15 @@ numericInteger : INT8
                | INT
                | BIGINT
                ;
+
+numericReal : REAL8
+            | REAL16
+            | REAL32
+            | REAL64
+            | REAL128
+            | REAL
+            | BIGREAL
+            ;
 
 numericDecimal : DEC1
                | DEC2
@@ -396,15 +405,6 @@ numericDecimal : DEC1
                | MONEY
                | BIGDEC
                ;
-
-numericReal : REAL8
-            | REAL16
-            | REAL32
-            | REAL64
-            | REAL128
-            | REAL
-            | BIGREAL
-            ;
 
 numericRatio : RATIO16
              | RATIO32
@@ -449,6 +449,7 @@ compositeType : RANGE;
 miscellaneousType : TANY
                   | ATOM
                   ;
+
 
 // --- EXPRESSION ---------------------------------------------------
 
@@ -610,7 +611,10 @@ errorHandling : "!"  [ expression ]
 
 literal : escalarLiteral
         | compositeLiteral
+        | optionLiteral
         ;
+
+valueConstruct : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
 
 // Escalar literals
 
@@ -626,7 +630,7 @@ booleanLiteral : TRUE
                ;
 
 numericLiteral : NUMBER_LIT
-               | NONZERO NUMBER_VAL
+               | NONZERO valueConstruct
                | ZERO
                | MINVALUE
                | MAXVALUE
@@ -636,30 +640,61 @@ numericLiteral : NUMBER_LIT
                ;
 
 temporalLiteral : TIME_LIT
-                | LOCALDATE TIME_VAL?
-                | LOCALDATETIME TIME_VAL?
-                | OFFSETDATE TIME_VAL?
-                | OFFSETDATETIME TIME_VAL?
-                | ZONEDDATE TIME_VAL?
-                | ZONEDDATETIME TIME_VAL?
+                | LOCALDATE valueConstruct?
+                | LOCALDATETIME valueConstruct?
+                | OFFSETDATE valueConstruct?
+                | OFFSETDATETIME valueConstruct?
+                | ZONEDDATE valueConstruct?
+                | ZONEDDATETIME valueConstruct?
+                | TOMORROW
+                | TODAY
+                | NOW
+                | YESTERDAY
+                | EON
+                | EPOCH
                 ;
 
 characterLiteral : CHAR_LIT
-                 | LETTER CHAR_VAL
-                 | DIGIT CHAR_VAL
-                 | PUNCTUATION CHAR_VAL
-                 | SYMBOL CHAR_VAL
-                 | SEPARATOR CHAR_VAL
-                 | NONPRINTABLE CHAR_VAL
-                 | OTHER CHAR_VAL
+                 | LETTER valueConstruct
+                 | DIGIT valueConstruct
+                 | PUNCTUATION valueConstruct
+                 | SYMBOL valueConstruct
+                 | SEPARATOR valueConstruct
+                 | OTHER valueConstruct
+                 | NONPRINTABLE valueConstruct
+                 | NULL
                  ;
 
 sequenceLiteral : HEREDOC_LITERAL
                 | SEQUENCE_LIT
-                | NONBLANK SEQUENCE_VAL
+                | NONBLANK valueConstruct
                 | BLANK
                 ;
 
 // Composite literals
 
 compositeLiteral : RANGE_LIT;
+
+// Wrappers data types
+
+optionLiteral : resultLiteral
+              | maybeLiteral
+              | eitherLiteral
+              | streamLiteral
+              ;
+
+resultLiteral : OKAY valueConstruct
+              | FAIL valueConstruct
+              ;
+
+maybeLiteral : SOME valueConstruct
+             | NONE
+             ;
+
+eitherLiteral : YEA valueConstruct
+              | NAY valueConstruct
+              ;
+
+streamLiteral : DATA valueConstruct
+              | EOT
+              ;

@@ -264,9 +264,9 @@ DirectiveStatement = ShebangInterpreter
 
 (* MAGIC COMMENT: SHELL LOOKUP *)
 
-ShellLookup = Comment UnicodeShell .
+Sherlock = Comment UnicodeShell .
 
-LookupStatement = ShellLookup Expressions .
+LookupStatement = Sherlock Expressions .
 
 
 (* MAGIC COMMENT: CANARY TESTING *)
@@ -601,20 +601,16 @@ CompositeEventDeclare = SymbolIdentifier EventParameters [ ProcResults ] ProcBod
 
 RubberDuck = UnicodeAtom { Alphanumeric } "=" .
 
-RubberDuckStatement = RubberDuck Statement .
+DebuggingStatement = RubberDuck [ Statement ] .
 
 
 (* TWEET TRACING *)
 
-Tweeter = UnicodeAtom { Alphanumeric } ">" .
-
-TweetTracing = Tweeter [ LoggingLevel ] { UnicodePrintable } .
+TracerBird = UnicodeAtom [ LoggingLevel | { Alphanumeric } ] ">" .
 
 LoggingLevel = TRACE | DEBUG | INFO | WARN | ERROR | FATAL .
 
-TweetTracingStatement = TweetTracing
-                      | TweetTracing Statement
-                      | Statement TweetTracing .
+LoggingStatement = TracerBird [ Statement ] .
 
 
 (* STATEMENTS AND BLOCKS *)
@@ -641,8 +637,8 @@ Statement      = "(" Statement ")"
                | ErrorHandlingStatement
                | ConcurrencyStatement
                | TopLevelSentence
-               | RubberDuckStatement
-               | TweetTracingStatement
+               | DebuggingStatement
+               | LoggingStatement
                | CommentedStatement .
 
 Label = AtomIdentifier .
@@ -964,15 +960,15 @@ NumericType = NumericDigit | NumericNatural | NumericInteger
             | NumericDecimal | NumericReal | NumericRatio
             | NumericComplex | NumericQuaternion .
 
-NumericDigit = DIG | BIT | OCT | HEX | NIBBLE .
+NumericDigit = DIG | BIT | OCT | HEX | NIBBLE | BYTE .
 
-NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | BYTE | NAT .
+NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | NAT | BIGNAT .
 
 NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT | BIGINT .
 
-NumericDecimal = DEC1 | DEC2 | DEC3 | DEC4 | DEC5 | DEC6 | DEC7 | DEC8 | DEC | MONEY | BIGDEC .
-
 NumericReal = REAL8 | REAL16 | REAL32 | REAL64 | REAL128 | REAL | BIGREAL .
+
+NumericDecimal = DEC1 | DEC2 | DEC3 | DEC4 | DEC5 | DEC6 | DEC7 | DEC8 | DEC | MONEY | BIGDEC .
 
 NumericRatio = RATIO16 | RATIO32 | RATIO64 | RATIO128 | RATIO .
 
@@ -1023,7 +1019,7 @@ NumericData = NONZERO | ZERO | MINVALUE | MAXVALUE | NAN | POSITIVEINFINITY | NE
 TemporalData = LOCALDATE | LOCALDATETIME | OFFSETDATE | OFFSETDATETIME | ZONEDDATE | ZONEDDATETIME
              | TOMORROW | TODAY | NOW | YESTERDAY | EON | EPOCH .
 
-CharacterData = LETTER | MARK | DIGIT | PUNCTUATION | SYMBOL | SEPARATOR | NONPRINTABLE | OTHER .
+CharacterData = LETTER | MARK | DIGIT | PUNCTUATION | SYMBOL | SEPARATOR | OTHER | NONPRINTABLE | NULL .
 
 SequenceData = BLANK | NONBLANK .
 
@@ -1347,10 +1343,11 @@ PrefixTypeModifier = ArrayModifier | VariadicModifier .
 (* POSFIX TYPE MODIFIERS *)
 
 OptionalModifier       = "!"   /* ResultOption wrapper declaration */
-                       | "?"   /* MaybeOption wrapper declaration */
-                       | "!?"  /* ResultOption wrapper of MaybeOption wrapper declaration */
+                       | "?"   /* MaybeOption  wrapper declaration */
                        | "??"  /* EitherOption wrapper declaration */
                        | "|>"  /* StreamOption wrapper declaration */
+                       | "!?"  /* ResultOption wrapper of MaybeOption wrapper declaration */
+                       | "!??" /* ResultOption wrapper of EitherOption wrapper declaration */
                        | "!|>" /* ResultOption wrapper of StreamOption wrapper declaration */
                        .  
 
@@ -1398,7 +1395,7 @@ XmlLiteral = XmlElement .
 
 (* ESCALAR LITERALS *)
 
-NumericLiteral = NumberLiteral | IntegerLiteral | DecLiteral | RealLiteral
+NumericLiteral = NumberLiteral | IntegerLiteral | RealLiteral | DecLiteral
                | ImaginaryLiteral | RationalLiteral . 
 
 RangeLiteral = Expression [ ">" ] ".." [ "<" ] Expression .
