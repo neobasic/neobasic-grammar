@@ -17,6 +17,8 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 lexer grammar NeoBasicKeywords_en;
 
+// --- KEYWORDS -----------------------------------------------------
+
 // TOP LEVEL SENTENCES
 
 CONST : 'const';
@@ -57,7 +59,6 @@ NXOR : 'nxor';
 
 // MISCELLANEOUS DATA TYPES
 
-NUMBER : 'Number';
 TANY : 'Any';
 ATOM : 'Atom';
 
@@ -69,6 +70,10 @@ BOOL32 : 'Bool32';
 BOOL64 : 'Bool64';
 BOOL128 : 'Bool128';
 BOOL : 'Bool';
+
+// NUMERIC GENERIC
+
+NUMBER : 'Number';
 
 // NUMERIC DIGITS
 
@@ -190,11 +195,22 @@ OFFSETDATETIME : 'OffsetDateTime';
 ZONEDDATE : 'ZonedDate';
 ZONEDDATETIME : 'ZonedDateTime';
 TOMORROW : 'Tomorrow';
-NOW : 'Now';
 TODAY : 'Today';
+NOW : 'Now';
 YESTERDAY : 'Yesterday';
 EON : 'Eon';
 EPOCH : 'Epoch';
+
+// MONAD CHARACTER VALUE CONSTRUCTORS
+
+LETTER : 'Letter';
+MARK : 'Mark';
+DIGIT : 'Digit';
+PUNCTUATION : 'Punctuation';
+SYMBOL : 'Symbol';
+SEPARATOR : 'Separator';
+NONPRINTABLE : 'NonPrintable';
+OTHER : 'Other';
 
 // MONAD SEQUENCE VALUE CONSTRUCTORS
 

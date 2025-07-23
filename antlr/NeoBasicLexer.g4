@@ -28,10 +28,11 @@ channels {
 }
 
 /*
- *  DEFAULT LEXER MODE
+ *  Default Lexer Mode
  */
 
-// Punctuation
+
+// --- PUNCTUATION --------------------------------------------------
 
 LEFT_PARENTHESIS  : '(';    // 
 RIGHT_PARENTHESIS : ')';    // 
@@ -48,8 +49,8 @@ COLON             : ':';    // Pair mapping
 EXCLAMATION       : '!';    // Error
 QUESTION          : '?';    // Optional
 APOSTROPHE        : '\'';   // Character lieral, template string literal
-BACKTICK          : '`';    // Backtick
 QUOTE             : '"';    // Verbatim String literal
+BACKTICK          : '`';    // Backtick
 AT                : '@';    // Atoms, Annotations/Decorators
 HASH              : '#';    // Shebang, Pragma, Canary testing
 DOLLAR            : '$';    // 
@@ -68,18 +69,7 @@ PLUS              : '+';    //
 MINUS             : '-';    //
 
 
-// POSFIX TYPE MODIFIERS
-
-OPTIONAL_MODIFIER
-    : EXCLAMATION                   // ResultOption wrapper declaration
-    | QUESTION                      // MaybeOption wrapper declaration
-    | EXCLAMATION QUESTION          // ResultOption wrapper of MaybeOption wrapper declaration
-    ;
-
-POSFIX_TYPE_MODIFIER
-    : OPTIONAL_MODIFIER
-    ;
-
+// --- OPERATORS ----------------------------------------------------
 
 // Unary Arithmetic Operators (Prefix Notation)
 
@@ -93,19 +83,16 @@ SQUARE_POWER  : ASTERISK ASTERISK;
 SQUARE_ROOT   : ASTERISK SLASH;
 FACTORIAL     : ASTERISK EXCLAMATION;
 
-
 // Binary Arithmetic operators (Infix Notation)
 
 ADDITION          : PLUS;
 SUBTRACTION       : MINUS;
 MULTIPLICATION    : ASTERISK;
 REAL_DIVISION     : SLASH;
-RATIONAL_FRACTION : SLASH SLASH;
 INTEGER_DIVISION  : PERCENT PERCENT | DIVISION ;
 MODULO            : PERCENT;
-EXPONENTIATION    : SQUARE_POWER;
+NTH_POWER         : SQUARE_POWER;
 NTH_ROOT          : SQUARE_ROOT;
-
 
 // Financial Operators
 
@@ -115,29 +102,34 @@ PERCENTAGE_INCREASE  : PERCENT PLUS;
 PERCENTAGE_DECREASE  : PERCENT MINUS;
 PERCENTAGE_VARIATION : PERCENT CARET;
 
-
 //  Bitwise Operators (Strict Evaluation = Eager Evaluation)
 
 BIT_AND              : AMPERSAND;
-BIT_OR               : PIPE;
-BIT_XOR              : CARET;
 BIT_CLEAR            : AMPERSAND CARET;
+BIT_XOR              : CARET;
+BIT_OR               : PIPE;
 LEFT_SHIFT           : LEFT_ANGLE LEFT_ANGLE;
 SIGNED_RIGHT_SHIFT   : RIGHT_ANGLE RIGHT_ANGLE;
 UNSIGNED_RIGHT_SHIFT : RIGHT_ANGLE RIGHT_ANGLE RIGHT_ANGLE;
 
+// Textual Operators
+// INTERPOLATION : POSITIVE;
+// REPETITION    : MULTIPLICATION;
 
 // Comparison Operators
 
-DIVISIBLE_BY_TEST     : QUESTION PERCENT;              // Evenly Divisible by (RETURNS BOOLEAN)  
-NOT_DIVISIBLE_BY_TEST : EXCLAMATION PERCENT;           // Not Divisible by (RETURNS BOOLEAN)   
-THREE_WAY_TEST        : LEFT_ANGLE EQUAL RIGHT_ANGLE;  // Three-way comparison (RETURNS -1, 0, OR 1)
-ELVIS_TEST            : QUESTION COLON;                // Elvis Operator (RETURNS -1, 0, OR 1)
 IDENTITY              : IS;                            // Identity Operator (RETURNS BOOLEAN)
 NOT_IDENTITY          : IS NOT;                        // Negation of Identity Operator (RETURNS BOOLEAN)
+MEMBERSHIP            : IN;
+NOT_MEMBERSHIP        : NOT IN;
 BETWEEN_RANGE         : BETWEEN;                       // Interval Comparison (RETURNS BOOLEAN)
 NOT_BETWEEN_RANGE     : NOT BETWEEN;                   // Negation of Interval Comparison (RETURNS BOOLEAN)
-
+MATCHING              : LIKE;                          // Matching Operator (RETURNS BOOLEAN)
+NOT_MATCHING          : NOT LIKE;                      // Negation of Matching Operator (RETURNS BOOLEAN)
+DIVISIBLE_BY          : QUESTION PERCENT;              // Evenly Divisible by (RETURNS BOOLEAN)  
+NOT_DIVISIBLE_BY      : EXCLAMATION PERCENT;           // Not Divisible by (RETURNS BOOLEAN)   
+ELVIS_TEST            : QUESTION COLON;                // Elvis Operator (RETURNS -1, 0, OR 1)
+THREE_WAY_TEST        : LEFT_ANGLE EQUAL RIGHT_ANGLE;  // Three-way comparison (RETURNS -1, 0, OR 1)
 
 // Relational Operators
 
@@ -148,26 +140,16 @@ LESS_OR_EQUALS    : LEFT_ANGLE EQUAL;
 GREATER           : RIGHT_ANGLE;
 GREATER_OR_EQUALS : RIGHT_ANGLE EQUAL;
 
-
 // Logical Operators (Non-Strict Evaluation = Short-circuit Evaluation) 
 
 LOGICAL_AND  : AND;   // CONJUNCTION
-LOGICAL_OR   : OR;    // DISJUNCTION
 LOGICAL_XOR  : XOR;   // EXCLUSIVE DISJUNCTION
+LOGICAL_OR   : OR;    // DISJUNCTION
 LOGICAL_NOT  : NOT;   // NEGATION
-// UNIVERSAL GATES
+// Universal gates
 LOGICAL_NAND : NAND;  // NEGATION OF CONJUNCTION: NOT (X AND B)
-LOGICAL_NOR  : NOR;   // NEGATION OF DISJUNCTION: NOT (X OR B)
 LOGICAL_NXOR : NXOR;  // NEGATION OF EXCLUSIVE DISJUNCTION: NOT (X OR B)
-
-
-// Textual Operators
-
-INTERPOLATION : POSITIVE;
-REPETITION    : MULTIPLICATION;
-MATCHING      : LIKE;         // Matching Operator (RETURNS BOOLEAN)
-NOT_MATCHING  : NOT LIKE;     // Negation of Matching Operator (RETURNS BOOLEAN)
-
+LOGICAL_NOR  : NOR;   // NEGATION OF DISJUNCTION: NOT (X OR B)
 
 // Coalescing Operators
 
@@ -180,9 +162,9 @@ EXCEPTION_STATEMENT               : ORELSE;
 
 // Single Assignment Operators
         
-BASIC_ASSIGNMENT        : EQUAL;
+BASIC_ASSIGNMENT         : EQUAL;
 DESTRUCTURING_ASSIGNMENT : COLON EQUAL;
-INLINE_ASSIGNMENT        : COLON COLON;
+MACRO_ASSIGNMENT         : COLON COLON;
 
 // Compound Assignment Operators
 
@@ -192,7 +174,7 @@ MULTIPLICATION_ASSIGNMENT       : ASTERISK EQUAL;
 REAL_DIVISION_ASSIGNMENT        : SLASH EQUAL;
 INTEGER_DIVISION_ASSIGNMENT     : DIVISION EQUAL | PERCENT PERCENT EQUAL;
 MODULO_ASSIGNMENT               : PERCENT EQUAL;
-EXPONENTIATION_ASSIGNMENT       : ASTERISK ASTERISK EQUAL;
+NTH_POWER_ASSIGNMENT            : ASTERISK ASTERISK EQUAL;
 NTH_ROOT_ASSIGNMENT             : ASTERISK SLASH  EQUAL;
 PERCENTAGE_RATE_ASSIGNMENT      : PERCENT SLASH EQUAL;
 PERCENTAGE_AMOUNT_ASSIGNMENT    : PERCENT ASTERISK EQUAL;
@@ -209,67 +191,25 @@ SIGNED_RIGHT_SHIFT_ASSIGNMENT   : RIGHT_ANGLE RIGHT_ANGLE EQUAL;
 UNSIGNED_RIGHT_SHIFT_ASSIGNMENT : RIGHT_ANGLE RIGHT_ANGLE RIGHT_ANGLE EQUAL;
 NONE_COALESCING_ASSIGNMENT      : QUESTION QUESTION EQUAL;
 
-
-// Maybe Literals
-
-MAYBE_LIT : NONE | SOME;
-
-
-// Result Literals
-
-RESULT_LIT : OKAY | FAIL;
-
-
-// Range Literals
-
-RANGE_LIT
-    : INTEGER_NUMBER? INTERVAL INTEGER_NUMBER?
-    | CHAR_LIT INTERVAL CHAR_LIT
-    ;
+// Composite Operators
 
 INTERVAL : RIGHT_ANGLE? DOT DOT LEFT_ANGLE?;
+ELLIPSIS : DOT DOT DOT;
+FRACTION : SLASH SLASH;
 
 
-// Boolean Literals
+// --- LITERALS -----------------------------------------------------
 
-BOOLEAN_LIT: TRUE | FALSE;
+// Numeric values and literals
 
+NUMBER_VAL : LEFT_PARENTHESIS NUMBER_LIT RIGHT_PARENTHESIS;
 
-// Numeric literals
-
-NUMBER_LIT
-    : DECIMAL_NUMBER
-    | REAL_NUMBER
-    | RATIONAL_NUMBER
-    | IMAGINARY_NUMBER
-    | INTEGER_NUMBER
-    | NONZERO
-    | ZERO
-    | MINVALUE
-    | MAXVALUE
-    | NAN
-    | POSITIVEINFINITY
-    | NEGATIVEINFINITY
-    ;
-
-
-// Temporal literals
-
-TIME_LIT
-    : LOCALDATE
-    | LOCALDATETIME
-    | OFFSETDATE
-    | OFFSETDATETIME
-    | ZONEDDATE
-    | ZONEDDATETIME
-    | TOMORROW
-    | NOW
-    | TODAY
-    | YESTERDAY
-    | EON
-    | EPOCH
-    ;
-
+NUMBER_LIT : INTEGER_NUMBER
+           | DECIMAL_NUMBER
+           | REAL_NUMBER
+           | RATIONAL_NUMBER
+           | IMAGINARY_NUMBER
+           ;
 
 // Decimal literals (Fixed Point Numbers)
 
@@ -292,7 +232,6 @@ fragment HEX_MANTISSA
     | '.' HEX_GROUPS
     ;
 
-
 // Real literals (Floating Point Numbers)
 
 fragment REAL_NUMBER
@@ -306,18 +245,13 @@ fragment DEC_EXPONENT : [eE] [+-]? DEC_GROUPS;
 fragment HEX_REAL : HEX_DECIMAL HEX_EXPONENT?;
 fragment HEX_EXPONENT: [pP] [+-]? DEC_GROUPS;
 
-
 // Rational literals
 
 fragment RATIONAL_NUMBER : INTEGER_NUMBER FRACTION INTEGER_NUMBER;
 
-fragment FRACTION : SLASH SLASH;
-
-
 // Imaginary literals
 
 fragment IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
-
 
 // Integer literals
 
@@ -340,7 +274,6 @@ fragment OCT_GROUPS  : OCT_DIGIT ('_'? OCT_DIGIT)*;
 fragment BIN_INTEGER : '0' [bB] BIN_GROUPS;
 fragment BIN_GROUPS  : BIN_DIGIT ('_'? BIN_DIGIT)*;
 
-
 // Computer number formats
 
 fragment DEC_DIGIT : UNICODE_DIGIT;
@@ -348,10 +281,56 @@ fragment HEX_DIGIT : [0-9a-fA-F];
 fragment OCT_DIGIT : [0-7];
 fragment BIN_DIGIT : [01];
 
+// Temporal values
+
+TIME_VAL : LEFT_PARENTHESIS TIME_LIT RIGHT_PARENTHESIS;
+
+TIME_LIT : ATOM_DOT_LIT
+         | NUMBER_LIT
+         | TOMORROW
+         | TODAY
+         | NOW
+         | YESTERDAY
+         | EON
+         | EPOCH
+         ;
+
+// Sequence literals
+
+SEQUENCE_VAL : LEFT_PARENTHESIS SEQUENCE_LIT RIGHT_PARENTHESIS;
+
+SEQUENCE_LIT : STRING_LIT
+             | REGULAR_EXPRESSION_LIT
+             | ATOM_DOT_LIT
+             | BINARY_LIT
+             ;
+
+// HereDoc Literals
+
+HEREDOC_LITERAL : LEFT_ANGLE LEFT_ANGLE HEREDOC_CONTENT ;
+
+HEREDOC_CONTENT : IDENTIFIER EOL VERBATIM_STRING_CONTENT EOL IDENTIFIER
+                | '"' EOL VERBATIM_STRING_CONTENT EOL '"'
+                | '"""' EOL VERBATIM_STRING_CONTENT EOL '"""'
+                | '\'' EOL TEMPLATE_STRING_CONTENT EOL '\''
+                | '\'\'\'' EOL TEMPLATE_STRING_CONTENT EOL '\'\'\''
+                | '/' EOL REGULAR_EXPRESSION_CONTENT EOL '/' REGEX_FLAG*
+                | '0' [xX] EOL HEX_DIGIT* EOL '0' [xX]
+                | '0' [oO] EOL OCT_DIGIT* EOL '0' [oO]
+                | '0' [bB] EOL BIN_DIGIT* EOL '0' [bB]
+                ;
+
+// Binary literals
+
+BINARY_LIT : '0' [xX] HEX_DIGIT*
+           | '0' [oO] OCT_DIGIT*
+           | '0' [bB] BIN_DIGIT*;
 
 // Regular expression literals 
 
-REGULAR_EXPRESSION_LIT : '/' REGEX_FIRST_CHAR REGEX_CHAR* '/' REGEX_FLAG*;
+REGULAR_EXPRESSION_LIT : '/' REGULAR_EXPRESSION_CONTENT '/' REGEX_FLAG*;
+
+REGULAR_EXPRESSION_CONTENT : REGEX_FIRST_CHAR REGEX_CHAR*;
 
 fragment REGEX_FIRST_CHAR
     : ~[\n\r\u0085\u2028\u2029*\\/[]
@@ -374,28 +353,15 @@ fragment REGEX_CLASS_CHAR
 
 fragment REGEX_FLAG : [digmsuvy];
 
+// String values and literals
 
-// HereDoc Literals
+STRING_VAL : BLANK
+           | NONBLANK
+           ;
 
-HEREDOC_LITERAL : LEFT_ANGLE LEFT_ANGLE HEREDOC_CONTENT ;
-
-HEREDOC_CONTENT
-   : '\'' EOL? TEMPLATE_STRING_CONTENT EOL? '\''
-   | '"' EOL? VERBATIM_STRING_CONTENT EOL? '"'
-   | IDENTIFIER EOL? VERBATIM_STRING_CONTENT EOL? IDENTIFIER
-   ;
-
-
-// String and Character literals
-
-STRING_LIT
-    : VERBATIM_STRING_LIT
-    | TEMPLATE_STRING_LIT
-    | CHAR_LIT
-    | ASCII_LIT
-    | BLANK
-    | NONBLANK
-    ;
+STRING_LIT : VERBATIM_STRING_LIT
+           | TEMPLATE_STRING_LIT
+           ;
 
 VERBATIM_STRING_LIT
     : '"' VERBATIM_STRING_CONTENT '"'
@@ -415,6 +381,10 @@ fragment TEMPLATE_STRING_CONTENT : ( ASCII_ESCAPED_VALUE
                                    | ~['\\] )* ; 
 
 STRING_PLACEHOLDER : ~['\\];
+
+// Character literals
+
+CHAR_VAL : LEFT_PARENTHESIS CHAR_LIT RIGHT_PARENTHESIS;
 
 CHAR_LIT
     : ASCII_LIT     
@@ -443,6 +413,29 @@ fragment UNICODE_ESCAPED_VALUE
            )
     ;
 
+// Atom literals
+
+ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
+
+DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
+
+// Maybe values
+
+MAYBE_VAL : NONE | SOME;
+
+// Result values
+
+RESULT_VAL : OKAY | FAIL;
+
+// Range Literals
+
+RANGE_LIT
+    : INTEGER_NUMBER? INTERVAL INTEGER_NUMBER?
+    | CHAR_LIT INTERVAL CHAR_LIT
+    ;
+
+
+// --- SYMBOLS ------------------------------------------------------
 
 // Identifier Names
 
@@ -456,14 +449,6 @@ fragment LETTER: UNICODE_LETTER | '_';
 
 fragment ALPHANUMERIC : UNICODE_ALPHANUMERIC | '_';
 
-
-// ATOM LITERAL
-
-ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
-
-DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
-
-
 // MUSICAL ALPHABET
 
 MUSIC_NOTE     : MUSIC_ALPHABET (PITCH_FLAT | PITCH_SHARP)? OCTAVE_DIGIT?;
@@ -474,7 +459,36 @@ PITCH_FLAT     : 'f';
 PITCH_SHARP    : 's';
 
 
-// UNICODE CHARACTERS
+// --- COMMENTS -----------------------------------------------------
+
+// Magic Comments
+
+SHEBANG : HASH EXCLAMATION ;
+
+SHEBANG_LINE : {this.IsStartOfFile()}? BOM? SHEBANG ~[\n\r\u0085\u2028\u2029]*; // only allowed at start
+
+//DIRECTIVE_LINE : {this.IsNotStartOfFile()}? SHEBANG ~[\n\r\u0085\u2028\u2029]*;
+
+WOODSTOCK : HASH QUESTION ;
+
+//CANARY_TESTING_LINE  : WOODSTOCK ~[\n\r\u0085\u2028\u2029]*;
+
+// Rubber Duck Debugging
+
+RUBBERDUCK : AT ALPHANUMERIC* EQUAL;
+
+// Tracer Bird Logging
+
+TRACERBIRD : AT (LOGGING_LEVEL | ALPHANUMERIC*)? RIGHT_ANGLE;
+
+LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
+
+// Hashtags
+
+HASHTAG : HASH ALPHANUMERIC* WSP? ~[\n\r\u0085\u2028\u2029]*;
+
+
+// --- UNICODE CHARACTERS -------------------------------------------
 
 fragment UNICODE_ALPHANUMERIC
     : UNICODE_LETTER
@@ -495,34 +509,18 @@ fragment UNICODE_DIGIT: [\p{Nd}];
 fragment ASCII_CHAR : [\u0020-\u007E];
 
 
-// Magic Comments
+// --- SPECIAL TOKENS -----------------------------------------------
 
-SHEBANG : HASH EXCLAMATION ;
+// Emit an EOS token for any newlines, semicolon, multiline comments or the EOF
+// and return to normal lexing
 
-SHEBANG_LINE : {this.IsStartOfFile()}? BOM? SHEBANG ~[\n\r\u0085\u2028\u2029]*; // only allowed at start
-
-DIRECTIVE_LINE : {this.IsNotStartOfFile()}? SHEBANG ~[\n\r\u0085\u2028\u2029]*;
-
-WOODSTOCK : HASH QUESTION ;
-
-CANARY_TESTING_LINE  : WOODSTOCK ~[\n\r\u0085\u2028\u2029]*;
-
-// RUBBER DUCK DEBUGGING
-RUBBERDUCK : AT ALPHANUMERIC* EQUAL;
-
-// TWEETER TRACING
-TWEETER : AT (LOGGING_LEVEL | ALPHANUMERIC*)? RIGHT_ANGLE;
-
-LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
-
-// HASHTAGS
-
-HASHTAG : HASH ALPHANUMERIC* WSP? ~[\n\r\u0085\u2028\u2029]*;
-
-
-// SPECIAL TOKENS
+EOS : EOL
+    | LINE_COMMENT
+    | EOF
+    ;
 
 // End of Line (EOL) characters
+
 EOL : '\n'       /* Unix, Linux, macOS */
     | '\r' '\n'  /* Windows, DOS */
     | '\r'       /* Classic Mac OS (pre-OS X) */
@@ -531,23 +529,26 @@ EOL : '\n'       /* Unix, Linux, macOS */
     | '\u2029'   /* Unicode Paragraph Separator */
     ;
 
-BOM : '\ufeff';  // Byte Order Mark.
+BOM : '\ufeff';  // Byte Order Mark
 
 
-// HIDDEN TOKENS:
+// --- HIDDEN TOKENS ------------------------------------------------
 
 // White Spaces (WSP) characters
+
 WSP : [\u0009\u000B\u000C\u0020\u00A0\p{Zs}]+ -> channel(HIDDEN);
 
 // Two or more physical lines may be joined into logical lines
-EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
 
+EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
+  
 // Comment Body
+
 LINE_COMMENT          : '#' ~[#$!?>] ~[\n\r\u0085\u2028\u2029]* -> channel(HIDDEN);
 BLOCK_COMMENT         : '##' ~[#>] .*? '##'                     -> channel(HIDDEN);
-DOCUMENTATION_COMMENT : '###' .*? '###'                    -> channel(HIDDEN);
+DOCUMENTATION_COMMENT : '###' .*? '###'                         -> channel(HIDDEN);
 
 
-// ERROR HANDLING
+// --- ERROR HANDLING -----------------------------------------------
 
 UnexpectedCharacter : . -> channel(ERROR_CHANNEL);

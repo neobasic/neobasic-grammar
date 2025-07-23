@@ -334,11 +334,22 @@ OFFSETDATETIME = "OffsetDateTime" .
 ZONEDDATE = "ZonedDate" .
 ZONEDDATETIME = "ZonedDateTime" .
 TOMORROW = "Tomorrow" .
-NOW = "Now" .
 TODAY = "Today" .
+NOW = "Now" .
 YESTERDAY = "Yesterday" .
 EON = "Eon" .
 EPOCH = "Epoch" .
+
+(* MONAD CHARACTER VALUE CONSTRUCTORS *)
+
+LETTER = "Letter" .
+MARK = "Mark" .
+DIGIT = "Digit" .
+PUNCTUATION = "Punctuation" .
+SYMBOL = "Symbol" .
+SEPARATOR = "Separator" .
+NONPRINTABLE = "NonPrintable" .
+OTHER = "Other" .
 
 (* MONAD SEQUENCE VALUE CONSTRUCTORS *)
 
@@ -366,25 +377,25 @@ URN = "Urn" .
 IPV4 = "Ipv4" .
 IPV6 = "Ipv6" .
 
-(* MONAD MAYBE VALUE CONSTRUCTORS *)
+(* MONAD RESULT ! VALUE CONSTRUCTORS *)
+
+OKAY = "Okay" .
+FAIL = "Fail" .
+
+(* MONAD MAYBE ? VALUE CONSTRUCTORS *)
 
 SOME = "Some" .
 NONE = "None" .
 
-(* MONAD EITHER VALUE CONSTRUCTORS *)
+(* MONAD EITHER ?? VALUE CONSTRUCTORS *)
 
 YEA = "Yea" .
 NAY = "Nay" .
 
-(* MONAD STREAM VALUE CONSTRUCTORS *)
+(* MONAD STREAM |> VALUE CONSTRUCTORS *)
 
 DATA = "Data" .
 EOT = "EoT" .
-
-(* MONAD RESULT VALUE CONSTRUCTORS *)
-
-OKAY = "Okay" .
-FAIL = "Fail" .
 
 (* ------------------------------------------------------------------------- *)
 

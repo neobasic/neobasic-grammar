@@ -933,9 +933,9 @@ FieldValue = Identifier [ FieldType ] ":" Literal .
 
 NeoNativeType = SymbolType | EscalarType | CompoundType | MiscellaneousType .
 
-EscalarType = BooleanType | NumericType | TemporalType | SequenceType .
+EscalarType = BooleanType | NumericType | TemporalType | CharacterType | SequenceType .
 
-CompoundType = Compositeype | ArrayType .
+CompoundType = CompositeType | ArrayType | ShellType .
 
 
 (* SYMBOL DATA TYPE *)
@@ -952,6 +952,7 @@ MiscellaneousType = VOID | TANY | URI | PATH | FILE
                    | ENUM | STRUCT
                    | PROTO | TRAIT | CLASS .
 
+
 (* BOOLEAN DATA TYPES *)
 
 BooleanType = BOOL8 | BOOL16 | BOOL32 | BOOL64 | BOOL128 | BOOL .
@@ -959,13 +960,13 @@ BooleanType = BOOL8 | BOOL16 | BOOL32 | BOOL64 | BOOL128 | BOOL .
 
 (* NUMERIC DATA TYPES *)
 
-NumericType = NumericDigit | NaturalNumber | NumericInteger
+NumericType = NumericDigit | NumericNatural | NumericInteger
             | NumericDecimal | NumericReal | NumericRatio
             | NumericComplex | NumericQuaternion .
 
 NumericDigit = DIG | BIT | OCT | HEX | NIBBLE .
 
-NaturalNumber = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | BYTE | NAT | ASCII | UNICODE .
+NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | BYTE | NAT .
 
 NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT | BIGINT .
 
@@ -985,14 +986,24 @@ NumericQuaternion = QUATERN32 | QUATERN64 | QUATERN128 | QUATERN256 | QUATERN .
 TemporalType = DATE | ELAPSE .
 
 
+(* CHARACTER DATA TYPES *)
+
+CharacterType = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | BYTE | NAT | ASCII | CHAR .
+
+
 (* SEQUENTIAL DATA TYPES *)
 
 SequenceType = STRING | REGEX | BINARY .
 
 
+(* SHELL DATA TYPES *)
+
+ShellType = PATH | URI | INET .
+
+
 (* COMPOSITE DATA TYPES *)
 
-Compositeype = RANGE | MAP | INET .
+CompositeType = RANGE | MAP .
 
 
 (* ARRAY DATA TYPES *)
@@ -1002,7 +1013,7 @@ ArrayType = ARRAY | LIST | DICT | CHAN | TUPLE | VEC | MAT | TSET | QUEUE | DEQU
 
 (* MONAD VALUE CONSTRUCTORS *)
 
-MonadValue = BooleanData | NumericData | TemporalData | SequenceData
+MonadValue = BooleanData | NumericData | TemporalData | CharacterData | SequenceData
            | MaybeOption | EitherOption | StreamOption | ResultOption .
 
 BooleanData = TRUE | FALSE .
@@ -1010,7 +1021,9 @@ BooleanData = TRUE | FALSE .
 NumericData = NONZERO | ZERO | MINVALUE | MAXVALUE | NAN | POSITIVEINFINITY | NEGATIVEINFINITY .
 
 TemporalData = LOCALDATE | LOCALDATETIME | OFFSETDATE | OFFSETDATETIME | ZONEDDATE | ZONEDDATETIME
-             | TOMORROW | NOW | TODAY | YESTERDAY | EON | EPOCH .
+             | TOMORROW | TODAY | NOW | YESTERDAY | EON | EPOCH .
+
+CharacterData = LETTER | MARK | DIGIT | PUNCTUATION | SYMBOL | SEPARATOR | NONPRINTABLE | OTHER .
 
 SequenceData = BLANK | NONBLANK .
 
@@ -1336,6 +1349,7 @@ PrefixTypeModifier = ArrayModifier | VariadicModifier .
 OptionalModifier       = "!"   /* ResultOption wrapper declaration */
                        | "?"   /* MaybeOption wrapper declaration */
                        | "!?"  /* ResultOption wrapper of MaybeOption wrapper declaration */
+                       | "??"  /* EitherOption wrapper declaration */
                        | "|>"  /* StreamOption wrapper declaration */
                        | "!|>" /* ResultOption wrapper of StreamOption wrapper declaration */
                        .  
@@ -1670,7 +1684,7 @@ UnicodePrintable = (* Unicode code points from U+0000 to U+10FFFF,
 UnicodeFilepath  = (* Unicode code points from U+0000 to U+10FFFF,
                       except categorized as Cc (Control), Cf (Format), 
                       Cs (Surrogate), Co (Private Use), Cn (Unassigned) 
-                      and except these 11 chars   / \\ | < > : ? * " ' `   *) . 
+                      and except these 11 chars   "/ \ | < > : ? * \" ' `"   *) . 
 
 
 (* UNICODE END-OF-LINE AND END-OF-FILE SEPARATORS *) 
