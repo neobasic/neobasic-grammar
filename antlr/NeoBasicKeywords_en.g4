@@ -37,11 +37,22 @@ ORELSE : 'orelse';
 THIS : 'this';
 IOTA : 'iota';
 
-// MISCELLANEOUS OPERATORS
+// FACT SCOPES
+
+ALL : 'all';
+ANY : 'any';
+ONE : 'one';
+TWO : 'two';
+NIL : 'nil';
+
+// META OPERATORS
 
 TYPEOF : 'typeof';
 INSTANCEOF : 'instanceof';
 SIZEOF : 'sizeof';
+
+// CONDITIONAL OPERATORS
+
 IS : 'is';
 IN : 'in';
 BETWEEN : 'between';
@@ -57,8 +68,9 @@ NAND : 'nand';
 NOR : 'nor';
 NXOR : 'nxor';
 
-// MISCELLANEOUS DATA TYPES
+// META DATA TYPES
 
+NUMBER : 'Number';
 TANY : 'Any';
 ATOM : 'Atom';
 
@@ -70,10 +82,6 @@ BOOL32 : 'Bool32';
 BOOL64 : 'Bool64';
 BOOL128 : 'Bool128';
 BOOL : 'Bool';
-
-// NUMERIC GENERIC
-
-NUMBER : 'Number';
 
 // NUMERIC DIGITS
 

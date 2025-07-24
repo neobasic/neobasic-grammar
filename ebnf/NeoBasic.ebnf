@@ -927,7 +927,7 @@ FieldValue = Identifier [ FieldType ] ":" Literal .
 
 (* NEOBASIC NATIVE DATA TYPES *)
 
-NeoNativeType = SymbolType | EscalarType | CompoundType | MiscellaneousType .
+NeoNativeType = SymbolType | EscalarType | CompoundType | MetaType .
 
 EscalarType = BooleanType | NumericType | TemporalType | CharacterType | SequenceType .
 
@@ -939,14 +939,14 @@ CompoundType = CompositeType | ArrayType | ShellType .
 SymbolType = ATOM .
 
 
-(* MISCELLANEOUS DATA TYPES *)
+(* META DATA TYPES *)
 
-MiscellaneousType = VOID | TANY | URI | PATH | FILE
-                   | MODULE | INTERFACE
-                   | TYPE | FACT | MODIF
-                   | FUNC | SUB | EVENT 
-                   | ENUM | STRUCT
-                   | PROTO | TRAIT | CLASS .
+MetaType = VOID | TANY | URI | PATH | FILE
+         | MODULE | INTERFACE
+         | TYPE | FACT | MODIF
+         | FUNC | SUB | EVENT 
+         | ENUM | STRUCT
+         | PROTO | TRAIT | CLASS .
 
 
 (* BOOLEAN DATA TYPES *)
@@ -1051,7 +1051,7 @@ Expressions = Expression { "," Expression } .
 
 PredeclaredValue = THIS | SELF | SUPER | IT | NTH | ONE | END | IOTA.
 
-FactModifier = ALL | ANY | ONE | TWO | NIL .
+FactScope = ALL | ANY | ONE | TWO | NIL .
 
 Literal = EscalarLiteral | CompoundLiteral | LambdaLiteral .
 
@@ -1064,8 +1064,8 @@ LetExpression = LET Expression .
 
 GetExpression = GET Expression Expression .
 
-FactExpression = [ FactModifier "`" ] Identifier Expressions
-               | Expression IS [NOT] [ FactModifier "`" ] Identifier .
+FactExpression = [ FactScope "`" ] Identifier Expressions
+               | Expression IS [NOT] [ FactScope "`" ] Identifier .
 
 EagerEvaluateExpression = UnaryEvaluate "(" Expression ")" .
 
@@ -1149,7 +1149,7 @@ UnaryEvaluate   = "&" . (* Eager Expression or Memory address of a var *)
 
 UnaryArithmetic = "+"  /* Plus sign */
                 | "-"  /* Minus sign */
-                | "**" /* Square */
+                | "**" /* Square power */
                 | "*/" /* Square root */
                 | "*!" /* Factorial */
                 | "++" /* Increment of a var */
@@ -1170,32 +1170,34 @@ UnaryClone      = "="   /* Shallow copy */
                 | "===" /* Deepp copy */
                 .
 
-UnaryMiscellaneous = TYPEOF     /* Type (string) of a var */
-                   | SIZEOF     /* Number of bytes required for a var or data structure */
-                   | INSTANCEOF /* Check if an object is an instance of a class */
-                   | EACH       /* Generate an iterator of a iterable var (for loops),
-                                   or a value converted to text, if not iterable,
-                                   Generate pipeline with itens of an array */
-                   | NEW        /* Insert a new item (before other) in a data structure or space in a string */
-                   | DEL        /* Delete an item of a data structure or a char of a string */
-                   .
+UnaryMeta = TYPEOF     /* Type (string) of a var */
+          | SIZEOF     /* Number of bytes required for a var or data structure */
+          | INSTANCEOF /* Check if an object is an instance of a class */
+          .
+
+UnaryArray = EACH       /* Generate an iterator of a iterable var (for loops),
+                           or a value converted to text, if not iterable,
+                           Generate pipeline with itens of an array */
+           | NEW        /* Insert a new item (before other) in a data structure or space in a string */
+           | DEL        /* Delete an item of a data structure or a char of a string */
+           .
 
 PrefixUnaryOperator  = UnaryBoolean | UnaryEvaluate | UnaryArithmetic | UnaryBitwise
-                     | UnarySort | UnarySpread | UnaryMiscellaneous .
+                     | UnarySort | UnarySpread | UnaryMeta | UnaryArray .
 
 PosfixUnaryOperator = UnarySort | UnaryClone .
 
 
 (* BINARY OPERATORS *)
 
-ArithmeticExpOperator = "**" /* Exponentiation */
+ArithmeticExpOperator = "**" /* Nth power */
                       | "*/" /* Nth root */
                       .
 
-ArithmeticMultOperator = "*" /* Multiplication of numbers and strings */
-                       | "/" /* Real Division of numbers, join of paths */
+ArithmeticMultOperator = "*"  /* Multiplication of numbers and strings */
+                       | "/"  /* Real Division of numbers, join of paths */
                        | "\\" /* Quotient (Integer division of numbers) */
-                       | "%" /* Remainder (Integer division of numbers) */
+                       | "%"  /* Remainder (Integer division of numbers) */
                        .
 
 ArithmeticAddOperator = "+" /* Addition of numbers, interpolation of strings */
@@ -1217,22 +1219,18 @@ BitwiseShiftOperator = "<<"  /* Left shift */
                      .
 
 BitwiseMultOperator = "&"  /* Bitwise AND */
-                    | "&^" /* Bitwise bit Cancel (AND NOT) */
+                    | "&~" /* Bitwise bitclear (AND NOT) */
                     .
 
 BitwiseAddOperator = "|" /* Bitwise OR */
                    | "^" /* Bitwise XOR */
                    .
 
-ComparatorOperator = "?%"  /* Evenly Divisible comparison */
-                   | "!%"  /* Not Divisible comparison */
-                   | "<=>" /* Three-way comparison */
+ComparisonOperator = "<=>" /* Three-way comparison */
                    | "?:"  /* Elvis comparison */
                    .
 
 ConcatenationOperator = "." . (* String concatenation *)
-
-MatchingOperator = LIKE .  (* Pattern Match Operator *)
 
 RelationalOperator = "==" /* Equality */
                    | "!=" /* Inequality */
@@ -1250,10 +1248,13 @@ BinaryBoolean   = AND   /* Logical AND */
                 | NXOR  /* Logical NXOR */ 
                 .
 
-IdentityOperator = IS        /* Identity Operator */
-                 | IN        /* Membership Operator */
-                 | BETWEEN   /* Range Operator */
-                 .
+ConditionalOperator = IS        /* Identity Operator */
+                    | IN        /* Membership Operator */
+                    | BETWEEN   /* Range Operator */
+                    | LIKE      /* Pattern Match Operator */
+                    | "?%"      /* Evenly Divisible comparison */
+                    | "!%"      /* Not Divisible comparison */
+                    .
 
 CoalescingOperator = "!!" /* Error coalescing */
                    | "??" /* Exception coalescing */
@@ -1268,8 +1269,8 @@ FunctorInfixOperador = "`" .
 BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAddOperator
                 | PercentageOperator | EllipsisOperator
                 | BitwiseShiftOperator | BitwiseMultOperator | BitwiseAddOperator
-                | ComparatorOperator | ConcatenationOperator | MatchingOperator
-                | RelationalOperator | BinaryBoolean   | IdentityOperator
+                | ComparisonOperator | ConcatenationOperator
+                | RelationalOperator | BinaryBoolean   | ConditionalOperator
                 | CoalescingOperator | PipelineOperator
                 | MonadBindOperador | FunctorInfixOperador .
 
@@ -1283,14 +1284,17 @@ SingleAssignmentOperator = "="   /* Simple assignment */
                          | "<|"  /* Pipe assignment */
                          .
 
-CompoundAssignmentOperator = "**="  /* Exponentiation Compound assignment */
+CompoundAssignmentOperator = "**="  /* Nth power Compound assignment */
                            | "*/="  /* Nth root Compound assignment */
                            | "*="   /* Multiplication Compound assignment */
                            | "/="   /* Real Division Compound assignment */
                            | "%%="  /* Quotient Compound assignment */
+                           | "÷="   /* Quotient Compound assignment */
                            | "%="   /* Remainder Compound assignment */
                            | "+="   /* Addition Compound assignment */
                            | "-="   /* Subtraction Compound assignment */
+                           | "%+="  /* Percentage Increase Compound assignment */
+                           | "%-="  /* Percentage Decrease Compound assignment */
                            | "<<="  /* Left shift Compound assignment */
                            | ">>="  /* Right shift Compound assignment */
                            | ">>>=" /* Unsigned right shift Compound assignment */

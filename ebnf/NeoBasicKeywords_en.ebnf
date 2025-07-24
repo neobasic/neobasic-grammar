@@ -133,7 +133,7 @@ IT = "it" .
 SELF = "self" .
 SUPER = "super" .
 
-(* FACT MODIFIERS *)
+(* FACT SCOPES *)
 
 ALL = "all" .
 ANY = "any" .
@@ -147,13 +147,14 @@ LET = "let" .
 GET = "get" .
 SET = "set" .
 
-(* MISCELLANEOUS OPERATORS *)
+(* META OPERATORS *)
 
 TYPEOF = "typeof" .
 INSTANCEOF = "instanceof" .
 SIZEOF = "sizeof" .
-NEW = "new" .
-DEL = "del" .
+
+(* CONDITIONAL OPERATORS *)
+
 IS = "is" .
 IN = "in" .
 BETWEEN = "between" .
@@ -169,7 +170,12 @@ NOR = "nor" .
 XOR = "xor" .
 NXOR = "nxor" .
 
-(* MISCELLANEOUS DATA TYPES *)
+(* ARRAY OPERATORS *)
+
+NEW = "new" .
+DEL = "del" .
+
+(* META DATA TYPES *)
 
 NUMBER = "Number" .
 TANY = "Any" .

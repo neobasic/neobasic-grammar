@@ -120,24 +120,25 @@ expressionStatement : expressions;
 
 // Conditional statement: if
 
-ifStatement : IfThenClause;
+ifStatement : ifThenClause;
 
-IfThenClause : IF expression THEN statement;
+ifThenClause : IF expression THEN statement;
 
 // Conditional statement modifier: unless
 
-unlessStatement : UnlessClause;
+unlessStatement : unlessClause;
 
-UnlessClause : statement UNLESS expression;
+unlessClause : statement UNLESS expression;
 
 
 // --- UNARY OPERATORS ----------------------------------------------
 
 prefixUnaryOperator : unaryArithmeticOperator
                     | unaryBitwiseOperator
-                    | unaryMiscellaneousOperator
+                    | unaryLogicalOperator
                     | unarySpreadOperator
                     | unarySortOperator
+                    | unaryMetaOperator
                     ;
 
 posfixUnaryOperator : unarySortOperator
@@ -155,17 +156,15 @@ unaryArithmeticOperator : POSITIVE
                         | FACTORIAL
                         ;
 
-//  Bitwise Operators
+//  Bitwise and Logical Operators
 
 unaryBitwiseOperator : BIT_NOT
                      | BIT_NEGATION
                      ;
 
-// Miscellaneous operators
+unaryLogicalOperator : LOGICAL_NOT;
 
-unaryMiscellaneousOperator : TYPEOF
-                           | SIZEOF
-                           ;
+// Miscellaneous operators
 
 unarySpreadOperator : ELLIPSIS;
 
@@ -176,6 +175,10 @@ unarySortOperator : CARET        // Sort ascending or descending a data structur
 unaryCloneOperator : EQUAL              // Shallow copy
                    | EQUAL EQUAL EQUAL  // Deepp copy
                    ;
+
+unaryMetaOperator : TYPEOF
+                  | SIZEOF
+                  ;
 
 // --- BINARY OPERATORS ---------------------------------------------
 
@@ -215,6 +218,12 @@ bitExclusiveDisjunctionOperator : BIT_XOR;
 
 bitDisjunctionOperator : BIT_OR;
 
+// Comparison Operators
+
+binaryComparisonOperator : ELVIS_TEST
+                         | THREE_WAY_TEST
+                         ;
+
 // Relational Operators
 
 binaryRelationalOperator : EQUALS
@@ -225,35 +234,33 @@ binaryRelationalOperator : EQUALS
                          | GREATER_OR_EQUALS
                          ;
 
-// Comparison operators
+// Conditional operators
 
-binaryComparisonOperator : IDENTITY
-                         | NOT_IDENTITY
-                         | MEMBERSHIP
-                         | NOT_MEMBERSHIP
-                         | BETWEEN_RANGE
-                         | NOT_BETWEEN_RANGE
-                         | MATCHING
-                         | NOT_MATCHING
-                         | DIVISIBLE_BY
-                         | NOT_DIVISIBLE_BY
-                         | ELVIS_TEST
-                         | THREE_WAY_TEST
-                         ;
+binaryConditionalOperator : IDENTITY
+                          | NOT_IDENTITY
+                          | MEMBERSHIP
+                          | NOT_MEMBERSHIP
+                          | BETWEEN_RANGE
+                          | NOT_BETWEEN_RANGE
+                          | MATCHING
+                          | NOT_MATCHING
+                          | DIVISIBLE_BY
+                          | NOT_DIVISIBLE_BY
+                          ;
 
 // Logical Operators (Non-Strict Evaluation = Short-circuit Evaluation)
 
-boolConjunctionOperator : LOGICAL_AND
-                        | LOGICAL_NAND
-                        ;
+binaryConjunctionOperator : LOGICAL_AND
+                          | LOGICAL_NAND
+                          ;
 
-boolExclusiveDisjunctionOperator : LOGICAL_XOR
-                                 | LOGICAL_NXOR
-                                 ;
+binaryExclusiveDisjunctionOperator : LOGICAL_XOR
+                                   | LOGICAL_NXOR
+                                   ;
 
-boolDisjunctionOperator : LOGICAL_OR
-                        | LOGICAL_NOR
-                        ;
+binaryDisjunctionOperator : LOGICAL_OR
+                          | LOGICAL_NOR
+                          ;
 
 // Coalescing Operators
 
@@ -267,6 +274,10 @@ binaryCoalescingOperator : ERROR_PROPAGATION
 
 
 // --- ASSIGNMENT OPERATORS -----------------------------------------
+
+assignmentOperator : singleAssignmentOperator
+                   | compoundAssignmentOperator
+                   ;
 
 singleAssignmentOperator : BASIC_ASSIGNMENT
                          | DESTRUCTURING_ASSIGNMENT
@@ -300,9 +311,19 @@ compoundAssignmentOperator : ADDITION_ASSIGNMENT
 
 // --- IDENTIFIERS --------------------------------------------------
 
+// Single identifier
+
+symbolIdentifier : IDENTIFIER;
+
+qualifiedIdentifier : IDENTIFIER (DOT IDENTIFIER)*;
+
+// Identifiers list
+
+identifiers : IDENTIFIER (COMMA IDENTIFIER)*;
+
 symbolIdentifiers : symbolIdentifier (COMMA symbolIdentifier)* ;
 
-symbolIdentifier : IDENTIFIER ;
+qualifiedIdentifiers : qualifiedIdentifier (COMMA qualifiedIdentifier)*;
 
 
 // --- DATA TYPES ---------------------------------------------------
@@ -316,7 +337,7 @@ type : prefixTypeModifier? nativeType
 
 nativeType : escalarType
            | compositeType
-           | miscellaneousType
+           | metaType
            ;
 
 posfixTypeModifier : EXCLAMATION                    // ResultOption wrapper declaration
@@ -444,167 +465,84 @@ sequenceType : STRING
 
 compositeType : RANGE;
 
-// Miscellaneous data types
+// Meta data types
 
-miscellaneousType : TANY
-                  | ATOM
-                  ;
+metaType : TANY
+         | ATOM
+         ;
 
 
 // --- EXPRESSION ---------------------------------------------------
 
 expressions : expression (COMMA expression)*;
 
-expression : unaryExpression
-           | binaryExpression
+expression : primaryExpression
+           | prefixUnaryOperator expression 
+           | expression posfixUnaryOperator
+           | expression binaryExponentialOperator expression
+           | expression binaryMultiplicativeOperator expression
+           | expression binaryAdditiveOperator expression
+           | expression bitShiftOperator expression
+           | expression bitConjunctionOperator expression
+           | expression bitExclusiveDisjunctionOperator expression
+           | expression bitDisjunctionOperator expression
+           | expression binaryComparisonOperator expression
+           | expression binaryRelationalOperator expression
+           | expression binaryConditionalOperator expression
+           | expression binaryConjunctionOperator expression
+           | expression binaryExclusiveDisjunctionOperator expression
+           | expression binaryDisjunctionOperator expression
+           | expression binaryCoalescingOperator expression?
            | assignmentExpression
+           | condicionalExpression
            ;
-
-unaryExpression : prefixUnaryOperator primaryExpression 
-                | primaryExpression posfixUnaryOperator
-                | primaryExpression 
-                ;
 
 primaryExpression
     : operand
-    | operand SEMICOLON modifier  
-    | consoleCmd
-    | conversion
-    | methodExpression
+    | primaryExpression modifier
     | primaryExpression selector
     | primaryExpression indexing
     | primaryExpression slicing
-    | primaryExpression functionArguments [ errorHandling ]
-    | primaryExpression [ functionArguments ] lambdaLiteral [ errorHandling ]
+    | primaryExpression arguments
     ;
 
-Operand : Literal
-        | PredeclaredValue
-        | OperandName [ GenericTypes ]
-        | ShellExpression
-        | "(" Expression ")"
+operand : literal
+        | predeclaredValue
+        | qualifiedIdentifier
+        | qualifiedIdentifier expression
+        | factScope BACKTICK qualifiedIdentifier expressions
+        | LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
         ;
 
+factScope : ALL
+          | ANY
+          | ONE
+          | TWO
+          | NIL
+          ;
 
+modifier : SEMICOLON qualifiedIdentifier;
 
+selector : DOT IDENTIFIER;
 
+indexing : LEFT_BRACKET expressions RIGHT_BRACKET;
 
+slicing : LEFT_BRACKET slicingRange RIGHT_BRACKET;
 
+slicingRange : expression? INTERVAL expression?
+             | expression? INTERVAL expression COMMA expression;
 
+arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
 
+assignmentExpression : expressions assignmentOperator expressions;
 
+condicionalExpression : guardsExpression;
 
+guardsExpression : guardClause+ guardDefault?;
 
+guardClause : PIPE expression IMPLICIT_RETURN expression;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-binaryExpression : expression binaryOperator expression;
-
-assignmentExpression : expressions singleAssignmentOperator expressions ;
-
-
-
-
-
-factExpression
-    : [ factModifier BACKTICK ] Identifier expressions
-    | expression IS [NOT] [ factModifier BACKTICK ] Identifier
-    ;
-
-factModifier : ALL | ANY | ONE | TWO | NIL ;
-
-
-
-
-eagerEvaluateExpression : unaryEvaluate LEFT_PARENTHESIS expression RIGHT_PARENTHESIS ;
-
-
-
-
-
-condicionalExpression : guardsExpressions ;
-
-guardsExpressions : PIPE guardExpression { PIPE guardExpression  } [ PIPE expression ] ;
-
-guardExpression : expressions lambdaImpliesOperator expression ; 
-
-
-
-
-
-
-
-predeclaredValue : THIS | IOTA ;
-
-factIdentifier  : Identifier | namespaceIdentifier ; 
-
-operand : literal | predeclaredValue | operandName [ GenericTypes ] | LEFT_PARENTHESIS expression RIGHT_PARENTHESIS ; 
-
-operandName [ GenericTypes ] | LEFT_PARENTHESIS expression RIGHT_PARENTHESIS 
-; : Identifier | namespaceIdentifier ;
-
-modifier : Identifier ;
-
-conversion : expression SEMICOLON Type ;
-
-methodExpression : receiverType DOTMethodName ;
-
-receiverType : Type ;
-
-methodName : Identifier ;
-
-selector : DOT Identifier ;
-
-indexing : LEFT_BRACKET expression [ COMMA ] RIGHT_BRACKET ;
-
-slicing : LEFT_BRACKET slicingRange [ SEMICOLON expression ] RIGHT_BRACKET ;
-
-slicingRange : [ expression [ RIGHT_ANGLE ] ] DOT DOT [ [ LEFT_ANGLE ] expression ] ;
-
-functionArguments : LEFT_PARENTHESIS [ namedExpressionList [ COMMA ] ] RIGHT_PARENTHESIS ;
-
-namedExpressionList : [ Identifier = ] expression { COMMA [ Identifier = ] expression } ;
-
-errorHandling : "!"  [ expression ] 
-              | "!!" expression
-              | "!?" expression
-              | "?"
-              | "??" expression ;
-
-
-
-
-
-
-
-
-
+guardDefault : PIPE expression;
 
 
 // LITERALS ---------------------------------------------------------
@@ -613,6 +551,9 @@ literal : escalarLiteral
         | compositeLiteral
         | optionLiteral
         ;
+
+predeclaredValue : THIS
+                 | IOTA;
 
 valueConstruct : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
 
