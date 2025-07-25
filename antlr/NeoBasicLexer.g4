@@ -492,8 +492,8 @@ fragment ASCII_CHAR : [\u0020-\u007E];
 
 // --- SPECIAL TOKENS -----------------------------------------------
 
-// Emit an EOS token for any newlines, semicolon, multiline comments or the EOF
-// and return to normal lexing
+// End of Sentence (EOS): Emit an EOS token for any newlines, semicolon, 
+// multiline comments or the EOF and return to normal lexing.
 
 EOS : EOL
     | LINE_COMMENT
@@ -510,10 +510,17 @@ EOL : '\n'       /* Unix, Linux, macOS */
     | '\u2029'   /* Unicode Paragraph Separator */
     ;
 
-BOM : '\ufeff';  // Byte Order Mark
-
 
 // --- HIDDEN TOKENS ------------------------------------------------
+
+// Byte Order Mark (BOM) is a Unicode character used to indicate the endianness of a text file.
+// It is often used at the beginning of a file to signal that the file is encoded in
+
+BOM : (UTF8_BOM | UTF16_BOM | UTF32_BOM) -> channel(HIDDEN);
+
+UTF8_BOM  : '\uEFBBBF';
+UTF16_BOM : '\uFEFF';
+UTF32_BOM : '\u0000FEFF';
 
 // White Spaces (WSP) characters
 
@@ -522,7 +529,7 @@ WSP : [\u0009\u000B\u000C\u0020\u00A0\p{Zs}]+ -> channel(HIDDEN);
 // Two or more physical lines may be joined into logical lines
 
 EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
-  
+
 // Comment Body
 
 LINE_COMMENT          : '#' ~[#$!?>] ~[\n\r\u0085\u2028\u2029]* -> channel(HIDDEN);

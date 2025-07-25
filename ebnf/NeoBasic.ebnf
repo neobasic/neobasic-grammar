@@ -1049,7 +1049,7 @@ Expression = UnaryExpression | BinaryExpression | LetExpression | GetExpression 
 
 Expressions = Expression { "," Expression } .
 
-PredeclaredValue = THIS | SELF | SUPER | IT | NTH | ONE | END | IOTA.
+PredeclaredValue = THIS | IOTA | ITS | TOP | END | IT | SELF | SUPER.
 
 FactScope = ALL | ANY | ONE | TWO | NIL .
 
@@ -1330,7 +1330,9 @@ DerivedModifier      = "/" . (* Derived attribute *)
 
 ReferenceModifier    = "&" . (* Borrowed / pass-by-reference parameter *)
 
-PrefixSymbolModifier = VisibilityModifier | LifetimeModifier | DerivedModifier .
+VariadicModifier   = "..." . (* Variadic variable declaration *)
+
+PrefixSymbolModifier = VisibilityModifier | LifetimeModifier | DerivedModifier | VariadicModifier .
 
 PrefixParmModifier   = ReferenceModifier .
 
@@ -1339,9 +1341,7 @@ PrefixParmModifier   = ReferenceModifier .
 
 ArrayModifier = "[" [ Expression ] "]" . (* Array variable declaration *) 
 
-VariadicModifier   = "..." . (* Variadic variable declaration *)
-
-PrefixTypeModifier = ArrayModifier | VariadicModifier .
+PrefixTypeModifier = ArrayModifier .
 
 
 (* POSFIX TYPE MODIFIERS *)

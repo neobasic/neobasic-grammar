@@ -96,17 +96,13 @@ variable : symbolIdentifiers type? (singleAssignmentOperator expressions)?;
 
 // --- INSTRUCTION SENTENCE: STATEMENT ------------------------------
 
-statement : LEFT_PARENTHESIS statement RIGHT_PARENTHESIS
-          | labeledStatement
+statement : labeledStatement
           | debugingStatement
           | loggingStatement
-          | emptyStatement
-          | expressionStatement
-          | ifStatement
-          | unlessStatement
+          | sExpressionStatement
+          | simpleStatement 
+          | compoundStatement
           ;
-
-// Simple statements
 
 labeledStatement : ATOM_IDENTIFIER statement?;
 
@@ -114,21 +110,40 @@ debugingStatement : RUBBERDUCK statement?;
 
 loggingStatement : TRACERBIRD statement?;
 
+sExpressionStatement : LEFT_PARENTHESIS statement RIGHT_PARENTHESIS;
+
+// Simple statements
+
+simpleStatement : emptyStatement
+                | expressionStatement
+                | assignmentStatement
+                ;
+
 emptyStatement : ELLIPSIS;
 
 expressionStatement : expressions;
 
-// Conditional statement: if
+assignmentStatement : primaryExpressions assignmentOperator expressions;
+
+// Compound statements
+
+compoundStatement : conditionalStatement;
+
+conditionalStatement : ifStatement
+                     | unlessStatement
+                     ;
+
+// Conditional statement if
 
 ifStatement : ifThenClause;
 
-ifThenClause : IF expression THEN statement;
+ifThenClause : IF expression THEN simpleStatement;
 
-// Conditional statement modifier: unless
+// Conditional statement unless
 
 unlessStatement : unlessClause;
 
-unlessClause : statement UNLESS expression;
+unlessClause : simpleStatement UNLESS expression;
 
 
 // --- UNARY OPERATORS ----------------------------------------------
@@ -328,10 +343,10 @@ qualifiedIdentifiers : qualifiedIdentifier (COMMA qualifiedIdentifier)*;
 
 // --- DATA TYPES ---------------------------------------------------
 
-type : prefixTypeModifier? nativeType
-     | nativeType posfixTypeModifier?
-     | nativeType PIPE type
+type : nativeType
+     | nativeType posfixTypeWrapper
      | nativeType AMPERSAND nativeType
+     | nativeType PIPE type
      | nativeType
      ;
 
@@ -340,16 +355,14 @@ nativeType : escalarType
            | metaType
            ;
 
-posfixTypeModifier : EXCLAMATION                    // ResultOption wrapper declaration
-                   | QUESTION                       // MaybeOption  wrapper declaration
-                   | QUESTION QUESTION              // EitherOption wrapper declaration
-                   | PIPE RIGHT_ANGLE               // StreamOption warpper declaration
-                   | EXCLAMATION QUESTION           // ResultOption wrapper of MaybeOption wrapper declaration
-                   | EXCLAMATION QUESTION QUESTION  // ResultOption wrapper of EitherOption wrapper declaration
-                   | EXCLAMATION PIPE RIGHT_ANGLE   // ResultOption wrapper of StreamOption warpper declaration
-                   ;
-
-prefixTypeModifier : ELLIPSIS;  // Variadic parameter declaration
+posfixTypeWrapper : EXCLAMATION                    // ResultOption wrapper declaration
+                  | QUESTION                       // MaybeOption  wrapper declaration
+                  | QUESTION QUESTION              // EitherOption wrapper declaration
+                  | PIPE RIGHT_ANGLE               // StreamOption warpper declaration
+                  | EXCLAMATION QUESTION           // ResultOption wrapper of MaybeOption wrapper declaration
+                  | EXCLAMATION QUESTION QUESTION  // ResultOption wrapper of EitherOption wrapper declaration
+                  | EXCLAMATION PIPE RIGHT_ANGLE   // ResultOption wrapper of StreamOption warpper declaration
+                  ;
 
 // Escalar data types
 
@@ -476,6 +489,8 @@ metaType : TANY
 
 expressions : expression (COMMA expression)*;
 
+primaryExpressions : primaryExpression (COMMA primaryExpression)*;
+
 expression : primaryExpression
            | prefixUnaryOperator expression 
            | expression posfixUnaryOperator
@@ -499,7 +514,7 @@ expression : primaryExpression
 
 primaryExpression
     : operand
-    | primaryExpression modifier
+    | primaryExpression converter
     | primaryExpression selector
     | primaryExpression indexing
     | primaryExpression slicing
@@ -521,7 +536,7 @@ factScope : ALL
           | NIL
           ;
 
-modifier : SEMICOLON qualifiedIdentifier;
+converter : SEMICOLON qualifiedIdentifier;
 
 selector : DOT IDENTIFIER;
 
@@ -534,7 +549,7 @@ slicingRange : expression? INTERVAL expression?
 
 arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
 
-assignmentExpression : expressions assignmentOperator expressions;
+assignmentExpression : primaryExpression assignmentOperator expression;
 
 condicionalExpression : guardsExpression;
 
