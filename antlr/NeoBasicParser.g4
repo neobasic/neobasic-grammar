@@ -42,14 +42,14 @@ instructionSentence : directive
 
 // --- INSTRUCTION SENTENCE: DIRECTIVE ------------------------------
 
-directive : shebangDirective
+directive : interpreterDirective
           | pragmaDirective
           | canaryTestDirective
           ; 
 
-// Shebang directive
+// Interpreter directive
 
-shebangDirective : SHEBANG_LINE;
+interpreterDirective : SHEBANG_INTERPRETER;
 
 // Pragma directive
 
@@ -418,8 +418,7 @@ numericInteger : INT8
                | BIGINT
                ;
 
-numericReal : REAL8
-            | REAL16
+numericReal : REAL16
             | REAL32
             | REAL64
             | REAL128
@@ -435,12 +434,13 @@ numericDecimal : DEC1
                | DEC6
                | DEC7
                | DEC8
-               | DEC
+               | DECIMAL
                | MONEY
-               | BIGDEC
+               | BIGDECIMAL
                ;
 
-numericRatio : RATIO16
+numericRatio : RATIO8
+             | RATIO16
              | RATIO32
              | RATIO64
              | RATIO128
@@ -454,10 +454,10 @@ numericComplex : COMPLEX16
                | COMPLEX
                ;
 
-numericQuaternion : QUATERN32
+numericQuaternion : QUATERN16
+                  | QUATERN32
                   | QUATERN64
                   | QUATERN128
-                  | QUATERN256
                   | QUATERN
                   ;
 
@@ -466,10 +466,17 @@ temporalType : DATE
              ;
 
 characterType : ASCII
+              | CHAR8
+              | CHAR16
+              | CHAR32
               | CHAR
               ;
 
-sequenceType : STRING
+sequenceType : STR
+             | STRING8
+             | STRING16
+             | STRING32
+             | STRING
              | REGEX
              | BINARY
              ;
@@ -480,14 +487,17 @@ compositeType : RANGE;
 
 // Meta data types
 
-metaType : TANY
-         | ATOM
+metaType : ATOM
+         | AUTO
+         | VOID
          ;
 
 
 // --- EXPRESSION ---------------------------------------------------
 
 expressions : expression (COMMA expression)*;
+
+juxtapositionExpression : expression expression*;
 
 primaryExpressions : primaryExpression (COMMA primaryExpression)*;
 
@@ -545,7 +555,9 @@ indexing : LEFT_BRACKET expressions RIGHT_BRACKET;
 slicing : LEFT_BRACKET slicingRange RIGHT_BRACKET;
 
 slicingRange : expression? INTERVAL expression?
-             | expression? INTERVAL expression COMMA expression;
+             | expression? INTERVAL expression? COLON expression
+             | expression? INTERVAL expression? COLON expression? COLON expression
+             ;
 
 arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
 
@@ -616,7 +628,6 @@ characterLiteral : CHAR_LIT
                  | PUNCTUATION valueConstruct
                  | SYMBOL valueConstruct
                  | SEPARATOR valueConstruct
-                 | OTHER valueConstruct
                  | NONPRINTABLE valueConstruct
                  | NULL
                  ;

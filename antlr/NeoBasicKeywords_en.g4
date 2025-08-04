@@ -70,9 +70,9 @@ NXOR : 'nxor';
 
 // META DATA TYPES
 
-NUMBER : 'Number';
-TANY : 'Any';
-ATOM : 'Atom';
+ATOM : 'atom';
+AUTO : 'auto';
+VOID : 'void';
 
 // BOOLEAN DATA TYPES
 
@@ -91,6 +91,7 @@ OCT : 'Oct';
 HEX : 'Hex';
 NIBBLE : 'Nibble';
 BYTE : 'Byte';
+NUMBER : 'Number';
 
 // NATURAL NUMBERS
 
@@ -114,7 +115,6 @@ BIGINT : 'Bigint';
 
 // NUMERIC REALS
 
-REAL8 : 'Real8';
 REAL16 : 'Real16';
 REAL32 : 'Real32';
 REAL64 : 'Real64';
@@ -132,12 +132,13 @@ DEC5 : 'Dec5';
 DEC6 : 'Dec6';
 DEC7 : 'Dec7';
 DEC8 : 'Dec8';
-DEC : 'Dec';
+DECIMAL : 'Decimal';
 MONEY : 'Money';
-BIGDEC : 'Bigdec';
+BIGDECIMAL : 'Bigdecimal';
 
 // NUMERIC RATIOS
 
+RATIO8 : 'Ratio8';
 RATIO16 : 'Ratio16';
 RATIO32 : 'Ratio32';
 RATIO64 : 'Ratio64';
@@ -154,10 +155,10 @@ COMPLEX : 'Complex';
 
 // NUMERIC QUATERNIONS
 
+QUATERN16 : 'Quatern16'; 
 QUATERN32 : 'Quatern32';
 QUATERN64 : 'Quatern64';
 QUATERN128 : 'Quatern128';
-QUATERN256 : 'Quatern256'; 
 QUATERN : 'Quatern';
 
 // TEMPORAL DATA TYPES
@@ -168,11 +169,18 @@ ELAPSE : 'Elapse';
 // CHARACTER DATA TYPES
 
 ASCII : 'Ascii';
+CHAR8 : 'Char8';
+CHAR16 : 'Char16';
+CHAR32 : 'Char32';
 CHAR : 'Char';
 
 // SEQUENCE DATA TYPES
 
-STRING : 'Str';
+STR : 'Str';
+STRING8 : 'String8';
+STRING16 : 'String16';
+STRING32 : 'String32';
+STRING : 'String';
 REGEX : 'Regex';
 BINARY : 'Binary';
 
@@ -218,7 +226,6 @@ DIGIT : 'Digit';
 PUNCTUATION : 'Punctuation';
 SYMBOL : 'Symbol';
 SEPARATOR : 'Separator';
-OTHER : 'Other';
 NONPRINTABLE : 'NonPrintable';
 NULL : 'Null';
 
