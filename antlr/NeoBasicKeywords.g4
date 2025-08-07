@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
  * Developed by : Raul Bras, @teknolista.
  */
 
-lexer grammar NeoBasicKeywords_en;
+lexer grammar NeoBasicKeywords;
 
 // --- KEYWORDS -----------------------------------------------------
 
@@ -45,7 +45,7 @@ ONE : 'one';
 TWO : 'two';
 NIL : 'nil';
 
-// META OPERATORS
+// META OPERATORS'
 
 TYPEOF : 'typeof';
 INSTANCEOF : 'instanceof';
@@ -287,7 +287,7 @@ CHGRP : 'chgrp';
 RAISE : 'raise';
 PANIC : 'panic';
 
-// MAGIC COMMENT: TWEET TRACING
+// BUILT-IN LEVELS TRACING
 
 TRACE : 'trace';
 DEBUG : 'debug';

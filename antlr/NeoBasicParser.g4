@@ -32,9 +32,9 @@ neoProgram : oneLinerProgram
 
 oneLinerProgram : instructionSentence;
 
-scriptFileProgram : BOM? (instructionSentence EOS)*;
+scriptFileProgram : (instructionSentence EOS)+;
 
-instructionSentence : directive 
+instructionSentence : directive
                     | declaration
                     | statement
                     ;
@@ -44,73 +44,90 @@ instructionSentence : directive
 
 directive : interpreterDirective
           | pragmaDirective
-          | canaryTestDirective
+          | canaryTestingDirective
           ; 
 
 // Interpreter directive
 
-interpreterDirective : SHEBANG_INTERPRETER;
+interpreterDirective : SHEBANG expression expression; 
 
 // Pragma directive
 
-pragmaDirective : SHEBANG IDENTIFIER expressions?; 
+pragmaDirective : SHEBANG IDENTIFIER expressions?;
 
-// Canary testing directive
+// Canary-testing directive
 
-canaryTestDirective : WOODSTOCK expression (EXCLAMATION expression)?;
+canaryTestingDirective : WOODSTOCK expression (EXCLAMATION | EXCLAMATION expression)?;
 
 
 // --- INSTRUCTION SENTENCE: DECLARATION ----------------------------
 
-declaration : constDeclaration
-            | valDeclaration
-            | varDeclaration
+declaration : constSentence
+            | valSentence
+            | varSentence
             ;
 
 // Constant declaration
 
-constDeclaration : constClause;
+constSentence : constClause;
 
-constClause : CONST constants;
+constClause : CONST constDeclare;
 
-constants : constant (COMMA constant)*;
+constDeclare : constDeclareSingle
+             | constDeclareMultiple
+             | constDeclareParallel
+             ;
 
-constant : symbolIdentifiers singleAssignmentOperator expressions;
+constDeclareSingle : symbolIdentifier type? singleAssignmentOperator expression;
+
+constDeclareMultiple : constDeclareSingle (COMMA constDeclareSingle)+;
+
+constDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssignmentOperator) expressions;
 
 // Value declaration
 
-valDeclaration : valClause;
+valSentence : valClause;
 
-valClause : VAL variables;
+valClause : VAL varDeclare;
+
+valDeclare : valDeclareSingle
+           | valDeclareMultiple
+           | valDeclareParallel
+           ;
+
+valDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?;
+
+valDeclareMultiple : valDeclareSingle (COMMA valDeclareSingle)+;
+
+valDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssignmentOperator) expressions;
 
 // Variable declaration
 
-varDeclaration : varClause;
+varSentence : varClause;
 
-varClause : VAR variables;
+varClause : VAR varDeclare;
 
-variables : variable (COMMA variable)*;
+varDeclare : varDeclareSingle
+           | varDeclareMultiple
+           | varDeclareParallel
+           ;
 
-variable : symbolIdentifiers type? (singleAssignmentOperator expressions)?;
+varDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?;
+
+varDeclareMultiple : varDeclareSingle (COMMA varDeclareSingle)+;
+
+varDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssignmentOperator) expressions;
 
 
 // --- INSTRUCTION SENTENCE: STATEMENT ------------------------------
 
-statement : labeledStatement
-          | debugingStatement
-          | loggingStatement
-          | sExpressionStatement
+statement : LABEL statement?
+          | RUBBERDUCK statement?
+          | SONGBIRD statement?
+          | LEFT_PARENTHESIS statement RIGHT_PARENTHESIS
           | simpleStatement 
           | compoundStatement
           ;
-
-labeledStatement : ATOM_IDENTIFIER statement?;
-
-debugingStatement : RUBBERDUCK statement?;
-
-loggingStatement : TRACERBIRD statement?;
-
-sExpressionStatement : LEFT_PARENTHESIS statement RIGHT_PARENTHESIS;
 
 // Simple statements
 
@@ -123,7 +140,18 @@ emptyStatement : ELLIPSIS;
 
 expressionStatement : expressions;
 
-assignmentStatement : primaryExpressions assignmentOperator expressions;
+// Assignment statements
+
+assignmentStatement : assignmentSingle
+                    | assignmentMultiple
+                    | assignmentParallel
+                    ;
+
+assignmentSingle : primaryExpression singleAssignmentOperator expression;
+
+assignmentMultiple : assignmentSingle (COMMA assignmentSingle)+;
+
+assignmentParallel : primaryExpressions (singleAssignmentOperator | multipleAssignmentOperator) expressions;
 
 // Compound statements
 
@@ -291,13 +319,15 @@ binaryCoalescingOperator : ERROR_PROPAGATION
 // --- ASSIGNMENT OPERATORS -----------------------------------------
 
 assignmentOperator : singleAssignmentOperator
+                   | multipleAssignmentOperator
                    | compoundAssignmentOperator
                    ;
 
 singleAssignmentOperator : BASIC_ASSIGNMENT
-                         | DESTRUCTURING_ASSIGNMENT
                          | MACRO_ASSIGNMENT
                          ;
+
+multipleAssignmentOperator : DESTRUCTURING_ASSIGNMENT;
 
 compoundAssignmentOperator : ADDITION_ASSIGNMENT
                            | SUBTRACTION_ASSIGNMENT
@@ -497,7 +527,7 @@ metaType : ATOM
 
 expressions : expression (COMMA expression)*;
 
-juxtapositionExpression : expression expression*;
+juxtapositionExpressions : expression expression*;
 
 primaryExpressions : primaryExpression (COMMA primaryExpression)*;
 

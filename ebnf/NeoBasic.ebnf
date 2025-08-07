@@ -604,13 +604,13 @@ RubberDuck = UnicodeAtom { Alphanumeric } "=" .
 DebuggingStatement = RubberDuck [ Statement ] .
 
 
-(* TWEET TRACING *)
+(* SONGBIRD TRACING *)
 
-TracerBird = UnicodeAtom [ LoggingLevel | { Alphanumeric } ] ">" .
+SongBird = UnicodeAtom [ LoggingLevel | { Alphanumeric } ] ">" .
 
 LoggingLevel = TRACE | DEBUG | INFO | WARN | ERROR | FATAL .
 
-LoggingStatement = TracerBird [ Statement ] .
+TracingStatement = SongBird [ Statement ] .
 
 
 (* STATEMENTS AND BLOCKS *)
@@ -638,10 +638,10 @@ Statement      = "(" Statement ")"
                | ConcurrencyStatement
                | TopLevelSentence
                | DebuggingStatement
-               | LoggingStatement
+               | TracingStatement
                | CommentedStatement .
 
-Label = AtomIdentifier .
+Label = AtomIdentifier ":" .
 
 ExpressionStatement = Expressions .
 
@@ -1420,7 +1420,7 @@ ArithmeticComprehension = BinaryOperator "{" Expressions { ComprehensionClause }
 ComprehensionClause = LoopForEachClause [ IF Expression ] .
 
 EscalarLiteral = NumericLiteral | RangeLiteral | MapLiteral
-               | AsciiLiteral | UnicodeLiteral | StringLiteral | RawLiteral | RegexLiteral
+               | AsciiLiteral | UnicodeLiteral | StringLiteral | VerbatimLiteral | RegexLiteral
                | XmlElement | AtomLiteral | PromptLiteral | ArithmeticComprehension .
 
 
@@ -1471,20 +1471,20 @@ RationalLiteral = IntegerLiteral "//" IntegerLiteral .
 (* ASCII CHARACTER LITERALS *)
 
 AsciiEscapedControl  = "\\" ( "0" /* 0x00 NULL (NUL) */
-                           | "a" /* 0x07 Bell (BEL) */
-                           | "b" /* 0x08 Backspace (BS) */
-                           | "c" /* 0x03 End of Text (ETX) = Ctrl+C = SIGINT (Interrupt Signal) */
-                           | "d" /* 0x04 End of Transmission (EOT) = Ctrl+D = EOF (End Of File) */
-                           | "e" /* 0x1B Escape (ESC) */
-                           | "f" /* 0x0C Form Feed (FF) */
-                           | "n" /* 0x0A Line Feed (LF) */
-                           | "q" /* 0x1C File Separator (FS) = Ctrl+\ = SIGQUIT (Quit Signal) */
-                           | "r" /* 0x0D Carriage Return (CR) */
-                           | "s" /* 0x20 White Space (SP) */
-                           | "t" /* 0x09 Horizontal Tab (HT) */
-                           | "v" /* 0x0B Vertical Tab (VT) */
-                           | "z" /* 0x1A Substitute (SUB) = Ctrl+Z = SIGTSTP (Terminal Stop Signal) */
-                           ) .
+                            | "a" /* 0x07 Bell (BEL) */
+                            | "b" /* 0x08 Backspace (BS) */
+                            | "c" /* 0x03 End of Text (ETX) = Ctrl+C = SIGINT (Interrupt Signal) */
+                            | "d" /* 0x04 End of Transmission (EOT) = Ctrl+D = EOF (End Of File) */
+                            | "e" /* 0x1B Escape (ESC) */
+                            | "f" /* 0x0C Form Feed (FF) */
+                            | "n" /* 0x0A Line Feed (LF) */
+                            | "q" /* 0x1C File Separator (FS) = Ctrl+\ = SIGQUIT (Quit Signal) */
+                            | "r" /* 0x0D Carriage Return (CR) */
+                            | "s" /* 0x20 White Space (SP) */
+                            | "t" /* 0x09 Horizontal Tab (HT) */
+                            | "v" /* 0x0B Vertical Tab (VT) */
+                            | "z" /* 0x1A Substitute (SUB) = Ctrl+Z = SIGTSTP (Terminal Stop Signal) */
+                            ) .
 
 AsciiEscapedSequence = "\\" ( '"' /* 0x22 Double Quote */
                             | "'" /* 0x27 Single Quote */
@@ -1534,19 +1534,19 @@ StringMultiValue  = { UnicodeValue | StringPlaceholder | EOL } .
 StringLiteral = ( "'" StringSingleValue "'" | "'''" StringMultiValue "'''" ) .
 
 
-(* RAW LITERALS *)
+(* VERBATIM LITERALS *)
 
-RawSingleValue = { UnicodePrintable } .
-RawMultiValue  = { UnicodePrintable | EOL } .
+VerbatimSingleValue = { UnicodePrintable } .
+VerbatimMultiValue  = { UnicodePrintable | EOL } .
 
-RawLiteral = '"' RawSingleValue '"' | '"""' RawMultiValue '"""' .
+VerbatimLiteral = '"' VerbatimSingleValue '"' | '"""' VerbatimMultiValue '"""' .
 
 
 (* HEREDOC LITERALS *)
 
 HeredocContent = "'" [ EOL ] StringMultiValue [ EOL ] "'" 
-               | '"' [ EOL ] RawMultiValue [ EOL ] '"' 
-               | Identifier [ EOL ] RawMultiValue [ EOL ] Identifier .
+               | '"' [ EOL ] VerbatimMultiValue [ EOL ] '"' 
+               | Identifier [ EOL ] VerbatimMultiValue [ EOL ] Identifier .
 
 HeredocLiteral = "<<" HeredocContent .
 
@@ -1574,7 +1574,7 @@ AtomLiteral = AtomDotLiteral | AtomCsiLiteral | AtomElapseLiteral | AtomMusicLit
 
 (* PROMPT LITERAL *)
 
-PromptLiteral = UnicodeShell ( StringLiteral | RawLiteral ) .
+PromptLiteral = UnicodeShell ( StringLiteral | VerbatimLiteral ) .
 
 
 (* ------------------------------------------------------------------------- *)

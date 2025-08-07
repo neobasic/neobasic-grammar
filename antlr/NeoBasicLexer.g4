@@ -17,13 +17,14 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 lexer grammar NeoBasicLexer;
 
-import NeoBasicKeywords_en;
+import NeoBasicKeywords;
 
 options {
     superClass = NeoBasicLexerBase;
 }
 
 channels {
+    COMMENT,
     ERROR_CHANNEL
 }
 
@@ -52,7 +53,7 @@ APOSTROPHE        : '\'';   // Character lieral, template string literal
 QUOTE             : '"';    // Verbatim String literal
 BACKTICK          : '`';    // Backtick
 AT                : '@';    // Atoms, Annotations/Decorators
-HASH              : '#';    // Shebang, Pragma, Canary testing
+HASH              : '#';    // Comment, Directive (Interpreter, Pragma, Testing)
 DOLLAR            : '$';    // 
 AMPERSAND         : '&';    // 
 ASTERISK          : '*';    // Multiplication
@@ -270,13 +271,16 @@ fragment INTEGER_NUMBER
 fragment DEC_INTEGER : '0' | DEC_GROUPS;
 fragment DEC_GROUPS  : DEC_DIGIT ('_'? DEC_DIGIT)*;
 
-fragment HEX_INTEGER : '0' [xX] HEX_GROUPS;
+fragment HEX_INTEGER : HEX_UNIT HEX_GROUPS;
+fragment HEX_UNIT    : '0' [xX];
 fragment HEX_GROUPS  : HEX_DIGIT ('_'? HEX_DIGIT)*;
 
-fragment OCT_INTEGER : '0' [oO] OCT_GROUPS;
+fragment OCT_INTEGER : OCT_UNIT OCT_GROUPS;
+fragment OCT_UNIT    : '0' [oO];
 fragment OCT_GROUPS  : OCT_DIGIT ('_'? OCT_DIGIT)*;
 
-fragment BIN_INTEGER : '0' [bB] BIN_GROUPS;
+fragment BIN_INTEGER : BIN_UNIT BIN_GROUPS;
+fragment BIN_UNIT    : '0' [bB];
 fragment BIN_GROUPS  : BIN_DIGIT ('_'? BIN_DIGIT)*;
 
 // Computer number formats
@@ -310,16 +314,18 @@ HEREDOC_CONTENT : IDENTIFIER EOL VERBATIM_STRING_CONTENT EOL IDENTIFIER
                 | '\'' EOL TEMPLATE_STRING_CONTENT EOL '\''
                 | '\'\'\'' EOL TEMPLATE_STRING_CONTENT EOL '\'\'\''
                 | '/' EOL REGULAR_EXPRESSION_CONTENT EOL '/' REGEX_FLAG*
-                | '0' [xX] EOL HEX_DIGIT* EOL '0' [xX]
-                | '0' [oO] EOL OCT_DIGIT* EOL '0' [oO]
-                | '0' [bB] EOL BIN_DIGIT* EOL '0' [bB]
+                | HEX_UNIT EOL HEX_DIGIT* EOL HEX_UNIT
+                | OCT_UNIT EOL OCT_DIGIT* EOL OCT_UNIT
+                | BIN_UNIT EOL BIN_DIGIT* EOL BIN_UNIT
                 ;
 
 // Binary literals
 
-BINARY_LIT : '0' [xX] HEX_DIGIT*
-           | '0' [oO] OCT_DIGIT*
-           | '0' [bB] BIN_DIGIT*;
+BINARY_LIT : HEX_UNIT HEX_GROUPS
+           | OCT_UNIT OCT_GROUPS
+           | BIN_UNIT BIN_GROUPS
+           ;
+
 
 // Regular expression literals 
 
@@ -441,33 +447,46 @@ PITCH_FLAT     : 'f';
 PITCH_SHARP    : 's';
 
 
-// --- COMMENTS -----------------------------------------------------
-
-// Magic Comments
-
-SHEBANG : HASH EXCLAMATION ;
-
-SHEBANG_INTERPRETER : {this.IsStartOfFile()}? BOM? SHEBANG ~[\n\r\u0085\u2028\u2029]*; // only allowed at start
-
-//DIRECTIVE_LINE : {this.IsNotStartOfFile()}? SHEBANG ~[\n\r\u0085\u2028\u2029]*;
-
-WOODSTOCK : HASH QUESTION ;
-
-//CANARY_TESTING_LINE  : WOODSTOCK ~[\n\r\u0085\u2028\u2029]*;
+// --- MAGIC STATEMENTS ---------------------------------------------
 
 // Rubber Duck Debugging
 
 RUBBERDUCK : AT ALPHANUMERIC* EQUAL;
 
-// Tracer Bird Logging
+// Songbird Logging
 
-TRACERBIRD : AT (LOGGING_LEVEL | ALPHANUMERIC*)? RIGHT_ANGLE;
+SONGBIRD : AT (LOGGING_LEVEL | IDENTIFIER)? RIGHT_ANGLE;
 
 LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
 
-// Hashtags
+// Label
 
-HASHTAG : HASH ALPHANUMERIC* WSP? ~[\n\r\u0085\u2028\u2029]*;
+LABEL : AT IDENTIFIER COLON;
+
+
+// --- MAGIC COMMENTS -----------------------------------------------
+
+// Pragma Directive
+
+SHEBANG : HASH EXCLAMATION ;
+
+// Canary-testing Directive
+
+WOODSTOCK : HASH QUESTION ;
+
+// Shell-lookup Directive
+
+SHERLOCK : HASH DOLLAR ;
+
+
+// --- COMMENTS -----------------------------------------------------
+
+LINE_COMMENT          : '#' ~[#!?$] ~[\n\r\u0085\u2028\u2029]* -> channel(COMMENT);
+BLOCK_COMMENT         : '##' ~[#?] .*? '##'                    -> channel(COMMENT);
+DOCUMENTATION_COMMENT : '###' .*? '###'                        -> channel(COMMENT);
+
+// Hashtags
+// HASHTAG : HASH ALPHANUMERIC*;
 
 
 // --- UNICODE CHARACTERS -------------------------------------------
@@ -530,12 +549,6 @@ WSP : [\u0009\u000B\u000C\u0020\u00A0\p{Zs}]+ -> channel(HIDDEN);
 // Two or more physical lines may be joined into logical lines
 
 EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
-
-// Comment Body
-
-LINE_COMMENT          : '#' ~[#$!?>] ~[\n\r\u0085\u2028\u2029]* -> channel(HIDDEN);
-BLOCK_COMMENT         : '##' ~[#>] .*? '##'                     -> channel(HIDDEN);
-DOCUMENTATION_COMMENT : '###' .*? '###'                         -> channel(HIDDEN);
 
 
 // --- ERROR HANDLING -----------------------------------------------
