@@ -45,40 +45,27 @@ SMTP = "smtp" .
 IMAP = "imap" .
 POP3 = "pop3" .
 
-(* MAGIC COMMENT: TEST *)
-
-UNIT = "unit" .
-FROM = "from" .
-ONCE = "once" .
-DATA = "data" .
-CALL = "call" .
-HIDE = "hide" .
-SHOW = "show" .
-INTO = "into" .
-PASS = "pass" .
-PAST = "past" .
-FAIL = "fail" .
-
 (* TOP LEVEL SENTENCES *)
 
-DEF = "def" .
-DEFN = "defn" .
-UNDEF = "undef" .
-TYPE = "type" .
 CONST = "const" .
 VAL = "val" .
 VAR = "var" .
+TYPE = "type" .
 FACT = "fact" .
-FEED = "feed" .
-FMAP = "fmap" .
 FUNC = "func" .
+FEED = "feed" .
 SUB = "sub" .
+OPER = "oper" .
 EVENT = "event" .
 ENUM = "enum" .
 STRUCT = "struct" .
 PROTO = "proto" .
 TRAIT = "trait" .
 CLASS = "class" .
+FMAP = "fmap" .
+DEF = "def" .
+DEFN = "defn" .
+UNDEF = "undef" .
 
 (* STATEMENTS AND BLOCKS *)
 
@@ -127,7 +114,7 @@ DEFAULT = "default" .
 
 THIS = "this" .
 IOTA = "iota" .
-ITS = "its" .
+NTH = "nth" .
 TOP = "top" .
 END = "end" .
 IT = "it" .
@@ -197,6 +184,7 @@ DIG = "Dig" .
 BIT = "Bit" .
 OCT = "Oct" .
 HEX = "Hex" .
+ROMAN = "Roman" .
 NIBBLE = "Nibble" .
 BYTE = "Byte" .
 NUMBER = "Number" .
@@ -443,7 +431,21 @@ CHGRP = "chgrp" .
 RAISE = "raise" .
 PANIC = "panic" .
 
-(* MAGIC COMMENT: TWEET TRACING *)
+(* MAGIC COMMENT: TEST *)
+
+UNIT = "unit" .
+FROM = "from" .
+ONCE = "once" .
+DATA = "data" .
+CALL = "call" .
+HIDE = "hide" .
+SHOW = "show" .
+INTO = "into" .
+PASS = "pass" .
+PAST = "past" .
+FAIL = "fail" .
+
+(* MAGIC STATEMENT: TRACING *)
 
 TRACE = "trace" .
 DEBUG = "debug" .

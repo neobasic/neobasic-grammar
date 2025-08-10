@@ -19,23 +19,89 @@ lexer grammar NeoBasicKeywords;
 
 // --- KEYWORDS -----------------------------------------------------
 
+// IDENTIFICATION DIVISION
+
+MODULE : 'module';
+ALGORITHM : 'algorithm';
+
+// ENVIRONMENT DIVISION
+
+USE : 'use';
+AS : 'as';
+OF : 'of';
+INCLUDE : 'include';
+INTERFACE : 'interface';
+
 // TOP LEVEL SENTENCES
 
 CONST : 'const';
 VAL : 'val';
 VAR : 'var';
+FUNC : 'func';
+FEED : 'feed';
+FMAP : 'fmap';
+SUB : 'sub';
+TYPE : 'type';
+FACT : 'fact';
+ENUM : 'enum';
+STRUCT : 'struct';
+PROTO : 'proto';
+TRAIT : 'trait';
+CLASS : 'class';
+OPER : 'oper';
+EVENT : 'event';
+DEF : 'def';
+DEFN : 'defn';
+UNDEF : 'undef';
 
 // STATEMENTS AND BLOCKS
 
 IF : 'if';
 THEN : 'then';
+ELIF : 'elif';
+ELSE : 'else';
 UNLESS : 'unless';
 ORELSE : 'orelse';
+MATCH : 'match';
+CASE : 'case';
+FALLTHROUGH : 'fallthrough';
+TRY : 'try';
+CATCH : 'catch';
+RETRY : 'retry';
+LOOP : 'loop';
+STEP : 'step';
+TIMES : 'times';
+FOR : 'for';
+EACH : 'each';
+WHILE : 'while';
+UNTIL : 'until';
+NEXT : 'next';
+REDO : 'redo';
+BREAK : 'break';
+RETURN : 'return';
+YIELD : 'yield';
+DEFER : 'defer';
+GO : 'go';
+TO : 'to';
+AWAIT : 'await';
+SWITCH : 'switch';
+WHEN : 'when';
+DEFAULT : 'default';
+CONTINUE : 'continue';
+WITH : 'with';
+DO : 'do';
+
 
 // PREDECLARED VALUES AND VARIABLES
 
 THIS : 'this';
 IOTA : 'iota';
+NTH : 'nth';
+TOP : 'top';
+END : 'end';
+IT : 'it';
+SELF : 'self';
+SUPER : 'super';
 
 // FACT SCOPES
 
@@ -44,6 +110,12 @@ ANY : 'any';
 ONE : 'one';
 TWO : 'two';
 NIL : 'nil';
+
+// EXPRESSIONS
+
+LET : 'let';
+GET : 'get';
+SET : 'set';
 
 // META OPERATORS'
 
@@ -68,6 +140,11 @@ NAND : 'nand';
 NOR : 'nor';
 NXOR : 'nxor';
 
+// ARRAY OPERATORS
+
+NEW : 'new';
+DEL : 'del';
+
 // META DATA TYPES
 
 ATOM : 'atom';
@@ -89,6 +166,7 @@ DIG : 'Dig';
 BIT : 'Bit';
 OCT : 'Oct';
 HEX : 'Hex';
+ROMAN : 'Roman';
 NIBBLE : 'Nibble';
 BYTE : 'Byte';
 NUMBER : 'Number';
@@ -184,9 +262,32 @@ STRING : 'String';
 REGEX : 'Regex';
 BINARY : 'Binary';
 
+// SHELL DATA TYPES
+
+PATH : 'Path';
+URI : 'Uri';
+INET : 'Inet';
+
 // COMPOSITE DATA TYPES
 
 RANGE : 'Range';
+MAP : 'Map';
+
+// ARRAY DATA TYPES
+
+ARRAY : 'Array';
+TUPLE : 'Tuple';
+LIST  : 'List';
+DICT  : 'Dict';
+CHAN  : 'Chan';
+VEC   : 'Vec';
+MAT   : 'Mat';
+TSET  : 'Set';
+QUEUE : 'Queue';
+DEQUE : 'Deque';
+XML   : 'Xml';
+TABLE : 'Table';
+MEMO  : 'Memo';
 
 // MONAD LOGIC VALUE CONSTRUCTORS
 
@@ -233,6 +334,27 @@ NULL : 'Null';
 
 BLANK : 'Blank';
 NONBLANK : 'Nonblank';
+
+// MONAD PATH VALUE CONSTRUCTORS
+
+FOLDER : 'Folder';
+FILE : 'File';
+LINKLINKFILE : 'LinkFile';
+PIPEFILE : 'PipeFile';
+SOCKETFILE : 'SocketFile';
+BLOCKDEVICE : 'BlockDevice';
+CHARDEVICE : 'CharDevice';
+NULLDEVICE : 'NullDevice';
+
+// MONAD URI VALUE CONSTRUCTORS
+
+URL : 'Url';
+URN : 'Urn';
+
+// MONAD INET VALUE CONSTRUCTORS
+
+IPV4 : 'Ipv4';
+IPV6 : 'Ipv6';
 
 // MONAD RESULT ! VALUE CONSTRUCTORS
 
@@ -287,7 +409,21 @@ CHGRP : 'chgrp';
 RAISE : 'raise';
 PANIC : 'panic';
 
-// BUILT-IN LEVELS TRACING
+// MAGIC COMMENT: TEST
+
+UNIT : 'unit';
+FROM : 'from';
+ONCE : 'once';
+TDATA : 'data';
+CALL : 'call';
+HIDE : 'hide';
+SHOW : 'show';
+INTO : 'into';
+PASS : 'pass';
+PAST : 'past';
+TFAIL : 'fail';
+
+// MAGIC STATEMENT: TRACING
 
 TRACE : 'trace';
 DEBUG : 'debug';

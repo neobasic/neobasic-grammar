@@ -82,7 +82,7 @@ constDeclareSingle : symbolIdentifier type? singleAssignmentOperator expression;
 
 constDeclareMultiple : constDeclareSingle (COMMA constDeclareSingle)+;
 
-constDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssignmentOperator) expressions;
+constDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
 // Value declaration
 
@@ -190,8 +190,8 @@ posfixUnaryOperator : unarySortOperator
 
 // Arithmetic Operators (Prefix Notation)
 
-unaryArithmeticOperator : POSITIVE
-                        | NEGATIVE
+unaryArithmeticOperator : PLUS
+                        | MINUS
                         | INCREMENT
                         | DECREMENT
                         | SQUARE_POWER
@@ -201,22 +201,22 @@ unaryArithmeticOperator : POSITIVE
 
 //  Bitwise and Logical Operators
 
-unaryBitwiseOperator : BIT_NOT
+unaryBitwiseOperator : TILDE
                      | BIT_NEGATION
                      ;
 
-unaryLogicalOperator : LOGICAL_NOT;
+unaryLogicalOperator : NOT;
 
 // Miscellaneous operators
 
 unarySpreadOperator : ELLIPSIS;
 
 unarySortOperator : CARET        // Sort ascending or descending a data structure
-                  | CARET CARET  // Sort ascending or descending a var
+                  | SORTING  // Sort ascending or descending a var
                   ;
 
 unaryCloneOperator : EQUAL              // Shallow copy
-                   | EQUAL EQUAL EQUAL  // Deepp copy
+                   | DEEP_CLONING  // Deepp copy
                    ;
 
 unaryMetaOperator : TYPEOF
@@ -227,14 +227,15 @@ unaryMetaOperator : TYPEOF
 
 // Arithmetic Operators (Infix Notation)
 
-binaryExponentialOperator : NTH_POWER
-                          | NTH_ROOT
+binaryExponentialOperator : SQUARE_POWER
+                          | SQUARE_ROOT
                           ;
 
-binaryMultiplicativeOperator : MULTIPLICATION
-                             | REAL_DIVISION
-                             | INTEGER_DIVISION
-                             | MODULO
+binaryMultiplicativeOperator : ASTERISK
+                             | SLASH
+                             | DIVISION
+                             | QUOTIENT
+                             | PERCENT
                              | PERCENTAGE_RATE
                              | PERCENTAGE_AMOUNT
                              | PERCENTAGE_INCREASE
@@ -242,24 +243,24 @@ binaryMultiplicativeOperator : MULTIPLICATION
                              | PERCENTAGE_VARIATION
                              ;
 
-binaryAdditiveOperator : ADDITION
-                       | SUBTRACTION
+binaryAdditiveOperator : PLUS
+                       | MINUS
                        ;
 
 // Bitwise Operators (Non-Strict Evaluation = Short-circuit Evaluation)
 
-bitShiftOperator : LEFT_SHIFT
-                 | SIGNED_RIGHT_SHIFT
+bitShiftOperator : DOULE_LEFT_ANGLE
+                 | DOULE_RIGHT_ANGLE
                  | UNSIGNED_RIGHT_SHIFT
                  ;
 
-bitConjunctionOperator : BIT_AND
+bitConjunctionOperator : AMPERSAND
                        | BIT_CLEAR
                        ;
 
-bitExclusiveDisjunctionOperator : BIT_XOR;
+bitExclusiveDisjunctionOperator : CARET;
 
-bitDisjunctionOperator : BIT_OR;
+bitDisjunctionOperator : PIPE;
 
 // Comparison Operators
 
@@ -271,48 +272,48 @@ binaryComparisonOperator : ELVIS_TEST
 
 binaryRelationalOperator : EQUALS
                          | NOT_EQUALS
-                         | LESS
+                         | LEFT_ANGLE
                          | LESS_OR_EQUALS
-                         | GREATER
+                         | RIGHT_ANGLE
                          | GREATER_OR_EQUALS
                          ;
 
 // Conditional operators
 
-binaryConditionalOperator : IDENTITY
-                          | NOT_IDENTITY
-                          | MEMBERSHIP
-                          | NOT_MEMBERSHIP
-                          | BETWEEN_RANGE
-                          | NOT_BETWEEN_RANGE
-                          | MATCHING
-                          | NOT_MATCHING
+binaryConditionalOperator : IS
+                          | IS NOT
+                          | IN
+                          | NOT IN
+                          | BETWEEN
+                          | NOT BETWEEN
+                          | LIKE
+                          | NOT LIKE
                           | DIVISIBLE_BY
                           | NOT_DIVISIBLE_BY
                           ;
 
 // Logical Operators (Non-Strict Evaluation = Short-circuit Evaluation)
 
-binaryConjunctionOperator : LOGICAL_AND
-                          | LOGICAL_NAND
+binaryConjunctionOperator : AND
+                          | NAND
                           ;
 
-binaryExclusiveDisjunctionOperator : LOGICAL_XOR
-                                   | LOGICAL_NXOR
+binaryExclusiveDisjunctionOperator : XOR
+                                   | NXOR
                                    ;
 
-binaryDisjunctionOperator : LOGICAL_OR
-                          | LOGICAL_NOR
+binaryDisjunctionOperator : OR
+                          | NOR
                           ;
 
 // Coalescing Operators
 
-binaryCoalescingOperator : ERROR_PROPAGATION
-                         | ERROR_COALESCING
+binaryCoalescingOperator : EXCLAMATION
+                         | DOULE_EXCLAMATION
                          | ERROR_PROPAGATION_NONE_COALESCING
-                         | ERROR_TO_NONE_CONVERTION
-                         | EXCEPTION_COALESCING
-                         | EXCEPTION_STATEMENT
+                         | QUESTION
+                         | DOULE_QUESTION
+                         | ORELSE
                          ; 
 
 
@@ -323,7 +324,7 @@ assignmentOperator : singleAssignmentOperator
                    | compoundAssignmentOperator
                    ;
 
-singleAssignmentOperator : BASIC_ASSIGNMENT
+singleAssignmentOperator : EQUAL
                          | MACRO_ASSIGNMENT
                          ;
 
@@ -584,10 +585,15 @@ indexing : LEFT_BRACKET expressions RIGHT_BRACKET;
 
 slicing : LEFT_BRACKET slicingRange RIGHT_BRACKET;
 
-slicingRange : expression? INTERVAL expression?
-             | expression? INTERVAL expression? COLON expression
-             | expression? INTERVAL expression? COLON expression? COLON expression
+slicingRange : rangeExpression
+             | rangeExpression COLON expression
              ;
+
+rangeExpression : expression INTERVAL expression
+                | expression INTERVAL_LEFT
+                | INTERVAL_RIGHT expression
+                | rangeExpression COLON INTEGER_NUMBER
+                ;
 
 arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
 
@@ -605,7 +611,6 @@ guardDefault : PIPE expression;
 // LITERALS ---------------------------------------------------------
 
 literal : escalarLiteral
-        | compositeLiteral
         | optionLiteral
         ;
 
@@ -627,7 +632,13 @@ booleanLiteral : TRUE
                | FALSE
                ;
 
-numericLiteral : NUMBER_LIT
+// Numeric literals
+
+numericLiteral : INTEGER_NUMBER
+               | REAL_NUMBER
+               | DECIMAL_NUMBER
+               | RATIONAL_NUMBER
+               | IMAGINARY_NUMBER
                | NONZERO valueConstruct
                | ZERO
                | MINVALUE
@@ -637,7 +648,7 @@ numericLiteral : NUMBER_LIT
                | NEGATIVEINFINITY
                ;
 
-temporalLiteral : TIME_LIT
+temporalLiteral : ATOM_DOT_LIT
                 | LOCALDATE valueConstruct?
                 | LOCALDATETIME valueConstruct?
                 | OFFSETDATE valueConstruct?
@@ -662,15 +673,16 @@ characterLiteral : CHAR_LIT
                  | NULL
                  ;
 
+// Sequence literals
+
 sequenceLiteral : HEREDOC_LITERAL
-                | SEQUENCE_LIT
+                | REGULAR_EXPRESSION_LIT
+                | STRING_LIT
+                | ATOM_DOT_LIT
+                | BINARY_LIT
                 | NONBLANK valueConstruct
                 | BLANK
                 ;
-
-// Composite literals
-
-compositeLiteral : RANGE_LIT;
 
 // Wrappers data types
 
@@ -695,3 +707,8 @@ eitherLiteral : YEA valueConstruct
 streamLiteral : DATA valueConstruct
               | EOT
               ;
+
+
+// Special Tokens
+
+loggingLevel : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;

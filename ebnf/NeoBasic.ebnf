@@ -1054,7 +1054,7 @@ Expressions = Expression { "," Expression } .
 
 JuxtapositionExpression = Expression { Expression } .
 
-PredeclaredValue = THIS | IOTA | ITS | TOP | END | IT | SELF | SUPER.
+PredeclaredValue = THIS | IOTA | NTH | TOP | END | IT | SELF | SUPER.
 
 FactScope = ALL | ANY | ONE | TWO | NIL .
 
@@ -1174,7 +1174,7 @@ UnarySort       = "^"  /* Sort ascending or descending a data structure */
 UnarySpread     = "..." . (* Spread *)
 
 UnaryClone      = "="   /* Shallow copy */
-                | "===" /* Deepp copy */
+                | "===" /* Deep copy */
                 .
 
 UnaryMeta = TYPEOF     /* Type (string) of a var */
@@ -1286,8 +1286,8 @@ BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAdd
 
 SingleAssignmentOperator = "="   /* Simple assignment */
                          | ":="  /* Destructuring assignment  */
-                         | "<-"  /* Pull/pop assignment */
-                         | "<<-" /* Pull/pop all assignment */
+                         | "<-"  /* Pop-one assignment */
+                         | "<<-" /* Pull-all assignment */
                          | "<|"  /* Pipe assignment */
                          .
 
@@ -1430,8 +1430,9 @@ DecimalInteger = DecimalGroups .
 BinaryInteger  = "0" ( "b" | "B" ) [ "_" ] BinaryGroups .
 OctalInteger   = "0" [ "o" | "O" ] [ "_" ] OctalGroups .
 HexInteger     = "0" ( "x" | "X" ) [ "_" ] HexGroups .
+RomanInteger   = "0" ( "r" | "R" ) [ "_" ] RomanGroups .
 
-NumberLiteral = ( DecimalInteger | BinaryInteger | OctalInteger | HexInteger ) . 
+NumberLiteral = ( DecimalInteger | BinaryInteger | OctalInteger | HexInteger | RomanInteger ) . 
 
 IntegerLiteral = [ "+" | "-" ] NumberLiteral . 
 
@@ -1666,11 +1667,13 @@ DecimalDigit  = UnicodeDigit .
 BinaryDigit   = "0" | "1" .
 OctalDigit    = "0" … "7" .
 HexDigit      = "0" … "9" | "A" … "F" | "a" … "f" .
+RomanDigit    = "I"	| "V" | "X"	| "L" | "C"	| "D" | "M" .
 
 DecimalGroups = DecimalDigit { [ "_" ] DecimalDigit } .
 BinaryGroups  = BinaryDigit { [ "_" ] BinaryDigit } .
 OctalGroups   = OctalDigit { [ "_" ] OctalDigit } .
 HexGroups     = HexDigit { [ "_" ] HexDigit } .
+RomanGroups   = RomanDigit { [ "_" ] RomanDigit } .
 
 
 (* UNICODE CHARACTERS *)

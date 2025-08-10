@@ -60,166 +60,168 @@ ASTERISK          : '*';    // Multiplication
 SLASH             : '/';    // Real Division, Regular expression literal
 DIVISION          : '÷';    // Integer Division
 PERCENT           : '%';    // Modulo, Integer Division, Percentage
-BACKSLASH         : '\\';   //
+BACKSLASH         : '\\';   // 
 TILDE             : '~';    // 
-CARET             : '^';    //  
+CARET             : '^';    // 
 PIPE              : '|';    // 
 UNDERSCORE        : '_';    // Wildcard, Anonymous variable
 EQUAL             : '=';    // Assignment, Equality
 PLUS              : '+';    // 
-MINUS             : '-';    //
+MINUS             : '-';    // 
+
+DOULE_LEFT_ANGLE  : '<<';   // 
+DOULE_RIGHT_ANGLE : '>>';   // 
+
+DOULE_EXCLAMATION : '!!';   // 
+DOULE_QUESTION    : '??';   // 
+
+ELLIPSIS          : '...';  //
+LAMBDA            : '(\\';  // 
 
 
-// --- OPERATORS ----------------------------------------------------
+// --- UNARY OPERATORS ----------------------------------------------
 
-// Unary Arithmetic Operators (Prefix Notation)
+// Arithmetic Operators
 
-POSITIVE      : PLUS;
-NEGATIVE      : MINUS;
-INCREMENT     : PLUS PLUS;
-DECREMENT     : MINUS MINUS;
-BIT_NOT       : TILDE;
-BIT_NEGATION  : TILDE TILDE;
-SQUARE_POWER  : ASTERISK ASTERISK;
-SQUARE_ROOT   : ASTERISK SLASH;
-FACTORIAL     : ASTERISK EXCLAMATION;
+INCREMENT     : '++';
+DECREMENT     : '--';
+SQUARE_POWER  : '**';
+SQUARE_ROOT   : '*/';
+FACTORIAL     : '*!';
 
-// Binary Arithmetic operators (Infix Notation)
+// Bitwise Operators
 
-ADDITION          : PLUS;
-SUBTRACTION       : MINUS;
-MULTIPLICATION    : ASTERISK;
-REAL_DIVISION     : SLASH;
-INTEGER_DIVISION  : PERCENT PERCENT
-                  | DIVISION;
-MODULO            : PERCENT;
-NTH_POWER         : SQUARE_POWER;
-NTH_ROOT          : SQUARE_ROOT;
+BIT_NEGATION  : '~~';
+
+// Miscellaneous Operators
+
+DEEP_CLONING : '===';
+
+SORTING : '^^';
+
+
+// --- BINARY OPERATORS ---------------------------------------------
+
+// Arithmetic operators
+
+QUOTIENT : '%%';
 
 // Financial Operators
 
-PERCENTAGE_RATE      : PERCENT SLASH;
-PERCENTAGE_AMOUNT    : PERCENT ASTERISK;
-PERCENTAGE_INCREASE  : PERCENT PLUS;
-PERCENTAGE_DECREASE  : PERCENT MINUS;
-PERCENTAGE_VARIATION : PERCENT CARET;
+PERCENTAGE_RATE      : '%/';
+PERCENTAGE_AMOUNT    : '%*';
+PERCENTAGE_INCREASE  : '%+';
+PERCENTAGE_DECREASE  : '%-';
+PERCENTAGE_VARIATION : '%^';
 
-//  Bitwise Operators (Strict Evaluation = Eager Evaluation)
+// Bitwise Operators
 
-BIT_AND              : AMPERSAND;
-BIT_CLEAR            : AMPERSAND TILDE;
-BIT_XOR              : CARET;
-BIT_OR               : PIPE;
-LEFT_SHIFT           : LEFT_ANGLE LEFT_ANGLE;
-SIGNED_RIGHT_SHIFT   : RIGHT_ANGLE RIGHT_ANGLE;
-UNSIGNED_RIGHT_SHIFT : RIGHT_ANGLE RIGHT_ANGLE RIGHT_ANGLE;
+BIT_CLEAR            : '&~';
+UNSIGNED_RIGHT_SHIFT : '>>>';
 
 // Conditional Operators
 
-IDENTITY              : IS;                            // Identity Operator (RETURNS BOOLEAN)
-NOT_IDENTITY          : IS NOT;                        // Negation of Identity Operator (RETURNS BOOLEAN)
-MEMBERSHIP            : IN;
-NOT_MEMBERSHIP        : NOT IN;
-BETWEEN_RANGE         : BETWEEN;                       // Interval Comparison (RETURNS BOOLEAN)
-NOT_BETWEEN_RANGE     : NOT BETWEEN;                   // Negation of Interval Comparison (RETURNS BOOLEAN)
-MATCHING              : LIKE;                          // Matching Operator (RETURNS BOOLEAN)
-NOT_MATCHING          : NOT LIKE;                      // Negation of Matching Operator (RETURNS BOOLEAN)
-DIVISIBLE_BY          : QUESTION PERCENT;              // Evenly Divisible by (RETURNS BOOLEAN)  
-NOT_DIVISIBLE_BY      : EXCLAMATION PERCENT;           // Not Divisible by (RETURNS BOOLEAN)   
+DIVISIBLE_BY          : '?%';
+NOT_DIVISIBLE_BY      : '!%';
 
 // Comparison Operators
 
-ELVIS_TEST            : QUESTION COLON;                // Elvis Operator (RETURNS -1, 0, OR 1)
-THREE_WAY_TEST        : LEFT_ANGLE EQUAL RIGHT_ANGLE;  // Three-way comparison (RETURNS -1, 0, OR 1)
+ELVIS_TEST            : '?:';
+THREE_WAY_TEST        : '<=>';
 
 // Relational Operators
 
-EQUALS            : EQUAL EQUAL;
-NOT_EQUALS        : EXCLAMATION EQUAL;
-LESS              : LEFT_ANGLE;
-LESS_OR_EQUALS    : LEFT_ANGLE EQUAL;
-GREATER           : RIGHT_ANGLE;
-GREATER_OR_EQUALS : RIGHT_ANGLE EQUAL;
-
-// Logical Operators (Non-Strict Evaluation = Short-circuit Evaluation) 
-
-LOGICAL_AND  : AND;   // CONJUNCTION
-LOGICAL_XOR  : XOR;   // EXCLUSIVE DISJUNCTION
-LOGICAL_OR   : OR;    // DISJUNCTION
-LOGICAL_NOT  : NOT;   // NEGATION
-// Universal gates
-LOGICAL_NAND : NAND;  // NEGATION OF CONJUNCTION: NOT (X AND B)
-LOGICAL_NXOR : NXOR;  // NEGATION OF EXCLUSIVE DISJUNCTION: NOT (X OR B)
-LOGICAL_NOR  : NOR;   // NEGATION OF DISJUNCTION: NOT (X OR B)
+EQUALS            : '==';
+NOT_EQUALS        : '!=';
+LESS_OR_EQUALS    : '<=';
+GREATER_OR_EQUALS : '>=';
 
 // Coalescing Operators
 
-ERROR_PROPAGATION                 : EXCLAMATION;
-ERROR_COALESCING                  : EXCLAMATION EXCLAMATION;
-ERROR_PROPAGATION_NONE_COALESCING : EXCLAMATION QUESTION;
-ERROR_TO_NONE_CONVERTION          : QUESTION;
-EXCEPTION_COALESCING              : QUESTION QUESTION;
-EXCEPTION_STATEMENT               : ORELSE; 
+ERROR_PROPAGATION_NONE_COALESCING : '!?';
 
 // Single Assignment Operators
         
-BASIC_ASSIGNMENT         : EQUAL;
-DESTRUCTURING_ASSIGNMENT : COLON EQUAL;
-MACRO_ASSIGNMENT         : COLON COLON;
+DESTRUCTURING_ASSIGNMENT : ':=';
+MACRO_ASSIGNMENT         : '::';
+POP_ONE_ASSIGNMENT       : '<-';
+PULL_ALL_ASSIGNMENT      : '<<-'; 
+PIPE_ASSIGNMENT          : '<|'; 
 
 // Compound Assignment Operators
 
-ADDITION_ASSIGNMENT             : PLUS EQUAL;
-SUBTRACTION_ASSIGNMENT          : MINUS EQUAL;
-MULTIPLICATION_ASSIGNMENT       : ASTERISK EQUAL;
-REAL_DIVISION_ASSIGNMENT        : SLASH EQUAL;
-INTEGER_DIVISION_ASSIGNMENT     : DIVISION EQUAL
-                                | PERCENT PERCENT EQUAL;
-MODULO_ASSIGNMENT               : PERCENT EQUAL;
-NTH_POWER_ASSIGNMENT            : ASTERISK ASTERISK EQUAL;
-NTH_ROOT_ASSIGNMENT             : ASTERISK SLASH  EQUAL;
-PERCENTAGE_RATE_ASSIGNMENT      : PERCENT SLASH EQUAL;
-PERCENTAGE_AMOUNT_ASSIGNMENT    : PERCENT ASTERISK EQUAL;
-PERCENTAGE_INCREASE_ASSIGNMENT  : PERCENT PLUS EQUAL;
-PERCENTAGE_DECREASE_ASSIGNMENT  : PERCENT MINUS EQUAL;
-PERCENTAGE_VARIATION_ASSIGNMENT : PERCENT CARET EQUAL;
-BIT_AND_ASSIGNMENT              : AMPERSAND EQUAL;
-BIT_OR_ASSIGNMENT               : PIPE EQUAL;
-BIT_XOR_ASSIGNMENT              : CARET EQUAL;
-BIT_CLEAR_ASSIGNMENT            : AMPERSAND TILDE EQUAL;
-BIT_NOT_ASSIGNMENT              : TILDE EQUAL;
-LEFT_SHIFT_ASSIGNMENT           : LEFT_ANGLE LEFT_ANGLE EQUAL;
-SIGNED_RIGHT_SHIFT_ASSIGNMENT   : RIGHT_ANGLE RIGHT_ANGLE EQUAL;
-UNSIGNED_RIGHT_SHIFT_ASSIGNMENT : RIGHT_ANGLE RIGHT_ANGLE RIGHT_ANGLE EQUAL;
-NONE_COALESCING_ASSIGNMENT      : QUESTION QUESTION EQUAL;
+ADDITION_ASSIGNMENT             : '+=';
+SUBTRACTION_ASSIGNMENT          : '-=';
+MULTIPLICATION_ASSIGNMENT       : '*=';
+REAL_DIVISION_ASSIGNMENT        : '/=';
+INTEGER_DIVISION_ASSIGNMENT     : '÷=';
+QUOTIENT_ASSIGNMENT             : '%%=';
+MODULO_ASSIGNMENT               : '%=';
+NTH_POWER_ASSIGNMENT            : '**=';
+NTH_ROOT_ASSIGNMENT             : '*/=';
+PERCENTAGE_RATE_ASSIGNMENT      : '%/=';
+PERCENTAGE_AMOUNT_ASSIGNMENT    : '%*=';
+PERCENTAGE_INCREASE_ASSIGNMENT  : '%+=';
+PERCENTAGE_DECREASE_ASSIGNMENT  : '%-=';
+PERCENTAGE_VARIATION_ASSIGNMENT : '%^⁼';
+BIT_AND_ASSIGNMENT              : '&=';
+BIT_OR_ASSIGNMENT               : '|=';
+BIT_XOR_ASSIGNMENT              : '^=';
+BIT_CLEAR_ASSIGNMENT            : '&^=';
+BIT_NOT_ASSIGNMENT              : '~=';
+LEFT_SHIFT_ASSIGNMENT           : '<<=';
+SIGNED_RIGHT_SHIFT_ASSIGNMENT   : '>>=';
+UNSIGNED_RIGHT_SHIFT_ASSIGNMENT : '>>>=';
+NONE_COALESCING_ASSIGNMENT      : '??=';
+
+// Range Operators
+
+INTERVAL_INCLUSIVE       : '..';
+INTERVAL_LEFT_EXCLUSIVE  : '>..';
+INTERVAL_RIGHT_EXCLUSIVE : '..<';
+INTERVAL_EXCLUSIVE       : '>..<';
+
+INTERVAL
+    : INTERVAL_INCLUSIVE
+    | INTERVAL_LEFT_EXCLUSIVE
+    | INTERVAL_RIGHT_EXCLUSIVE
+    | INTERVAL_EXCLUSIVE
+    ;
+
+INTERVAL_LEFT
+    : INTERVAL_INCLUSIVE
+    | INTERVAL_LEFT_EXCLUSIVE
+    ;
+
+INTERVAL_RIGHT
+    : INTERVAL_INCLUSIVE
+    | INTERVAL_RIGHT_EXCLUSIVE
+    ;
 
 // Composite Operators
 
-INTERVAL : RIGHT_ANGLE? DOT DOT LEFT_ANGLE?;
-ELLIPSIS : DOT DOT DOT;
-FRACTION : SLASH SLASH;
+MIXIN   : '<>';
+EXTENDS : '->';
 
 // Imply Operators
 
-IMPLICIT_RETURN : EQUAL RIGHT_ANGLE;
+IMPLICIT_RETURN : '=>';
 
-MONAD_BIND : EQUAL RIGHT_ANGLE RIGHT_ANGLE;
+MONAD_BIND : '=>>';
+
+// Miscellaneous Operators
+
+PIPELINE : '|>';
+
+PIPED_THREAD : '&>';
+ASYNC_THREAD : '&&';
 
 
 // --- LITERALS -----------------------------------------------------
 
-// Numeric literals
-
-NUMBER_LIT : INTEGER_NUMBER
-           | REAL_NUMBER
-           | DECIMAL_NUMBER
-           | RATIONAL_NUMBER
-           | IMAGINARY_NUMBER
-           ;
-
 // Decimal literals (Fixed Point Numbers)
 
-fragment DECIMAL_NUMBER
+DECIMAL_NUMBER
     : DEC_DECIMAL
     | HEX_DECIMAL
     ; 
@@ -240,48 +242,53 @@ fragment HEX_MANTISSA
 
 // Real literals (Floating Point Numbers)
 
-fragment REAL_NUMBER
+REAL_NUMBER
     : DEC_REAL
     | HEX_REAL
     ; 
 
-fragment DEC_REAL : DEC_DECIMAL DEC_EXPONENT?;
+fragment DEC_REAL     : DEC_DECIMAL DEC_EXPONENT?;
 fragment DEC_EXPONENT : [eE] [+-]? DEC_GROUPS;
 
-fragment HEX_REAL : HEX_DECIMAL HEX_EXPONENT?;
-fragment HEX_EXPONENT: [pP] [+-]? DEC_GROUPS;
+fragment HEX_REAL     : HEX_DECIMAL HEX_EXPONENT?;
+fragment HEX_EXPONENT : [pP] [+-]? DEC_GROUPS;
 
 // Rational literals
 
-fragment RATIONAL_NUMBER : INTEGER_NUMBER FRACTION INTEGER_NUMBER;
+RATIONAL_NUMBER : INTEGER_NUMBER '//' INTEGER_NUMBER;
 
 // Imaginary literals
 
-fragment IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
+IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
 
 // Integer literals
 
-fragment INTEGER_NUMBER
-    : DEC_INTEGER
-    | HEX_INTEGER
-    | OCT_INTEGER
-    | BIN_INTEGER
+INTEGER_NUMBER
+    : DEC_VALUE
+    | HEX_VALUE
+    | OCT_VALUE
+    | BIN_VALUE
+    | ROM_VALUE
     ;
 
-fragment DEC_INTEGER : '0' | DEC_GROUPS;
-fragment DEC_GROUPS  : DEC_DIGIT ('_'? DEC_DIGIT)*;
+fragment DEC_VALUE  : '0' | DEC_GROUPS;
+fragment DEC_GROUPS : DEC_DIGIT ('_'? DEC_DIGIT)*;
 
-fragment HEX_INTEGER : HEX_UNIT HEX_GROUPS;
-fragment HEX_UNIT    : '0' [xX];
-fragment HEX_GROUPS  : HEX_DIGIT ('_'? HEX_DIGIT)*;
+fragment HEX_VALUE  : HEX_UNIT HEX_GROUPS;
+fragment HEX_UNIT   : '0' [xX];
+fragment HEX_GROUPS : HEX_DIGIT ('_'? HEX_DIGIT)*;
 
-fragment OCT_INTEGER : OCT_UNIT OCT_GROUPS;
-fragment OCT_UNIT    : '0' [oO];
-fragment OCT_GROUPS  : OCT_DIGIT ('_'? OCT_DIGIT)*;
+fragment OCT_VALUE  : OCT_UNIT OCT_GROUPS;
+fragment OCT_UNIT   : '0' [oO];
+fragment OCT_GROUPS : OCT_DIGIT ('_'? OCT_DIGIT)*;
 
-fragment BIN_INTEGER : BIN_UNIT BIN_GROUPS;
-fragment BIN_UNIT    : '0' [bB];
-fragment BIN_GROUPS  : BIN_DIGIT ('_'? BIN_DIGIT)*;
+fragment BIN_VALUE  : BIN_UNIT BIN_GROUPS;
+fragment BIN_UNIT   : '0' [bB];
+fragment BIN_GROUPS : BIN_DIGIT ('_'? BIN_DIGIT)*;
+
+fragment ROM_VALUE  : ROM_UNIT ROM_GROUPS;
+fragment ROM_UNIT   : '0' [rR];
+fragment ROM_GROUPS : ROM_DIGIT ('_'? ROM_DIGIT)*;
 
 // Computer number formats
 
@@ -289,47 +296,36 @@ fragment DEC_DIGIT : UNICODE_DIGIT;
 fragment HEX_DIGIT : [0-9a-fA-F];
 fragment OCT_DIGIT : [0-7];
 fragment BIN_DIGIT : [01];
-
-// Temporal values
-
-TIME_LIT : ATOM_DOT_LIT
-         | NUMBER_LIT
-         ;
-
-// Sequence literals
-
-SEQUENCE_LIT : STRING_LIT
-             | REGULAR_EXPRESSION_LIT
-             | ATOM_DOT_LIT
-             | BINARY_LIT
-             ;
-
-// HereDoc Literals
-
-HEREDOC_LITERAL : LEFT_ANGLE LEFT_ANGLE HEREDOC_CONTENT ;
-
-HEREDOC_CONTENT : IDENTIFIER EOL VERBATIM_STRING_CONTENT EOL IDENTIFIER
-                | '"' EOL VERBATIM_STRING_CONTENT EOL '"'
-                | '"""' EOL VERBATIM_STRING_CONTENT EOL '"""'
-                | '\'' EOL TEMPLATE_STRING_CONTENT EOL '\''
-                | '\'\'\'' EOL TEMPLATE_STRING_CONTENT EOL '\'\'\''
-                | '/' EOL REGULAR_EXPRESSION_CONTENT EOL '/' REGEX_FLAG*
-                | HEX_UNIT EOL HEX_DIGIT* EOL HEX_UNIT
-                | OCT_UNIT EOL OCT_DIGIT* EOL OCT_UNIT
-                | BIN_UNIT EOL BIN_DIGIT* EOL BIN_UNIT
-                ;
+fragment ROM_DIGIT : [IVXLCDM];
 
 // Binary literals
 
-BINARY_LIT : HEX_UNIT HEX_GROUPS
-           | OCT_UNIT OCT_GROUPS
-           | BIN_UNIT BIN_GROUPS
-           ;
+BINARY_LIT
+    : HEX_VALUE
+    | OCT_VALUE
+    | BIN_VALUE
+    ;
+
+// HereDoc Literals
+
+HEREDOC_LITERAL : '<<' HEREDOC_CONTENT ;
+
+HEREDOC_CONTENT
+    : IDENTIFIER EOL VERBATIM_STRING_CONTENT EOL IDENTIFIER
+    | '"' EOL VERBATIM_STRING_CONTENT EOL '"'
+    | '"""' EOL VERBATIM_STRING_CONTENT EOL '"""'
+    | '\'' EOL TEMPLATE_STRING_CONTENT EOL '\''
+    | '\'\'\'' EOL TEMPLATE_STRING_CONTENT EOL '\'\'\''
+    | '/' EOL REGULAR_EXPRESSION_CONTENT EOL '/' REGEX_FLAG*
+    | HEX_UNIT EOL HEX_DIGIT* EOL HEX_UNIT
+    | OCT_UNIT EOL OCT_DIGIT* EOL OCT_UNIT
+    | BIN_UNIT EOL BIN_DIGIT* EOL BIN_UNIT
+    ;
 
 
 // Regular expression literals 
 
-REGULAR_EXPRESSION_LIT : '/' REGULAR_EXPRESSION_CONTENT '/' REGEX_FLAG*;
+REGULAR_EXPRESSION_LIT     : '/' REGULAR_EXPRESSION_CONTENT '/' REGEX_FLAG*;
 
 REGULAR_EXPRESSION_CONTENT : REGEX_FIRST_CHAR REGEX_CHAR*;
 
@@ -356,28 +352,31 @@ fragment REGEX_FLAG : [digmsuvy];
 
 // String literals
 
-STRING_LIT : VERBATIM_STRING_LIT
-           | TEMPLATE_STRING_LIT
-           ;
+STRING_LIT
+    : VERBATIM_STRING_LIT
+    | TEMPLATE_STRING_LIT
+    ;
 
 VERBATIM_STRING_LIT
     : '"' VERBATIM_STRING_CONTENT '"'
     | '"""' VERBATIM_STRING_CONTENT '"""'
     ;
 
-fragment VERBATIM_STRING_CONTENT : ~["]* ;
+fragment VERBATIM_STRING_CONTENT : ~["]*;
 
 TEMPLATE_STRING_LIT
     : '\'' TEMPLATE_STRING_CONTENT '\''
     | '\'\'\'' TEMPLATE_STRING_CONTENT '\'\'\''
     ;
 
-fragment TEMPLATE_STRING_CONTENT : ( ASCII_ESCAPED_VALUE
-                                   | UNICODE_ESCAPED_VALUE
-                                   | '{' STRING_PLACEHOLDER '}'
-                                   | ~['\\] )* ; 
+fragment TEMPLATE_STRING_CONTENT
+    : ( ASCII_ESCAPED_VALUE
+    | UNICODE_ESCAPED_VALUE
+    | '{' PLACEHOLDER_VALUE* '}'
+    | ~['] )*
+    ; 
 
-STRING_PLACEHOLDER : ~['\\];
+PLACEHOLDER_VALUE : ~['}];
 
 // Character literals
 
@@ -414,28 +413,16 @@ ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
 
 DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
 
-// Range Literals
-
-RANGE_LIT
-    : INTEGER_NUMBER? INTERVAL INTEGER_NUMBER?
-    | INTEGER_NUMBER? INTERVAL INTEGER_NUMBER? COLON INTEGER_NUMBER
-    | CHAR_LIT INTERVAL CHAR_LIT
-    ;
-
 
 // --- SYMBOLS ------------------------------------------------------
 
 // Identifier Names
 
-KEYWORD : ALPHA+;
+//KEYWORD : ALPHA+;
 
 IDENTIFIER : ALPHA ALPHANUMERIC*;
 
 ATOM_IDENTIFIER : '@' IDENTIFIER; 
-
-fragment ALPHA: UNICODE_LETTER | '_';
-
-fragment ALPHANUMERIC : UNICODE_ALPHANUMERIC | '_';
 
 // MUSICAL ALPHABET
 
@@ -447,36 +434,34 @@ PITCH_FLAT     : 'f';
 PITCH_SHARP    : 's';
 
 
-// --- MAGIC STATEMENTS ---------------------------------------------
-
-// Rubber Duck Debugging
-
-RUBBERDUCK : AT ALPHANUMERIC* EQUAL;
-
-// Songbird Logging
-
-SONGBIRD : AT (LOGGING_LEVEL | IDENTIFIER)? RIGHT_ANGLE;
-
-LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
-
-// Label
-
-LABEL : AT IDENTIFIER COLON;
-
-
 // --- MAGIC COMMENTS -----------------------------------------------
 
 // Pragma Directive
 
-SHEBANG : HASH EXCLAMATION ;
+SHEBANG : '#!';
 
 // Canary-testing Directive
 
-WOODSTOCK : HASH QUESTION ;
+WOODSTOCK : '#?';
 
 // Shell-lookup Directive
 
-SHERLOCK : HASH DOLLAR ;
+SHERLOCK : '#$';
+
+
+// --- MAGIC STATEMENTS ---------------------------------------------
+
+// Rubber Duck Debugging
+
+RUBBERDUCK : '@' IDENTIFIER? '=';
+
+// Songbird Logging
+
+SONGBIRD : '@' IDENTIFIER? '>';
+
+// Label
+
+LABEL : '@' IDENTIFIER ':';
 
 
 // --- COMMENTS -----------------------------------------------------
@@ -490,6 +475,10 @@ DOCUMENTATION_COMMENT : '###' .*? '###'                        -> channel(COMMEN
 
 
 // --- UNICODE CHARACTERS -------------------------------------------
+
+fragment ALPHA: UNICODE_LETTER | '_';
+
+fragment ALPHANUMERIC : UNICODE_ALPHANUMERIC | '_';
 
 fragment UNICODE_ALPHANUMERIC
     : UNICODE_LETTER
@@ -522,12 +511,12 @@ EOS : EOL
 
 // End of Line (EOL) characters
 
-EOL : '\n'       /* Unix, Linux, macOS */
-    | '\r' '\n'  /* Windows, DOS */
-    | '\r'       /* Classic Mac OS (pre-OS X) */
-    | '\u0085'   /* IBM Mainframes (EBCDIC) */
-    | '\u2028'   /* Unicode Line Separator */
-    | '\u2029'   /* Unicode Paragraph Separator */
+EOL : '\n'       // Unix, Linux, macOS
+    | '\r' '\n'  // Windows, DOS
+    | '\r'       // Classic Mac OS (pre-OS X)
+    | '\u0085'   // IBM Mainframes (EBCDIC)
+    | '\u2028'   // Unicode Line Separator
+    | '\u2029'   // Unicode Paragraph Separator
     ;
 
 
@@ -546,9 +535,9 @@ UTF32_BOM : '\u0000FEFF';
 
 WSP : [\u0009\u000B\u000C\u0020\u00A0\p{Zs}]+ -> channel(HIDDEN);
 
-// Two or more physical lines may be joined into logical lines
-
-EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
+// Two or more physical lines may be joined into logical lines,
+// But can cause conflict with \\ character.
+//EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
 
 
 // --- ERROR HANDLING -----------------------------------------------
