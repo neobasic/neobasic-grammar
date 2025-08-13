@@ -135,7 +135,7 @@ InterfaceMemberDeclare = MixinSentence
                        | RpcMethodDeclare
                        | ExternMethodDeclare .
 
-MixinSentence = '<>' Types .
+MixinSentence = MixinOperator Types .
 
 RpcMethodDeclare = RPC SymbolIdentifier RpcParameters RpcResult .
 
@@ -206,7 +206,9 @@ GenericsStereotype = "<<" TypeParameters ">>" .
 
 AtomStereotypes = AtomStereotype { [ EOL ] AtomStereotype } .
 
-AtomStereotype = AtomIdentifier [ TaggedValuePairs ] .
+AtomStereotype = AtomIdentifier [ TaggedValuePairs ]
+               | AspectIdentifier [ TaggedValuePairs ]
+               .
 
 TaggedValuePairs = TaggedValuePair { "," TaggedValuePair } .
 
@@ -357,7 +359,7 @@ TypeSuite = EOL Indent TypeDeclareList Dedent .
 
 TypeDeclareList = TypeDeclare { EOL TypeDeclare } .
 
-TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator | '<>' ] Type [ "=" TypeName ] [ MonadBody ] .
+TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator | MixinOperator ] Type [ "=" TypeName ] [ MonadBody ] .
 
 MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
 
@@ -374,7 +376,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters MacroAssignmentOperator Expression .
+FactSentence = FACT SymbolIdentifier TypeParameters ComputedAssignmentOperator Expression .
 
 
 (* DEF SENTENCE *)
@@ -385,7 +387,7 @@ DefSuite = EOL Indent DefDeclareList Dedent .
 
 DefDeclareList = DefDeclare { EOL DefDeclare } .
 
-DefDeclare = Identifier [ MacroAssignmentOperator Expression ] .
+DefDeclare = Identifier [ ComputedAssignmentOperator Expression ] .
 
 
 (* DEFN SENTENCE *)
@@ -396,7 +398,7 @@ DefnSuite = EOL Indent DefnDeclareList Dedent .
 
 DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
 
-DefnDeclare = Identifier ProcParameters MacroAssignmentOperator Expression .
+DefnDeclare = Identifier ProcParameters ComputedAssignmentOperator Expression .
 
 
 (* UNDEF SENTENCE *)
@@ -432,7 +434,7 @@ VarDeclares = VarDeclare { "," VarDeclare } .
 
 VarDeclare = SymbolIdentifiers [ Type ] [ DeclareAssignment | HeredocLiteral ] .
 
-DeclareAssignment = [ SingleAssignmentOperator | MacroAssignmentOperator ] Expressions .
+DeclareAssignment = [ SingleAssignmentOperator | ComputedAssignmentOperator ] Expressions .
 
 
 (* FUNC SENTENCE *) 
@@ -623,9 +625,7 @@ StatementBlock = Statement { EOL Statement } .
 
 Statement      = "(" Statement ")"
                | AtomStereotypes Statement
-               | Statement AsynchronousThreadOperator Statement 
-               | Statement SynchronousThreadOperator Statement 
-               | Statement PipedThreadOperator Statement
+               | Statement CommandThreadOperator Statement 
                | Label Statement
                | ExpressionStatement
                | EmptyStatement
@@ -1317,7 +1317,11 @@ AssignmentOperator = SingleAssignmentOperator | CompoundAssignmentOperator .
 
 (* IMPLICATION OPERATORS *)
 
-MacroAssignmentOperator  = "::" . (* Macro Assignment operator *) 
+NeckRule = ":-" .
+
+ComputedAssignmentOperator  = "::" . (* Computed Assignment operator *) 
+
+MixinOperator = "<>" . (* Mixin, in composition, operator *)
 
 SubtypeOperator = "->" . (* Subtype / Extends operator *)
 
@@ -1371,11 +1375,31 @@ PosfixTypeModifier     = OptionalModifier | ShallowInitialModifier .
 
 (* MULTITHREAD CONTROL FLOW *)
 
-PipedThreadOperator = "&>" . (* Forward pipe chain *)
+CommandSequence     = "&&" .
+CommandSequenceOkay = "?&" .
+CommandSequenceFail = "!&" .
+CommandBackground   = "|&" .
 
-SynchronousThreadOperator = "&" . (* Synchronous Execution *) 
+OutputRedirection       = "&>" .
+AppendOutputRedirection = "&>>" .
 
-AsynchronousThreadOperator = "&&" . (* Asynchronous Execution *)
+StdoutRedirection       = "&1>" .
+AppendStdoutRedirection = "&1>>" .
+
+StderrRedirection       = "&2>" .
+AppendStderrRedirection = "&2>>" .
+
+CommandThreadOperator = CommandSequence
+                      | CommandSequenceOkay
+                      | CommandSequenceFail
+                      | CommandBackground
+                      | OutputRedirection
+                      | AppendOutputRedirection
+                      | StdoutRedirection
+                      | AppendStdoutRedirection
+                      | StderrRedirection
+                      | AppendStderrRedirection
+                      .
 
 
 (* ------------------------------------------------------------------------- *)
@@ -1593,14 +1617,15 @@ NamespaceIdentifier = Identifier { "." Identifier } .
 
 AtomIdentifier = UnicodeAtom Identifier .
 
-ShellIdentifier = UnicodeShell { Alphanumeric } /* UnicodeShell Identifier */
-	            | UnicodeShell                  /* Object shell */
-	            | UnicodeShell UnicodeShell     /* Process ID (PID) of the NeoBASIC program */
-	            | UnicodeShell "*"              /* All the arguments in a single string */
-	            | UnicodeShell "%"              /* Number of arguments */
-	            | UnicodeShell "?"              /* Exit status of the last process */
-	            | UnicodeShell UnicodeShell "?" /* Process number of the last background command */
-	            | UnicodeShell "!"              /* Last exception raised (Error object) */
+AspectIdentifier = UnicodeAtom UnicodeAtom Identifier .
+
+ShellIdentifier = UnicodeShell "_"                 /* Current directory, workspace */
+	            | UnicodeShell ("0" | "1" | "2")   /* Standard streams (stdin, stdout, stderr) */
+	            | UnicodeShell Identifier          /* Environment Variable */
+	            | UnicodeShell UnicodeShell        /* Process ID (PID) of the NeoBASIC program */
+	            | UnicodeShell "%"                 /* All the arguments in an array or string */
+	            | UnicodeShell "%" DecimalInteger  /* Nth argument */
+	            | UnicodeShell UnicodeShell        /* Process number of the last background command */
                 .
 
 ShellExpression = ( ShellIdentifier | FileSystemShell ) [ ';' Type ] .
@@ -1620,7 +1645,7 @@ SymbolIdentifiers = SymbolIdentifier { "," SymbolIdentifier } .
 
 FileSystemShell = UnicodeShell FileSystemPath .
 
-FileSystemPath = AbsolutePath | RelativePath | TildePath | Path .
+FileSystemPath = AbsolutePath | RelativePath | TildePath .
 
 AbsolutePath = ( "\\" | Letter ":\\" | PathSeparator ) Path .
 

@@ -439,6 +439,24 @@ ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
 
 DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
 
+// Shell literals (File system files and directories)
+
+SHELL_PATH_LIT : '$' FILESYSTEM_PATH;
+
+FILESYSTEM_PATH : ABSOLUTE_PATH | RELATIVE_PATH | TILDE_PATH; //  | PATH_NAME;
+
+ABSOLUTE_PATH : (DRIVE_LETTER ':')? '/' PATH_NAME?;
+
+RELATIVE_PATH : ('.' | '..') '/' ('..' '/')* PATH_NAME?;
+
+TILDE_PATH : '~' '/'? PATH_NAME?;
+
+PATH_NAME : FILE_NAME ('/' FILE_NAME)*;
+
+FILE_NAME : UNICODE_FILEPATH+;
+
+DRIVE_LETTER : [a-zA-Z];
+
 
 // --- SYMBOLS ------------------------------------------------------
 
@@ -450,9 +468,17 @@ TAG : ALPHANUMERIC+;
 
 IDENTIFIER : ALPHA ALPHANUMERIC*;
 
-ATOM_IDENTIFIER : '@' IDENTIFIER; 
+ATOM_IDENTIFIER : '@' IDENTIFIER;
 
-ASPECT_IDENTIFIER : '@@' IDENTIFIER; 
+ASPECT_IDENTIFIER : '@@' IDENTIFIER;
+
+SHELL_IDENTIFIER
+    : '$_'
+    | '$' [012]
+    | '$' IDENTIFIER
+    | '$%' DEC_VALUE?
+    | '$$'
+    ;
 
 // MUSICAL ALPHABET
 
@@ -528,6 +554,11 @@ fragment UNICODE_DIGIT: [\p{Nd}];
 
 // Unicode code points from U+0000 to U+007F except categorized as Cc (Control)
 fragment ASCII_CHAR : [\u0020-\u007E];
+
+// Unicode code points from U+0000 to U+10FFFF, except categorized as: 
+// Cc (Control), Cf (Format), Cs (Surrogate), Co (Private Use), Cn (Unassigned) 
+// and except these 15 special chars (punctuation or operators). 
+fragment UNICODE_FILEPATH : ~[|/\\<>;:?*#$&"'`\p{Cc}\p{Cf}\p{Cs}\p{Co}\p{Cn}] ;
 
 
 // --- SPECIAL TOKENS -----------------------------------------------
