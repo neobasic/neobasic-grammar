@@ -249,8 +249,8 @@ binaryAdditiveOperator : PLUS
 
 // Bitwise Operators (Non-Strict Evaluation = Short-circuit Evaluation)
 
-bitShiftOperator : DOULE_LEFT_ANGLE
-                 | DOULE_RIGHT_ANGLE
+bitShiftOperator : DOUBLE_LEFT_ANGLE
+                 | DOUBLE_RIGHT_ANGLE
                  | UNSIGNED_RIGHT_SHIFT
                  ;
 
@@ -309,10 +309,10 @@ binaryDisjunctionOperator : OR
 // Coalescing Operators
 
 binaryCoalescingOperator : EXCLAMATION
-                         | DOULE_EXCLAMATION
+                         | DOUBLE_EXCLAMATION
                          | ERROR_PROPAGATION_NONE_COALESCING
                          | QUESTION
-                         | DOULE_QUESTION
+                         | DOUBLE_QUESTION
                          | ORELSE
                          ; 
 
@@ -325,7 +325,7 @@ assignmentOperator : singleAssignmentOperator
                    ;
 
 singleAssignmentOperator : EQUAL
-                         | MACRO_ASSIGNMENT
+                         | COMPUTED_ASSIGNMENT
                          ;
 
 multipleAssignmentOperator : DESTRUCTURING_ASSIGNMENT;
@@ -347,7 +347,6 @@ compoundAssignmentOperator : ADDITION_ASSIGNMENT
                            | BIT_CLEAR_ASSIGNMENT
                            | BIT_XOR_ASSIGNMENT
                            | BIT_OR_ASSIGNMENT
-                           | BIT_NOT_ASSIGNMENT
                            | LEFT_SHIFT_ASSIGNMENT
                            | SIGNED_RIGHT_SHIFT_ASSIGNMENT
                            | UNSIGNED_RIGHT_SHIFT_ASSIGNMENT

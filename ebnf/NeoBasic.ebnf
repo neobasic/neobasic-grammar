@@ -243,7 +243,7 @@ CommentStatement = CommentContent
 
 (* MAGIC COMMENT: HASHTAG *)
 
-Hashtag = Comment Identifier .
+Hashtag = Comment Tag { "/" Tag } .
 
 
 (* MAGIC COMMENT: DIRECTIVE *)
@@ -1116,7 +1116,7 @@ FunctionArguments = "(" [].
 
 FunctionArguments = "(" [ NamedExpressionList [ "," ] ] ")" .
 
-NamedExpressionList = [ Identifier = ] Expression { "," [ Identifier = ] Expression } .
+NamedExpressionList = [ Identifier "=" ] Expression { "," [ Identifier "=" ] Expression } .
 
 ErrorHandling = "!"  [ Expression ] 
               | "!!" Expression
@@ -1582,6 +1582,8 @@ PromptLiteral = UnicodeShell ( StringLiteral | VerbatimLiteral ) .
 
 
 (* IDENTIFIERS *)
+
+Tag = Alphanumeric { Alphanumeric } .
 
 Identifier = Letter { Alphanumeric } .
 

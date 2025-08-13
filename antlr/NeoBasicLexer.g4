@@ -32,7 +32,6 @@ channels {
  *  Default Lexer Mode
  */
 
-
 // --- PUNCTUATION --------------------------------------------------
 
 LEFT_PARENTHESIS  : '(';    // 
@@ -69,14 +68,23 @@ EQUAL             : '=';    // Assignment, Equality
 PLUS              : '+';    // 
 MINUS             : '-';    // 
 
-DOULE_LEFT_ANGLE  : '<<';   // 
-DOULE_RIGHT_ANGLE : '>>';   // 
-
-DOULE_EXCLAMATION : '!!';   // 
-DOULE_QUESTION    : '??';   // 
-
-ELLIPSIS          : '...';  //
+ELLIPSIS          : '...';  // 
 LAMBDA            : '(\\';  // 
+
+DOUBLE_LEFT_BRACKET  : '[[';    // 
+DOUBLE_RIGHT_BRACKET : ']]';    // 
+
+DOUBLE_LEFT_CURLY    : '{{';    // 
+DOUBLE_RIGHT_CURLY   : '}}';    // 
+
+DOUBLE_LEFT_ANGLE    : '<<';   // 
+DOUBLE_RIGHT_ANGLE   : '>>';   // 
+
+DOUBLE_EXCLAMATION   : '!!';   // 
+DOUBLE_QUESTION      : '??';   // 
+
+DOUBLE_COLON         : '::';   // 
+DOUBLE_SEMICOLON     : ';;';   // 
 
 
 // --- UNARY OPERATORS ----------------------------------------------
@@ -141,9 +149,9 @@ GREATER_OR_EQUALS : '>=';
 ERROR_PROPAGATION_NONE_COALESCING : '!?';
 
 // Single Assignment Operators
-        
+
 DESTRUCTURING_ASSIGNMENT : ':=';
-MACRO_ASSIGNMENT         : '::';
+COMPUTED_ASSIGNMENT      : '~=';
 POP_ONE_ASSIGNMENT       : '<-';
 PULL_ALL_ASSIGNMENT      : '<<-'; 
 PIPE_ASSIGNMENT          : '<|'; 
@@ -168,7 +176,6 @@ BIT_AND_ASSIGNMENT              : '&=';
 BIT_OR_ASSIGNMENT               : '|=';
 BIT_XOR_ASSIGNMENT              : '^=';
 BIT_CLEAR_ASSIGNMENT            : '&^=';
-BIT_NOT_ASSIGNMENT              : '~=';
 LEFT_SHIFT_ASSIGNMENT           : '<<=';
 SIGNED_RIGHT_SHIFT_ASSIGNMENT   : '>>=';
 UNSIGNED_RIGHT_SHIFT_ASSIGNMENT : '>>>=';
@@ -205,16 +212,35 @@ EXTENDS : '->';
 
 // Imply Operators
 
+NECK_RULE : ':-';
+
 IMPLICIT_RETURN : '=>';
 
 MONAD_BIND : '=>>';
 
-// Miscellaneous Operators
+// Pipeline Operator
 
 PIPELINE : '|>';
 
-PIPED_THREAD : '&>';
-ASYNC_THREAD : '&&';
+// Command Execution Operators
+
+COMMAND_SEQUENCE : '&&';
+
+COMMAND_SEQUENCE_OKAY : '?&';
+COMMAND_SEQUENCE_FAIL : '!&';
+
+COMMAND_BACKGROUND : '|&';
+
+// Input/Output Redirection Operators
+
+OUTPUT_REDIRECTION : '&>';
+APPEND_OUTPUT_REDIRECTION : '&>>';
+
+STDOUT_REDIRECTION : '&1>';
+APPEND_STDOUT_REDIRECTION : '&1>>';
+
+STDERR_REDIRECTION : '&2>';
+APPEND_STDERR_REDIRECTION : '&2>>';
 
 
 // --- LITERALS -----------------------------------------------------
@@ -420,9 +446,13 @@ DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
 
 //KEYWORD : ALPHA+;
 
+TAG : ALPHANUMERIC+;
+
 IDENTIFIER : ALPHA ALPHANUMERIC*;
 
 ATOM_IDENTIFIER : '@' IDENTIFIER; 
+
+ASPECT_IDENTIFIER : '@@' IDENTIFIER; 
 
 // MUSICAL ALPHABET
 
@@ -471,7 +501,8 @@ BLOCK_COMMENT         : '##' ~[#?] .*? '##'                    -> channel(COMMEN
 DOCUMENTATION_COMMENT : '###' .*? '###'                        -> channel(COMMENT);
 
 // Hashtags
-// HASHTAG : HASH ALPHANUMERIC*;
+
+HASHTAG : HASH TAG ('/' TAG)* -> channel(COMMENT);
 
 
 // --- UNICODE CHARACTERS -------------------------------------------

@@ -23,6 +23,7 @@ lexer grammar NeoBasicKeywords;
 
 MODULE : 'module';
 ALGORITHM : 'algorithm';
+NOTABENE : 'notabene';
 
 // ENVIRONMENT DIVISION
 
@@ -31,6 +32,7 @@ AS : 'as';
 OF : 'of';
 INCLUDE : 'include';
 INTERFACE : 'interface';
+EXTERN : 'extern';
 
 // TOP LEVEL SENTENCES
 
@@ -84,13 +86,14 @@ DEFER : 'defer';
 GO : 'go';
 TO : 'to';
 AWAIT : 'await';
+ASYNC : 'async';
 SWITCH : 'switch';
 WHEN : 'when';
 DEFAULT : 'default';
 CONTINUE : 'continue';
 WITH : 'with';
 DO : 'do';
-
+INVAR : 'invar';
 
 // PREDECLARED VALUES AND VARIABLES
 
@@ -383,8 +386,12 @@ EOT : 'EoT';
 AT    : 'at';
 SCAN  : 'scan';
 ECHO  : 'echo';
+ALERT : 'alert';
+ENTRY : 'entry';
 TILL  : 'till';
 SINCE : 'since';
+TIMELY : 'timely';
+CANCEL : 'cancel';
 PLAY  : 'play';
 CLS   : 'cls';
 
