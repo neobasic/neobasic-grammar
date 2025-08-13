@@ -1619,16 +1619,19 @@ AtomIdentifier = UnicodeAtom Identifier .
 
 AspectIdentifier = UnicodeAtom UnicodeAtom Identifier .
 
-ShellIdentifier = UnicodeShell "_"                 /* Current directory, workspace */
-	            | UnicodeShell ("0" | "1" | "2")   /* Standard streams (stdin, stdout, stderr) */
-	            | UnicodeShell Identifier          /* Environment Variable */
-	            | UnicodeShell UnicodeShell        /* Process ID (PID) of the NeoBASIC program */
-	            | UnicodeShell "%"                 /* All the arguments in an array or string */
-	            | UnicodeShell "%" DecimalInteger  /* Nth argument */
-	            | UnicodeShell UnicodeShell        /* Process number of the last background command */
-                .
+ShellIdentifier = UnicodeShell Identifier .  /* Environment Variable */
+	            |                 .
 
-ShellExpression = ( ShellIdentifier | FileSystemShell ) [ ';' Type ] .
+ShellLiteral = UnicodeShell "_"                 /* Current directory, workspace */
+	         | UnicodeShell ("0" | "1" | "2")   /* Standard streams (stdin, stdout, stderr) */
+	         | UnicodeShell "%"                 /* All the arguments in an array or string */
+	         | UnicodeShell "%" DecimalInteger  /* Nth argument */
+	         | UnicodeShell UnicodeShell        /* Process ID (PID) of the NeoBASIC program */
+             | FileSystemShell
+             | ShellIdentifier
+             .
+
+ShellExpression = ShellLiteral [ ';' Type ] .
 
 ShellExpressions = ShellExpression { "," ShellExpression } .
 

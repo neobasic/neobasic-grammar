@@ -441,6 +441,15 @@ DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
 
 // Shell literals (File system files and directories)
 
+SHELL_LIT
+    : '$_'
+    | '$' [012]
+    | '$%' DEC_VALUE?
+    | '$$'
+    | SHELL_PATH_LIT
+    | SHELL_IDENTIFIER
+    ;
+
 SHELL_PATH_LIT : '$' FILESYSTEM_PATH;
 
 FILESYSTEM_PATH : ABSOLUTE_PATH | RELATIVE_PATH | TILDE_PATH; //  | PATH_NAME;
@@ -472,13 +481,7 @@ ATOM_IDENTIFIER : '@' IDENTIFIER;
 
 ASPECT_IDENTIFIER : '@@' IDENTIFIER;
 
-SHELL_IDENTIFIER
-    : '$_'
-    | '$' [012]
-    | '$' IDENTIFIER
-    | '$%' DEC_VALUE?
-    | '$$'
-    ;
+SHELL_IDENTIFIER : '$' IDENTIFIER;
 
 // MUSICAL ALPHABET
 
