@@ -520,7 +520,7 @@ SONGBIRD : '@' IDENTIFIER? '>';
 
 // Label
 
-LABEL : '@' IDENTIFIER ':';
+//LABEL : IDENTIFIER ':';
 
 
 // --- COMMENTS -----------------------------------------------------

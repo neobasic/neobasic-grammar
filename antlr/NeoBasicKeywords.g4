@@ -112,6 +112,12 @@ WITH : 'with';
 DO : 'do';
 INVAR : 'invar';
 
+// PREDECLARED LABEL NAMES
+
+PUBLIC : 'public';
+PRIVATE : 'private';
+PROTECTED : 'protected';
+
 // PREDECLARED VALUES AND VARIABLES
 
 THIS : 'this';

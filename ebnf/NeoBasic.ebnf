@@ -641,7 +641,7 @@ Statement      = "(" Statement ")"
                | TracingStatement
                | CommentedStatement .
 
-Label = AtomIdentifier ":" .
+Label = Identifier ":" .
 
 ExpressionStatement = Expressions .
 

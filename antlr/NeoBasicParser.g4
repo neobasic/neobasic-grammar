@@ -121,7 +121,7 @@ varDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssig
 
 // --- INSTRUCTION SENTENCE: STATEMENT ------------------------------
 
-statement : LABEL statement?
+statement : IDENTIFIER ':' statement?
           | RUBBERDUCK statement?
           | SONGBIRD statement?
           | LEFT_PARENTHESIS statement RIGHT_PARENTHESIS
