@@ -435,6 +435,7 @@ numericNatural : NAT8
                | NAT32
                | NAT64
                | NAT128
+               | NAT_
                | NAT
                | BIGNAT
                ;
@@ -444,6 +445,7 @@ numericInteger : INT8
                | INT32
                | INT64
                | INT128
+               | INT_
                | INT
                | BIGINT
                ;
@@ -499,6 +501,7 @@ characterType : ASCII
               | CHAR8
               | CHAR16
               | CHAR32
+              | CHAR_
               | CHAR
               ;
 
