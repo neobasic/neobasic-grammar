@@ -51,6 +51,8 @@ STRUCT : 'struct';
 PROTO : 'proto';
 TRAIT : 'trait';
 CLASS : 'class';
+GET : 'get';
+SET : 'set';
 OPER : 'oper';
 EVENT : 'event';
 DEF : 'def';
@@ -59,19 +61,28 @@ UNDEF : 'undef';
 
 // DECLARATION MODIFIERS
 
-STATIC : 'static';
+SHARED : 'shared';
+VOLATILE : 'volatile';
+LOCAL : 'local';
 ATOMIC : 'atomic';
+STATIC : 'static';
+COMPTIME : 'comptime';
+MUTABLE : 'mutable';
+TRANSIENT : 'transient';
 INLINE : 'inline';
+SYNCHRO : 'synchro';
+VIRTUAL : 'virtual';
+OVERRIDE : 'override';
+FINAL : 'final';
+ASYNC : 'async';
 ABSTRACT : 'abstract';
-SEALED : 'sealed';
 SINGLETON : 'singleton';
 RECORD : 'record';
-SHARED : 'shared';
 MONAD : 'monad';
 MEASURE : 'measure';
 INFIX : 'infix';
-PREFIX : 'prefix';
-POSTFIX : 'postfix';
+EXPLICIT : 'explicit';
+
 
 // STATEMENTS AND BLOCKS
 
@@ -103,7 +114,6 @@ DEFER : 'defer';
 GO : 'go';
 TO : 'to';
 AWAIT : 'await';
-ASYNC : 'async';
 SWITCH : 'switch';
 WHEN : 'when';
 DEFAULT : 'default';
@@ -128,6 +138,7 @@ END : 'end';
 IT : 'it';
 SELF : 'self';
 SUPER : 'super';
+PARENT : 'parent';
 
 // FACT SCOPES
 
@@ -140,8 +151,6 @@ NIL : 'nil';
 // EXPRESSIONS
 
 LET : 'let';
-GET : 'get';
-SET : 'set';
 
 // META OPERATORS'
 
