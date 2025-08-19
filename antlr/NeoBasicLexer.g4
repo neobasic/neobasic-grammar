@@ -86,6 +86,8 @@ DOUBLE_QUESTION      : '??';   //
 DOUBLE_COLON         : '::';   // 
 DOUBLE_SEMICOLON     : ';;';   // 
 
+SPECIAL_ASSIGNMENT   : '~=';   // 
+
 
 // --- UNARY OPERATORS ----------------------------------------------
 
@@ -150,11 +152,10 @@ ERROR_PROPAGATION_NONE_COALESCING : '!?';
 
 // Single Assignment Operators
 
-DESTRUCTURING_ASSIGNMENT : ':=';
-COMPUTED_ASSIGNMENT      : '~=';
 POP_ONE_ASSIGNMENT       : '<-';
 PULL_ALL_ASSIGNMENT      : '<<-'; 
 PIPE_ASSIGNMENT          : '<|'; 
+DESTRUCTURING_ASSIGNMENT : ':=';
 
 // Compound Assignment Operators
 
@@ -517,10 +518,6 @@ RUBBERDUCK : '@' IDENTIFIER? '=';
 // Songbird Logging
 
 SONGBIRD : '@' IDENTIFIER? '>';
-
-// Label
-
-//LABEL : IDENTIFIER ':';
 
 
 // --- COMMENTS -----------------------------------------------------

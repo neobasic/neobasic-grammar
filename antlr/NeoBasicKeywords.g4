@@ -59,8 +59,15 @@ DEF : 'def';
 DEFN : 'defn';
 UNDEF : 'undef';
 
-// DECLARATION MODIFIERS
+// ACCESS SPECIFIERS
 
+PUBLIC : 'public';
+PROTECTED : 'protected';
+PRIVATE : 'private';
+
+// DECLARATION SPECIFIERS
+
+LINEAR : 'linear';
 SHARED : 'shared';
 VOLATILE : 'volatile';
 LOCAL : 'local';
@@ -122,12 +129,6 @@ WITH : 'with';
 DO : 'do';
 INVAR : 'invar';
 
-// PREDECLARED LABEL NAMES
-
-PUBLIC : 'public';
-PRIVATE : 'private';
-PROTECTED : 'protected';
-
 // PREDECLARED VALUES AND VARIABLES
 
 THIS : 'this';
@@ -151,6 +152,8 @@ NIL : 'nil';
 // EXPRESSIONS
 
 LET : 'let';
+OWN : 'own';
+MUT : 'mut';
 
 // META OPERATORS'
 

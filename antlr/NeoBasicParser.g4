@@ -38,7 +38,7 @@ instructionSentence : directive
                     | declaration
                     | statement
                     ;
-
+// access specifiers as 'labeled suite' enters here.
 
 // --- INSTRUCTION SENTENCE: DIRECTIVE ------------------------------
 
@@ -62,14 +62,24 @@ canaryTestingDirective : WOODSTOCK expression (EXCLAMATION | EXCLAMATION express
 
 // --- INSTRUCTION SENTENCE: DECLARATION ----------------------------
 
-declaration : constSentence
+declaration : accessSpecifier declaration
+            | constSentence
             | valSentence
             | varSentence
             ;
 
+accessSpecifier : PUBLIC
+                | PROTECTED
+                | PRIVATE
+                ;
+
 // Constant declaration
 
-constSentence : constClause;
+constSentence : constSpecifier* constClause;
+
+constSpecifier : COMPTIME
+               | INLINE
+               ;
 
 constClause : CONST constDeclare;
 
@@ -86,7 +96,13 @@ constDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
 // Value declaration
 
-valSentence : valClause;
+valSentence : valSpecifier* valClause;
+
+valSpecifier : COMPTIME
+             | STATIC
+             | LINEAR
+             | INLINE
+             ;
 
 valClause : VAL varDeclare;
 
@@ -99,11 +115,21 @@ valDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?
 
 valDeclareMultiple : valDeclareSingle (COMMA valDeclareSingle)+;
 
-valDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssignmentOperator) expressions;
+valDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
 // Variable declaration
 
-varSentence : varClause;
+varSentence : varSpecifier* varClause;
+
+varSpecifier : COMPTIME
+             | STATIC
+             | VOLATILE
+             | SHARED
+             | LOCAL
+             | ATOMIC
+             | LINEAR
+             | INLINE
+             ;
 
 varClause : VAR varDeclare;
 
@@ -116,14 +142,15 @@ varDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?
 
 varDeclareMultiple : varDeclareSingle (COMMA varDeclareSingle)+;
 
-varDeclareParallel : symbolIdentifiers (singleAssignmentOperator | multipleAssignmentOperator) expressions;
+varDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
 
 // --- INSTRUCTION SENTENCE: STATEMENT ------------------------------
 
-statement : IDENTIFIER ':' statement?
-          | RUBBERDUCK statement?
-          | SONGBIRD statement?
+statement : labelIdentifier COLON
+          | labelIdentifier COLON statement
+          | RUBBERDUCK statement
+          | SONGBIRD statement
           | LEFT_PARENTHESIS statement RIGHT_PARENTHESIS
           | simpleStatement 
           | compoundStatement
@@ -211,11 +238,11 @@ unaryLogicalOperator : NOT;
 
 unarySpreadOperator : ELLIPSIS;
 
-unarySortOperator : CARET        // Sort ascending or descending a data structure
+unarySortOperator : CARET    // Sort ascending or descending a data structure
                   | SORTING  // Sort ascending or descending a var
                   ;
 
-unaryCloneOperator : EQUAL              // Shallow copy
+unaryCloneOperator : EQUAL         // Shallow copy
                    | DEEP_CLONING  // Deepp copy
                    ;
 
@@ -325,10 +352,14 @@ assignmentOperator : singleAssignmentOperator
                    ;
 
 singleAssignmentOperator : EQUAL
-                         | COMPUTED_ASSIGNMENT
+                         | POP_ONE_ASSIGNMENT
+                         | PULL_ALL_ASSIGNMENT
+                         | PIPE_ASSIGNMENT
                          ;
 
-multipleAssignmentOperator : DESTRUCTURING_ASSIGNMENT;
+multipleAssignmentOperator : EQUAL
+                           | DESTRUCTURING_ASSIGNMENT
+                           ;
 
 compoundAssignmentOperator : ADDITION_ASSIGNMENT
                            | SUBTRACTION_ASSIGNMENT
@@ -356,7 +387,9 @@ compoundAssignmentOperator : ADDITION_ASSIGNMENT
 
 // --- IDENTIFIERS --------------------------------------------------
 
-// Single identifier
+// Single identifiers
+
+labelIdentifier : TAG;
 
 symbolIdentifier : IDENTIFIER;
 
@@ -553,6 +586,7 @@ expression : primaryExpression
            | expression binaryCoalescingOperator expression?
            | assignmentExpression
            | condicionalExpression
+           | macroExpression
            ;
 
 primaryExpression
@@ -608,6 +642,10 @@ guardsExpression : guardClause+ guardDefault?;
 guardClause : PIPE expression IMPLICIT_RETURN expression;
 
 guardDefault : PIPE expression;
+
+macroExpression : macroCall+;
+
+macroCall : qualifiedIdentifier expression*;
 
 
 // LITERALS ---------------------------------------------------------

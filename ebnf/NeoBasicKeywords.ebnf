@@ -70,8 +70,15 @@ DEF = "def" .
 DEFN = "defn" .
 UNDEF = "undef" .
 
-(* DECLARATION MODIFIERS *)
+(* ACCESS SPECIFIERS *)
 
+PUBLIC = "public" .
+PROTECTED = "protected" .
+PRIVATE = "private" .
+
+(* DECLARATION SPECIFIERS *)
+
+LINEAR = "linear" .
 SHARED = "shared" .
 VOLATILE = "volatile" .
 LOCAL = "local" .
@@ -137,12 +144,6 @@ SWITCH = "switch" .
 WHEN = "when" .
 DEFAULT = "default" .
 
-(* PREDECLARED LABEL NAMES *)
-
-PUBLIC = "public" .
-PRIVATE = "private" .
-PROTECTED = "protected" .
-
 (* PREDECLARED VALUES AND VARIABLES *)
 
 THIS = "this" .
@@ -166,6 +167,8 @@ NIL = "nil" .
 (* EXPRESSIONS *)
 
 LET = "let" .
+OWN = "own" .
+MUT = "mut" .
 
 (* META OPERATORS *)
 
