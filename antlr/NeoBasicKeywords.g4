@@ -216,7 +216,6 @@ NAT16 : 'Nat16';
 NAT32 : 'Nat32';
 NAT64 : 'Nat64';
 NAT128 : 'Nat128';
-NAT_ : 'Nat_';
 NAT : 'Nat';
 BIGNAT : 'Bignat';
 
@@ -227,7 +226,6 @@ INT16 : 'Int16';
 INT32 : 'Int32';
 INT64 : 'Int64';
 INT128 : 'Int128';
-INT_ : 'Int_';
 INT : 'Int';
 BIGINT : 'Bigint';
 
@@ -290,7 +288,6 @@ ASCII : 'Ascii';
 CHAR8 : 'Char8';
 CHAR16 : 'Char16';
 CHAR32 : 'Char32';
-CHAR_ : 'Char_';
 CHAR : 'Char';
 
 // SEQUENCE DATA TYPES

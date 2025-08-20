@@ -965,9 +965,9 @@ NumericType = NumericDigit | NumericNatural | NumericInteger
 
 NumericDigit = DIG | BIT | OCT | HEX | NIBBLE | BYTE .
 
-NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | NAT_ | NAT | BIGNAT .
+NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | NAT | BIGNAT .
 
-NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT_ | INT | BIGINT .
+NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT | BIGINT .
 
 NumericReal = REAL16 | REAL32 | REAL64 | REAL128 | REAL | BIGREAL .
 
@@ -987,7 +987,7 @@ TemporalType = DATE | ELAPSE .
 
 (* CHARACTER DATA TYPES *)
 
-CharacterType = ASCII | CHAR8 | CHAR16 | CHAR32 | CHAR_ | CHAR .
+CharacterType = ASCII | CHAR8 | CHAR16 | CHAR32 | CHAR .
 
 
 (* SEQUENTIAL DATA TYPES *)
