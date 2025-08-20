@@ -539,9 +539,9 @@ characterType : ASCII
               ;
 
 sequenceType : STR
-             | STRING8
-             | STRING16
-             | STRING32
+             | STR8
+             | STR16
+             | STR32
              | STRING
              | REGEX
              | BINARY

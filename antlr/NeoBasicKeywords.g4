@@ -296,9 +296,9 @@ CHAR : 'Char';
 // SEQUENCE DATA TYPES
 
 STR : 'Str';
-STRING8 : 'String8';
-STRING16 : 'String16';
-STRING32 : 'String32';
+STR8 : 'Str8';
+STR16 : 'Str16';
+STR32 : 'Str32';
 STRING : 'String';
 REGEX : 'Regex';
 BINARY : 'Binary';
