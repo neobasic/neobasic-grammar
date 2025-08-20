@@ -359,7 +359,7 @@ TypeSuite = EOL Indent TypeDeclareList Dedent .
 
 TypeDeclareList = TypeDeclare { EOL TypeDeclare } .
 
-TypeDeclare = SymbolIdentifier [ GenericTypes ] [ AS | SubtypeOperator | MixinOperator ] Type [ "=" TypeName ] [ MonadBody ] .
+TypeDeclare = SymbolIdentifier [ GenericTypes ] [ ":" | AS | SubtypeOperator | MixinOperator ] Type [ "=" TypeName ] [ MonadBody ] .
 
 MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
 
@@ -376,7 +376,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters ComputedAssignmentOperator Expression .
+FactSentence = FACT SymbolIdentifier TypeParameters LambdaImpliesOperator Expression .
 
 
 (* DEF SENTENCE *)
@@ -387,7 +387,7 @@ DefSuite = EOL Indent DefDeclareList Dedent .
 
 DefDeclareList = DefDeclare { EOL DefDeclare } .
 
-DefDeclare = Identifier [ ComputedAssignmentOperator Expression ] .
+DefDeclare = Identifier [ LambdaImpliesOperator Expression ] .
 
 
 (* DEFN SENTENCE *)
@@ -398,7 +398,7 @@ DefnSuite = EOL Indent DefnDeclareList Dedent .
 
 DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
 
-DefnDeclare = Identifier ProcParameters ComputedAssignmentOperator Expression .
+DefnDeclare = Identifier ProcParameters LambdaImpliesOperator Expression .
 
 
 (* UNDEF SENTENCE *)
@@ -434,7 +434,7 @@ VarDeclares = VarDeclare { "," VarDeclare } .
 
 VarDeclare = SymbolIdentifiers [ Type ] [ DeclareAssignment | HeredocLiteral ] .
 
-DeclareAssignment = [ SingleAssignmentOperator | ComputedAssignmentOperator ] Expressions .
+DeclareAssignment = SingleAssignmentOperator Expressions .
 
 
 (* FUNC SENTENCE *) 
@@ -1318,8 +1318,6 @@ AssignmentOperator = SingleAssignmentOperator | CompoundAssignmentOperator .
 (* IMPLICATION OPERATORS *)
 
 NeckRule = ":-" .
-
-ComputedAssignmentOperator  = "::" . (* Computed Assignment operator *) 
 
 MixinOperator = "<>" . (* Mixin, in composition, operator *)
 
