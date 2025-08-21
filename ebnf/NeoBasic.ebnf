@@ -1525,10 +1525,13 @@ AsciiEscapedHex     = "\\" "x" HexDigit HexDigit .
 AsciiValue   = AsciiPrintable | AsciiEscapedControl | AsciiEscapedSequence
              | AsciiEscapedDecimal | AsciiEscapedBinary | AsciiEscapedOctal | AsciiEscapedHex .
 
-AsciiLiteral = NumberLiteral     
-             | "'" AsciiValue "'"
-             | '"' AsciiValue '"' .
+AsciiCharacter = "'" AsciiValue "'"
+               | '"' AsciiValue '"'
+               .
 
+AsciiPrefix = "a" .
+
+AsciiLiteral = [ AsciiPrefix ] AsciiCharacter;
 
 (* UNICODE CHARACTER LITERALS *)
 
@@ -1543,9 +1546,13 @@ UnicodeEscaped = AsciiEscapedControl | AsciiEscapedSequence | AsciiEscapedDecima
 UnicodeValue   = UnicodePrintable | AsciiValue
                | UnicodeEscapedShort | UnicodeEscapedLong .
 
-UnicodeLiteral = AsciiLiteral
-               | "'" UnicodeValue "'"
-               | '"' UnicodeValue '"' .
+UnicodeCharacter =  "'" UnicodeValue "'"
+                 | '"' UnicodeValue '"'
+                 .
+
+UnicodePrefix = "L" | "u" | "u8" | "u16" | "u32" .
+
+UnicodeLiteral = [ UnicodePrefix ] UnicodeCharacter .
 
 
 (* ASCII STRING & UNICODE TEXT LITERALS *)
@@ -1556,7 +1563,13 @@ FormatSpecifiers   = UnicodeValue { UnicodeValue } .
 StringSingleValue = { UnicodeValue | StringPlaceholder } .
 StringMultiValue  = { UnicodeValue | StringPlaceholder | EOL } .
 
-StringLiteral = ( "'" StringSingleValue "'" | "'''" StringMultiValue "'''" ) .
+StringSequence = "'" StringSingleValue "'"
+               | "'''" StringMultiValue "'''"
+               .
+
+StringPrefix = AsciiPrefix | UnicodePrefix .
+
+StringLiteral = [ StringPrefix ] StringSequence .
 
 
 (* VERBATIM LITERALS *)
@@ -1564,13 +1577,17 @@ StringLiteral = ( "'" StringSingleValue "'" | "'''" StringMultiValue "'''" ) .
 VerbatimSingleValue = { UnicodePrintable } .
 VerbatimMultiValue  = { UnicodePrintable | EOL } .
 
-VerbatimLiteral = '"' VerbatimSingleValue '"' | '"""' VerbatimMultiValue '"""' .
+VerbatimSequence = '"' VerbatimSingleValue '"'
+                 | '"""' VerbatimMultiValue '"""'
+                 .
+
+VerbatimLiteral = [ StringPrefix ] VerbatimSequence .
 
 
 (* HEREDOC LITERALS *)
 
-HeredocContent = "'" [ EOL ] StringMultiValue [ EOL ] "'" 
-               | '"' [ EOL ] VerbatimMultiValue [ EOL ] '"' 
+HeredocContent = [ StringPrefix ] "'" [ EOL ] StringMultiValue [ EOL ] "'" 
+               | [ StringPrefix ] '"' [ EOL ] VerbatimMultiValue [ EOL ] '"' 
                | Identifier [ EOL ] VerbatimMultiValue [ EOL ] Identifier .
 
 HeredocLiteral = "<<" HeredocContent .
