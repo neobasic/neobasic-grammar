@@ -672,11 +672,12 @@ booleanLiteral : TRUE
 
 // Numeric literals
 
-numericLiteral : INTEGER_NUMBER
-               | REAL_NUMBER
-               | DECIMAL_NUMBER
-               | RATIONAL_NUMBER
-               | IMAGINARY_NUMBER
+numericLiteral : NATURAL_LIT
+               | INTEGER_LIT
+               | DEC_LIT
+               | REAL_LIT
+               | RATIO_LIT
+               | IMAGINARY_LIT
                | NONZERO valueConstruct
                | ZERO
                | MINVALUE
@@ -701,7 +702,9 @@ temporalLiteral : ATOM_DOT_LIT
                 | EPOCH
                 ;
 
-characterLiteral : CHAR_LIT
+characterLiteral : ASCII_LIT
+                 | WCHAR_LIT
+                 | CHAR_LIT
                  | LETTER valueConstruct
                  | DIGIT valueConstruct
                  | PUNCTUATION valueConstruct

@@ -1430,7 +1430,7 @@ XmlLiteral = XmlElement .
 
 (* ESCALAR LITERALS *)
 
-NumericLiteral = NumberLiteral | IntegerLiteral | RealLiteral | DecLiteral
+NumericLiteral = NumberLiteral | NaturalLiteral | IntegerLiteral | DecLiteral | RealLiteral
                | ImaginaryLiteral | RationalLiteral . 
 
 RangeLiteral = Expression [ ">" ] ".." [ "<" ] Expression  [ ":" Expression ].
@@ -1456,7 +1456,9 @@ RomanInteger   = "0" ( "r" | "R" ) [ "_" ] RomanGroups .
 
 NumberLiteral = ( DecimalInteger | BinaryInteger | OctalInteger | HexInteger | RomanInteger ) . 
 
-IntegerLiteral = [ "+" | "-" ] NumberLiteral . 
+NaturalLiteral = NumberLiteral ( "N" | "n" ) .
+
+IntegerLiteral = [ "+" | "-" ] NumberLiteral .
 
 
 (* FIXED-POINT AND FLOATING-POINT REAL LITERALS *)
@@ -1475,9 +1477,9 @@ HexMantissa     = [ "_" ] HexGroups DecimalPoint [ HexGroups ]
 HexExponent     = ( "p" | "P" ) [ "+" | "-" ] DecimalGroups .
 HexReal         = "0" ( "x" | "X" ) HexMantissa HexExponent .
 
-DecLiteral      = [ "+" | "-" ] DecimalMantissa .
+DecLiteral      = [ "+" | "-" ] DecimalMantissa ( "D" | "d" ) .
 
-RealLiteral     = [ "+" | "-" ] ( DecimalReal | HexReal ) . 
+RealLiteral     = [ "+" | "-" ] ( DecimalReal | HexReal ) .
 
 
 (* IMAGINARY LITERALS *)

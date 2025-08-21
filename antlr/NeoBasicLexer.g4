@@ -248,6 +248,8 @@ APPEND_STDERR_REDIRECTION : '&2>>';
 
 // Decimal literals (Fixed Point Numbers)
 
+DEC_LIT : [+-] DECIMAL_NUMBER [Dd];
+
 DECIMAL_NUMBER
     : DEC_DECIMAL
     | HEX_DECIMAL
@@ -269,6 +271,8 @@ fragment HEX_MANTISSA
 
 // Real literals (Floating Point Numbers)
 
+REAL_LIT : [+-] REAL_NUMBER;
+
 REAL_NUMBER
     : DEC_REAL
     | HEX_REAL
@@ -282,13 +286,21 @@ fragment HEX_EXPONENT : [pP] [+-]? DEC_GROUPS;
 
 // Rational literals
 
+RATIO_LIT : [+-] RATIONAL_NUMBER;
+
 RATIONAL_NUMBER : INTEGER_NUMBER '//' INTEGER_NUMBER;
 
 // Imaginary literals
 
+IMAGINARY_LIT : [+-] IMAGINARY_NUMBER;
+
 IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
 
 // Integer literals
+
+NATURAL_LIT : INTEGER_NUMBER [Nn];
+
+INTEGER_LIT : [+-] INTEGER_NUMBER;
 
 INTEGER_NUMBER
     : DEC_VALUE
@@ -339,16 +351,15 @@ HEREDOC_LITERAL : '<<' HEREDOC_CONTENT ;
 
 HEREDOC_CONTENT
     : IDENTIFIER EOL VERBATIM_STRING_CONTENT EOL IDENTIFIER
-    | '"' EOL VERBATIM_STRING_CONTENT EOL '"'
-    | '"""' EOL VERBATIM_STRING_CONTENT EOL '"""'
-    | '\'' EOL TEMPLATE_STRING_CONTENT EOL '\''
-    | '\'\'\'' EOL TEMPLATE_STRING_CONTENT EOL '\'\'\''
-    | '/' EOL REGULAR_EXPRESSION_CONTENT EOL '/' REGEX_FLAG*
+    | STRING_PREFIX? '"' EOL VERBATIM_STRING_CONTENT EOL '"'
+    | STRING_PREFIX? '"""' EOL VERBATIM_STRING_CONTENT EOL '"""'
+    | STRING_PREFIX? '\'' EOL TEMPLATE_STRING_CONTENT EOL '\''
+    | STRING_PREFIX? '\'\'\'' EOL TEMPLATE_STRING_CONTENT EOL '\'\'\''
+    | STRING_PREFIX? '/' EOL REGULAR_EXPRESSION_CONTENT EOL '/' REGEX_FLAG*
     | HEX_UNIT EOL HEX_DIGIT* EOL HEX_UNIT
     | OCT_UNIT EOL OCT_DIGIT* EOL OCT_UNIT
     | BIN_UNIT EOL BIN_DIGIT* EOL BIN_UNIT
     ;
-
 
 // Regular expression literals 
 
@@ -379,19 +390,27 @@ fragment REGEX_FLAG : [digmsuvy];
 
 // String literals
 
-STRING_LIT
-    : VERBATIM_STRING_LIT
-    | TEMPLATE_STRING_LIT
+STRING_LIT : STRING_PREFIX? STRING_SEQUENCE;
+
+STRING_PREFIX
+    : UNICODE_PREFIX
+    | 'L'
+    | 'a'
     ;
 
-VERBATIM_STRING_LIT
+STRING_SEQUENCE
+    : VERBATIM_STRING
+    | TEMPLATE_STRING
+    ;
+
+VERBATIM_STRING
     : '"' VERBATIM_STRING_CONTENT '"'
     | '"""' VERBATIM_STRING_CONTENT '"""'
     ;
 
 fragment VERBATIM_STRING_CONTENT : ~["]*;
 
-TEMPLATE_STRING_LIT
+TEMPLATE_STRING
     : '\'' TEMPLATE_STRING_CONTENT '\''
     | '\'\'\'' TEMPLATE_STRING_CONTENT '\'\'\''
     ;
@@ -407,16 +426,22 @@ PLACEHOLDER_VALUE : ~['}];
 
 // Character literals
 
-CHAR_LIT
-    : ASCII_LIT     
-    | '\'' UNICODE_ESCAPED_VALUE '\''
+CHAR_LIT : UNICODE_PREFIX? UNICODE_CHAR;
+
+WCHAR_LIT : [L] UNICODE_CHAR;
+
+UNICODE_CHAR
+    : '\'' UNICODE_ESCAPED_VALUE '\''
+    | '\'' ~['] '\''
     | '"' ~["] '"'
     ;
 
-ASCII_LIT
-    : INTEGER_NUMBER     
-    | '\'' ASCII_ESCAPED_VALUE '\''
-    | '"' ASCII_CHAR '"'
+ASCII_LIT : [a] ASCII_CHAR;
+
+ASCII_CHAR
+    : '\'' ASCII_ESCAPED_VALUE '\''
+    | '\'' UNICODE_ASCII '\''
+    | '"' UNICODE_ASCII '"'
     ;
 
 fragment ASCII_ESCAPED_VALUE
@@ -432,6 +457,13 @@ fragment UNICODE_ESCAPED_VALUE
     : '\\' ( 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
            | 'U' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
            )
+    ;
+
+fragment UNICODE_PREFIX
+    : 'u'
+    | 'u8'
+    | 'u16'
+    | 'u32'
     ;
 
 // Atom literals
@@ -553,7 +585,7 @@ fragment UNICODE_LETTER: [\p{L}];
 fragment UNICODE_DIGIT: [\p{Nd}];
 
 // Unicode code points from U+0000 to U+007F except categorized as Cc (Control)
-fragment ASCII_CHAR : [\u0020-\u007E];
+fragment UNICODE_ASCII : [\u0020-\u007E];
 
 // Unicode code points from U+0000 to U+10FFFF, except categorized as: 
 // Cc (Control), Cf (Format), Cs (Surrogate), Co (Private Use), Cn (Unassigned) 
