@@ -533,13 +533,14 @@ characterType : ASCII
               | CHAR16
               | CHAR32
               | CHAR
+              | WCHAR
               ;
 
-sequenceType : STR
+sequenceType : ANSI
              | STR8
              | STR16
              | STR32
-             | STRING
+             | STR
              | REGEX
              | BINARY
              ;

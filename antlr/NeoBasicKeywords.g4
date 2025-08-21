@@ -289,14 +289,15 @@ CHAR8 : 'Char8';
 CHAR16 : 'Char16';
 CHAR32 : 'Char32';
 CHAR : 'Char';
+WCHAR : 'wchar';
 
 // SEQUENCE DATA TYPES
 
-STR : 'Str';
+ANSI : 'Ansi';
 STR8 : 'Str8';
 STR16 : 'Str16';
 STR32 : 'Str32';
-STRING : 'String';
+STR : 'Str';
 REGEX : 'Regex';
 BINARY : 'Binary';
 

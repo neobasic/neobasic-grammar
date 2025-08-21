@@ -987,12 +987,12 @@ TemporalType = DATE | ELAPSE .
 
 (* CHARACTER DATA TYPES *)
 
-CharacterType = ASCII | CHAR8 | CHAR16 | CHAR32 | CHAR .
+CharacterType = ASCII | CHAR8 | CHAR16 | CHAR32 | CHAR | WCHAR .
 
 
 (* SEQUENTIAL DATA TYPES *)
 
-SequenceType = STR | STR8 | STR16 | STR32 | STRING | REGEX | BINARY .
+SequenceType = ANSI | STR8 | STR16 | STR32 | STR | REGEX | BINARY .
 
 
 (* SHELL DATA TYPES *)
