@@ -718,6 +718,7 @@ characterLiteral : ASCII_LIT
 
 sequenceLiteral : HEREDOC_LITERAL
                 | REGULAR_EXPRESSION_LIT
+                | WSTRING_LIT
                 | STRING_LIT
                 | ATOM_DOT_LIT
                 | BINARY_LIT
