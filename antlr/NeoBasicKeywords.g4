@@ -22,6 +22,7 @@ lexer grammar NeoBasicKeywords;
 // IDENTIFICATION DIVISION
 
 MODULE : 'module';
+LAMBDA : 'lambda';
 ALGORITHM : 'algorithm';
 NOTABENE : 'notabene';
 
