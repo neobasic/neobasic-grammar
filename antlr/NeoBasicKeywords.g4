@@ -99,7 +99,7 @@ THEN : 'then';
 ELIF : 'elif';
 ELSE : 'else';
 UNLESS : 'unless';
-ORELSE : 'orelse';
+OTHERWISE : 'otherwise';
 MATCH : 'match';
 CASE : 'case';
 FALLTHROUGH : 'fallthrough';

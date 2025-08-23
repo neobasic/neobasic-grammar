@@ -652,7 +652,7 @@ EmptyStatement = EllipsisOperator .
 
 ControlFlowStatement = DeferSentence
                      | WithSentence
-                     | OrElseSentence .
+                     | OtherwiseSentence .
 
 DeferSentence = DEFER ( Statement | StatementSuite ) .
 
@@ -660,9 +660,9 @@ DeferSentence = DEFER ( Statement | StatementSuite ) .
 
 WithSentence = WITH Expressions StatementSuite.
 
-(* ORELSE SENTENCE *)
+(* OTHERWISE SENTENCE *)
 
-OrElseSentence = Statement ORELSE ( Statement | StatementSuite ) .
+OtherwiseSentence = Statement OTHERWISE ( Statement | StatementSuite ) .
 
 
 (* CONDITIONAL STATEMENTS *)

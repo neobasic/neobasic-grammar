@@ -196,7 +196,7 @@
 				{
 					"comment": "FLOW CONTROL KEYWORDS",
 					"name": "keyword.control.flow.$1.neo",
-					"match": "\\b(do|with|defer|next|redo|break|retry|orelse|continue|fallthrough|return|yield|go|to|switch|when|default|await|async|thread|task|node)\\b"
+					"match": "\\b(do|with|defer|next|redo|break|retry|otherwise|continue|fallthrough|return|yield|go|to|switch|when|default|await|async|thread|task|node)\\b"
 				},
 				{
 					"comment": "CONDITIONAL CONTROL KEYWORDS",

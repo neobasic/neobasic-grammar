@@ -340,7 +340,7 @@ binaryCoalescingOperator : EXCLAMATION
                          | ERROR_PROPAGATION_NONE_COALESCING
                          | QUESTION
                          | DOUBLE_QUESTION
-                         | ORELSE
+                         | OTHERWISE
                          ; 
 
 
