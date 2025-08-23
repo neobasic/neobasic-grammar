@@ -299,6 +299,7 @@ STR8 : 'Str8';
 STR16 : 'Str16';
 STR32 : 'Str32';
 STR : 'Str';
+CSTR : 'cstr';
 WSTR : 'wstr';
 REGEX : 'Regex';
 BINARY : 'Binary';

@@ -541,6 +541,8 @@ sequenceType : ANSI
              | STR16
              | STR32
              | STR
+             | CSTR
+             | WSTR
              | REGEX
              | BINARY
              ;
