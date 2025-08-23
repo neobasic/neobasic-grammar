@@ -22,7 +22,6 @@ lexer grammar NeoBasicKeywords;
 // IDENTIFICATION DIVISION
 
 MODULE : 'module';
-LAMBDA : 'lambda';
 ALGORITHM : 'algorithm';
 NOTABENE : 'notabene';
 
@@ -68,6 +67,7 @@ PRIVATE : 'private';
 
 // DECLARATION SPECIFIERS
 
+LAMBDA : 'lambda';
 LINEAR : 'linear';
 SHARED : 'shared';
 VOLATILE : 'volatile';
