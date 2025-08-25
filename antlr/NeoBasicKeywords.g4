@@ -78,6 +78,7 @@ COMPTIME : 'comptime';
 MUTABLE : 'mutable';
 TRANSIENT : 'transient';
 INLINE : 'inline';
+VIEW : 'view';
 SYNCHRO : 'synchro';
 VIRTUAL : 'virtual';
 OVERRIDE : 'override';
