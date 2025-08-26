@@ -141,8 +141,10 @@ THREE_WAY_TEST        : '<=>';
 
 // Relational Operators
 
-EQUALS            : '==';
-NOT_EQUALS        : '!=';
+STRICT_EQUALITY   : '==';
+STRICT_INEQUALITY : '!=';
+LOOSE_EQUALITY    : '~==';
+LOOSE_INEQUALITY  : '~!=';
 LESS_OR_EQUALS    : '<=';
 GREATER_OR_EQUALS : '>=';
 

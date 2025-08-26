@@ -297,8 +297,10 @@ binaryComparisonOperator : ELVIS_TEST
 
 // Relational Operators
 
-binaryRelationalOperator : EQUALS
-                         | NOT_EQUALS
+binaryRelationalOperator : STRICT_EQUALITY
+                         | STRICT_INEQUALITY
+                         | LOOSE_EQUALITY
+                         | LOOSE_INEQUALITY
                          | LEFT_ANGLE
                          | LESS_OR_EQUALS
                          | RIGHT_ANGLE

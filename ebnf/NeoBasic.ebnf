@@ -1239,12 +1239,14 @@ ComparisonOperator = "<=>" /* Three-way comparison */
 
 ConcatenationOperator = "." . (* String concatenation *)
 
-RelationalOperator = "==" /* Equality */
-                   | "!=" /* Inequality */
-                   | "<"  /* Less than */
-                   | "<=" /* Less than or equal */
-                   | ">"  /* Greater than */
-                   | ">=" /* Greater than or equal */
+RelationalOperator = "=="  /* Strict Equality (test type and value) */
+                   | "!="  /* Strict Inequality */
+                   | "~==" /* Loose Equality (ignore type and case) */
+                   | "~!=" /* Loose Inequality */
+                   | "<"   /* Less than */
+                   | "<="  /* Less than or equal */
+                   | ">"   /* Greater than */
+                   | ">="  /* Greater than or equal */
                    .
 
 BinaryBoolean   = AND   /* Logical AND */
