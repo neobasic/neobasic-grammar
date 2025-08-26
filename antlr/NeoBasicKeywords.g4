@@ -85,6 +85,7 @@ OVERRIDE : 'override';
 FINAL : 'final';
 ASYNC : 'async';
 ABSTRACT : 'abstract';
+SEALED : 'sealed';
 SINGLETON : 'singleton';
 RECORD : 'record';
 MONAD : 'monad';

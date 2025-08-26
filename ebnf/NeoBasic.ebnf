@@ -1637,7 +1637,8 @@ AtomIdentifier = UnicodeAtom Identifier .
 AspectIdentifier = UnicodeAtom UnicodeAtom Identifier .
 
 ShellIdentifier = UnicodeShell Identifier .  /* Environment Variable */
-	            |                 .
+
+ShellString = UnicodeShell ( StringSequence | VerbatimSequence ) .
 
 ShellLiteral = UnicodeShell "_"                 /* Current directory, workspace */
 	         | UnicodeShell ("0" | "1" | "2")   /* Standard streams (stdin, stdout, stderr) */
@@ -1646,6 +1647,7 @@ ShellLiteral = UnicodeShell "_"                 /* Current directory, workspace 
 	         | UnicodeShell UnicodeShell        /* Process ID (PID) of the NeoBASIC program */
              | FileSystemShell
              | ShellIdentifier
+             | ShellString
              .
 
 ShellExpression = ShellLiteral [ ';' Type ] .
