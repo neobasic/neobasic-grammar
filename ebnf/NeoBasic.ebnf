@@ -647,6 +647,10 @@ ExpressionStatement = Expressions .
 
 EmptyStatement = EllipsisOperator .
 
+OneLinerStatement = ":" Statement .
+
+ClauseStatement = Statement | OneLinerStatement | StatementSuite .
+
 
 (* CONTROL FLOW STATEMENTS *)
 
@@ -654,15 +658,15 @@ ControlFlowStatement = DeferSentence
                      | WithSentence
                      | OtherwiseSentence .
 
-DeferSentence = DEFER ( Statement | StatementSuite ) .
+DeferSentence = DEFER ClauseStatement .
 
 (* WITH SENTENCE *)
 
-WithSentence = WITH Expressions StatementSuite.
+WithSentence = WITH Expressions ClauseStatement.
 
 (* OTHERWISE SENTENCE *)
 
-OtherwiseSentence = Statement OTHERWISE ( Statement | StatementSuite ) .
+OtherwiseSentence = Statement OTHERWISE ClauseStatement .
 
 
 (* CONDITIONAL STATEMENTS *)
@@ -682,25 +686,17 @@ IfElseClause = IfClause
              { ElifClause }
              [ ElseClause ] .
 
-IfClause = IF Expression StatementSuite .
+IfClause = IF Expression ClauseStatement .
 
-ElifClause = ELIF Expression StatementSuite .
+ElifClause = ELIF Expression ClauseStatement .
 
-ElseClause = ELSE StatementSuite .
+ElseClause = ELSE ClauseStatement .
 
 (* UNLESS SENTENCE *)
 
 UnlessSentence = UnlessClause .
 
 UnlessClause = Statement UNLESS Expression .
-
-(* CASE-ELSE SENTENCE *)
-
-CaseSentence = CaseClause
-               [ ElseClause ] .
-
-CaseClause = CASE Expression StatementSuite
-             { CASE Expression StatementSuite } .
 
 (* MATCH-LIKE-ELSE SENTENCE *)
 
@@ -713,7 +709,7 @@ MatchClause = MATCH Expression [ EOL ] .
 CaseClauses = CaseClause
             { CaseClause } .
 
-CaseClause = Expressions StatementSuite .
+CaseClause = CASE Expression ClauseStatement .
 
 
 (* TRY-CATCH SENTENCE *)
@@ -724,11 +720,11 @@ TrySentence = TryClause
               { EOL CatchClause }
               .
 
-TryClause = TRY ( Statement | StatementSuite ) .
+TryClause = TRY ( Statement | Expression ) .
 
-ThenClause = THEN StatementSuite .
+ThenClause = THEN ClauseStatement .
 
-CatchClause = CATCH [ VarDeclares ] StatementSuite . 
+CatchClause = CATCH [ VarDeclares ] ClauseStatement . 
 
 
 (* LOOPING STATEMENTS *)
@@ -745,7 +741,7 @@ LoopClause = LOOP ( LoopSequence | LoopBlock ) .
 
 LoopSequence = Statement [ LoopCheckFirst ] .
 
-LoopBlock = [ LoopCheckFirst ] [ StepClause ] StatementSuite
+LoopBlock = [ LoopCheckFirst ] [ StepClause ] ClauseStatement
           | StatementSuite [ LoopCheckLast ] [ StepClause ] .
 
 LoopCheckFirst = LoopTimesClause | LoopForEachClause | LoopWhileClause | LoopUntilClause .
@@ -811,7 +807,7 @@ ConcurrencyStatement = DoSentence
 
 (* DO SENTENCE *)
 
-DoSentence = DO ( DoSequence | StatementSuite ) .
+DoSentence = DO ClauseStatement .
 
 DoSequence = Statement [ ( IF | UNLESS ) Expression ] .
 
@@ -844,15 +840,17 @@ AwaitSentence = AWAIT [ Expressions | ALL ] [ TillCmd ] .
 (* SWITCH-WHEN-DEFAULT STATEMENT *)
 
 SwitchSentence = SwitchClause
-                 WhenClause
+                 WhenClauses
                  [ DefaultClause ] .
 
 SwitchClause = SWITCH Expressions [ EOL ] .
 
-WhenClause = WHEN Expressions StatementSuite
-             { WHEN Expressions StatementSuite } .
+WhenClauses = WhenClause
+            { WhenClause } .
 
-DefaultClause = DEFAULT StatementSuite .
+WhenClause = WHEN Expressions ClauseStatement .
+
+DefaultClause = DEFAULT ClauseStatement .
 
 
 (* ------------------------------------------------------------------------- *)
