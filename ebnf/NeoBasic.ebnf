@@ -696,7 +696,7 @@ UnlessClause = Statement UNLESS Expression .
 
 (* CASE-ELSE SENTENCE *)
 
-CaseSentence = 
+CaseSentence = CaseClause
                [ ElseClause ] .
 
 CaseClause = CASE Expression StatementSuite
@@ -719,10 +719,14 @@ CaseClause = Expressions StatementSuite .
 (* TRY-CATCH SENTENCE *)
 
 TrySentence = TryClause 
+              [ ThenClause ]
               CatchClause
-              { EOL CatchClause } .
+              { EOL CatchClause }
+              .
 
 TryClause = TRY ( Statement | StatementSuite ) .
+
+ThenClause = THEN StatementSuite .
 
 CatchClause = CATCH [ VarDeclares ] StatementSuite . 
 
@@ -733,7 +737,11 @@ LoopingStatement = LoopSentence .
 
 (* LOOP SENTENCE *)
 
-LoopSentence = LOOP ( LoopSequence | LoopBlock ) .
+LoopSentence = LoopClause
+               [ ThenClause ]
+               .
+
+LoopClause = LOOP ( LoopSequence | LoopBlock ) .
 
 LoopSequence = Statement [ LoopCheckFirst ] .
 
