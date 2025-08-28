@@ -1007,12 +1007,12 @@ ShellType = PATH | URI | INET .
 
 (* COMPOSITE DATA TYPES *)
 
-CompositeType = RANGE | PAIR .
+CompositeType = RANGE | PAIR | TUPLE .
 
 
 (* ARRAY DATA TYPES *)
 
-ArrayType = ARRAY | LIST | DICT | CHAN | TUPLE | VEC | MAT | TSET | QUEUE | DEQUE | XML | TABLE | MEMO . 
+ArrayType = ARRAY | LIST | DICT | CHAN | VEC | MAT | TSET | QUEUE | DEQUE | XML | TABLE | MEMO . 
 
 
 (* MONAD VALUE CONSTRUCTORS *)
@@ -1442,13 +1442,15 @@ NumericLiteral = NumberLiteral | NaturalLiteral | IntegerLiteral | DecLiteral | 
 
 RangeLiteral = Expression [ ">" ] ".." [ "<" ] Expression  [ ":" Expression ].
 
-MapLiteral = Expression ":" Expression .
+PairLiteral = Expression ":" Expression .
+
+TupleLiteral = "(" Expressions [ "," ] ")" .
 
 ArithmeticComprehension = BinaryOperator "{" Expressions { ComprehensionClause } "}" .
 
 ComprehensionClause = LoopForEachClause [ IF Expression ] .
 
-EscalarLiteral = NumericLiteral | RangeLiteral | MapLiteral
+EscalarLiteral = NumericLiteral | RangeLiteral | PairLiteral | TupleLiteral
                | AsciiLiteral | UnicodeLiteral | StringLiteral | VerbatimLiteral | RegexLiteral
                | XmlElement | AtomLiteral | PromptLiteral | ArithmeticComprehension .
 

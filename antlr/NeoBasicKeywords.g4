@@ -319,11 +319,11 @@ INET : 'Inet';
 
 RANGE : 'Range';
 PAIR : 'Pair';
+TUPLE : 'Tuple';
 
 // ARRAY DATA TYPES
 
 ARRAY : 'Array';
-TUPLE : 'Tuple';
 LIST  : 'List';
 DICT  : 'Dict';
 CHAN  : 'Chan';
