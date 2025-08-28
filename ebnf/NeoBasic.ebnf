@@ -1007,7 +1007,7 @@ ShellType = PATH | URI | INET .
 
 (* COMPOSITE DATA TYPES *)
 
-CompositeType = RANGE | MAP .
+CompositeType = RANGE | PAIR .
 
 
 (* ARRAY DATA TYPES *)

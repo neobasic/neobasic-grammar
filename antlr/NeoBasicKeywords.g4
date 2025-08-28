@@ -318,7 +318,7 @@ INET : 'Inet';
 // COMPOSITE DATA TYPES
 
 RANGE : 'Range';
-MAP : 'Map';
+PAIR : 'Pair';
 
 // ARRAY DATA TYPES
 

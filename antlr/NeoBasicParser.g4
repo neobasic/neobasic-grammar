@@ -551,7 +551,7 @@ sequenceType : ANSI
 
 // Composite data types
 
-compositeType : RANGE;
+compositeType : RANGE | PAIR;
 
 // Meta data types
 
