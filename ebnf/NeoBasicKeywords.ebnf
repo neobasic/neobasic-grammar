@@ -28,8 +28,9 @@ AS = "as" .
 OF = "of" .
 INCLUDE = "include" .
 INTERFACE = "interface" .
-RPC = "rpc" .
 EXTERN = "extern" .
+RPROC = "rproc" .
+FOREIGN = "foreign" .
 
 (* API TYPES *)
 

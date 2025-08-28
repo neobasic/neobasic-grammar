@@ -118,8 +118,7 @@ IncludeAsClause = ShellExpression AS Identifier .
 
 (* INTERFACE SENTENCE *)
 
-InterfaceSentence = INTERFACE SymbolIdentifier ( ApiClause | MixinSentence )
-                    InterfaceBody .
+InterfaceSentence = INTERFACE SymbolIdentifier ( ApiClause | MixinSentence ) InterfaceBody .
 
 ApiClause = ":" ApiType StringLiteral .
 
@@ -137,7 +136,7 @@ InterfaceMemberDeclare = MixinSentence
 
 MixinSentence = MixinOperator Types .
 
-RpcMethodDeclare = RPC SymbolIdentifier RpcParameters RpcResult .
+RpcMethodDeclare = RPROC SymbolIdentifier RpcParameters RpcResult .
 
 RpcParameters = "(" [ Types ] ")" .
 
@@ -233,11 +232,11 @@ BlockCommentBegin = Comment Comment .
 BlockCommentEnd   = BlockCommentBegin .
 BlockComment      = BlockCommentBegin { Hashtag | UnicodePrintable | EOL } BlockCommentEnd .
 
-DocumentationCommentBegin = Comment Comment Comment .
-DocumentationCommentEnd   = DocumentationCommentBegin .
-DocumentationComment      = DocumentationCommentBegin { Hashtag | UnicodePrintable | EOL } DocumentationCommentEnd .
+CellCommentBegin = Comment Comment Comment .
+CellCommentEnd   = CellCommentBegin .
+CellComment      = CellCommentBegin { Hashtag | UnicodePrintable | EOL } CellCommentEnd .
 
-CommentContent = LineComment | BlockComment | DocumentationComment .
+CommentContent = LineComment | BlockComment | CellComment .
 
 CommentStatement = CommentContent 
                  | Statement CommentContent .

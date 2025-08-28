@@ -33,6 +33,8 @@ OF : 'of';
 INCLUDE : 'include';
 INTERFACE : 'interface';
 EXTERN : 'extern';
+RPROC : 'rproc';
+FOREIGN : 'foreign';
 
 // TOP LEVEL SENTENCES
 

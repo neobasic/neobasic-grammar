@@ -561,9 +561,9 @@ SONGBIRD : '@' IDENTIFIER? '>';
 
 // --- COMMENTS -----------------------------------------------------
 
-LINE_COMMENT          : '#' ~[#!?$] ~[\n\r\u0085\u2028\u2029]* -> channel(COMMENT);
-BLOCK_COMMENT         : '##' ~[#?] .*? '##'                    -> channel(COMMENT);
-DOCUMENTATION_COMMENT : '###' .*? '###'                        -> channel(COMMENT);
+LINE_COMMENT  : '#' ~[#!?$] ~[\n\r\u0085\u2028\u2029]* -> channel(COMMENT);
+BLOCK_COMMENT : '##' ~[#?] .*? '##'                    -> channel(COMMENT);
+CELL_COMMENT  : '###' .*? '###'                        -> channel(COMMENT);
 
 // Hashtags
 
