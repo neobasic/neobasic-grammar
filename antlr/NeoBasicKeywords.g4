@@ -85,6 +85,7 @@ SYNCHRO : 'synchro';
 VIRTUAL : 'virtual';
 OVERRIDE : 'override';
 FINAL : 'final';
+OFF : 'off';
 ASYNC : 'async';
 ABSTRACT : 'abstract';
 SEALED : 'sealed';
