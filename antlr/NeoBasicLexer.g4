@@ -217,7 +217,7 @@ EXTENDS : '->';
 
 NECK_RULE : ':-';
 
-IMPLICIT_RETURN : '=>';
+ONELINER_SUITE : '=>';
 
 MONAD_BIND : '=>>';
 

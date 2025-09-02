@@ -375,7 +375,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters LambdaImpliesOperator Expression .
+FactSentence = FACT SymbolIdentifier TypeParameters OneLinerSuiteOperator Expression .
 
 
 (* DEF SENTENCE *)
@@ -386,7 +386,7 @@ DefSuite = EOL Indent DefDeclareList Dedent .
 
 DefDeclareList = DefDeclare { EOL DefDeclare } .
 
-DefDeclare = Identifier [ LambdaImpliesOperator Expression ] .
+DefDeclare = Identifier [ OneLinerSuiteOperator Expression ] .
 
 
 (* DEFN SENTENCE *)
@@ -397,7 +397,7 @@ DefnSuite = EOL Indent DefnDeclareList Dedent .
 
 DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
 
-DefnDeclare = Identifier ProcParameters LambdaImpliesOperator Expression .
+DefnDeclare = Identifier ProcParameters OneLinerSuiteOperator Expression .
 
 
 (* UNDEF SENTENCE *)
@@ -463,8 +463,8 @@ ResultIdentifiers = Identifiers .
 
 GuardsSuite = EOL GuardsClause .
 
-ProcBody = LambdaImpliesOperator Expressions
-         | LambdaImpliesOperator StatementSuite
+ProcBody = OneLinerSuiteOperator Expressions
+         | OneLinerSuiteOperator StatementSuite
          | StatementSuite .
 
 
@@ -734,6 +734,7 @@ LoopingStatement = LoopSentence .
 
 LoopSentence = LoopClause
                [ ThenClause ]
+               [ ElseClause ] 
                .
 
 LoopClause = LOOP ( LoopSequence | LoopBlock ) .
@@ -1150,7 +1151,7 @@ ForGuardExpression = FOR [ Expressions ] GuardsExpressions .
 
 GuardsExpressions = "|" GuardExpression { "|" GuardExpression  } [ "|" Expression ] .
 
-GuardExpression = Expressions LambdaImpliesOperator Expression .
+GuardExpression = Expressions OneLinerSuiteOperator Expression .
 
 
 (* UNARY OPERATORS *)
@@ -1330,7 +1331,7 @@ MixinOperator = "<>" . (* Mixin, in composition, operator *)
 
 SubtypeOperator = "->" . (* Subtype / Extends operator *)
 
-LambdaImpliesOperator = "=>" . (* Lambda Implies operator | Implicit return *)
+OneLinerSuiteOperator = "=>" . (* One-Liner Suite operator | Implicit return *)
 
 
 (* PREFIX SYMBOL MODIFIERS *)
@@ -1414,7 +1415,7 @@ CommandThreadOperator = CommandSequence
 
 LambdaLiteral = "(\\" LambdaBody ")" .
 
-LambdaBody = [ LambdaParmDeclares LambdaImpliesOperator ] ( Statement | StatementSuite ) . 
+LambdaBody = [ LambdaParmDeclares OneLinerSuiteOperator ] ( Statement | StatementSuite ) . 
 
 LambdaParmDeclares = LambdaParmDeclare { "," LambdaParmDeclare } .
 

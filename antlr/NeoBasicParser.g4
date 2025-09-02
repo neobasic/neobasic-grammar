@@ -641,7 +641,7 @@ condicionalExpression : guardsExpression;
 
 guardsExpression : guardClause+ guardDefault?;
 
-guardClause : PIPE expression IMPLICIT_RETURN expression;
+guardClause : PIPE expression COLON expression;
 
 guardDefault : PIPE expression;
 
