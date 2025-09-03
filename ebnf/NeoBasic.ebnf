@@ -752,22 +752,22 @@ LoopClause = LOOP ( LoopSequence | LoopBlock ) .
 
 LoopSequence = Statement [ LoopCheckFirst ] .
 
-LoopBlock = [ LoopCheckFirst ] [ StepClause ] ClauseStatement
-          | StatementSuite [ LoopCheckLast ] [ StepClause ] .
+LoopBlock = [ LoopCheckFirst ] [ UponClause ] ClauseStatement
+          | StatementSuite [ LoopCheckLast ] [ UponClause ] .
 
-LoopCheckFirst = LoopUptoClause | LoopForEachClause | LoopWhileClause | LoopUntilClause .
+LoopCheckFirst = [LoopForEachClause] [LoopWhileClause] [LoopUntilClause] [LoopUptoClause] .
 
-LoopCheckLast = LoopWhileClause | LoopUntilClause .
+LoopCheckLast = [LoopWhileClause] [LoopUntilClause] [LoopUptoClause] .
 
-LoopUptoClause = UPTO Expression .
-
-LoopForEachClause = FOR Identifiers .
+LoopForEachClause = FOR Identifiers EACH Expressions [ STEP Expression ] .
 
 LoopWhileClause = WHILE Expression .
 
 LoopUntilClause = UNTIL Expression .
 
-StepClause = STEP ( Expression | statement ) .
+LoopUptoClause = UPTO Expression .
+
+UponClause = UPON ( Expression | statement ) .
 
 
 (* ITERATION STATEMENTS *)
