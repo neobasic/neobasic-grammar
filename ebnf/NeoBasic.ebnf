@@ -646,7 +646,7 @@ ExpressionStatement = Expressions .
 
 EmptyStatement = EllipsisOperator .
 
-OneLinerStatement = ":" Statement .
+OneLinerStatement = "=>" Statement .
 
 ClauseStatement = Statement | OneLinerStatement | StatementSuite .
 
@@ -655,7 +655,8 @@ ClauseStatement = Statement | OneLinerStatement | StatementSuite .
 
 ControlFlowStatement = DeferSentence
                      | WithSentence
-                     | OtherwiseSentence .
+                     | OtherwiseSentence
+                     | BeginSentence .
 
 DeferSentence = DEFER ClauseStatement .
 
@@ -666,6 +667,18 @@ WithSentence = WITH Expressions ClauseStatement.
 (* OTHERWISE SENTENCE *)
 
 OtherwiseSentence = Statement OTHERWISE ClauseStatement .
+
+(* BEGIN SENTENCE *)
+
+BeginSentence = BeginClause 
+                FinallyClause
+              { CatchClause } .
+
+BeginClause = BEGIN ClauseStatement .
+
+FinallyClause = FINALLY ClauseStatement .
+
+CatchClause = CATCH [ VarDeclares ] ClauseStatement . 
 
 
 (* CONDITIONAL STATEMENTS *)
@@ -716,14 +729,12 @@ CaseClause = CASE Expression ClauseStatement .
 TrySentence = TryClause 
               [ ThenClause ]
               CatchClause
-              { EOL CatchClause }
+              { CatchClause }
               .
 
 TryClause = TRY ( Statement | Expression ) .
 
 ThenClause = THEN ClauseStatement .
-
-CatchClause = CATCH [ VarDeclares ] ClauseStatement . 
 
 
 (* LOOPING STATEMENTS *)

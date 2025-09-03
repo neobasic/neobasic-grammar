@@ -99,6 +99,9 @@ EXPLICIT : 'explicit';
 
 // STATEMENTS AND BLOCKS
 
+DEFER : 'defer';
+WITH : 'with';
+DO : 'do';
 IF : 'if';
 THEN : 'then';
 ELIF : 'elif';
@@ -111,18 +114,17 @@ FALLTHROUGH : 'fallthrough';
 TRY : 'try';
 CATCH : 'catch';
 LOOP : 'loop';
-STEP : 'step';
 UPTO : 'upto';
 FOR : 'for';
 EACH : 'each';
+STEP : 'step';
 WHILE : 'while';
 UNTIL : 'until';
-NEXT : 'next';
 REDO : 'redo';
+NEXT : 'next';
 BREAK : 'break';
 RETURN : 'return';
 YIELD : 'yield';
-DEFER : 'defer';
 GO : 'go';
 TO : 'to';
 AWAIT : 'await';
@@ -130,8 +132,8 @@ SWITCH : 'switch';
 WHEN : 'when';
 DEFAULT : 'default';
 CONTINUE : 'continue';
-WITH : 'with';
-DO : 'do';
+BEGIN : 'begin';
+FINALLY : 'finally';
 INVAR : 'invar';
 
 // PREDECLARED VALUES AND VARIABLES
