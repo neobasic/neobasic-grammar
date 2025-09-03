@@ -112,7 +112,7 @@ TRY : 'try';
 CATCH : 'catch';
 LOOP : 'loop';
 STEP : 'step';
-TIMES : 'times';
+UPTO : 'upto';
 FOR : 'for';
 EACH : 'each';
 WHILE : 'while';

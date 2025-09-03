@@ -744,11 +744,11 @@ LoopSequence = Statement [ LoopCheckFirst ] .
 LoopBlock = [ LoopCheckFirst ] [ StepClause ] ClauseStatement
           | StatementSuite [ LoopCheckLast ] [ StepClause ] .
 
-LoopCheckFirst = LoopTimesClause | LoopForEachClause | LoopWhileClause | LoopUntilClause .
+LoopCheckFirst = LoopUptoClause | LoopForEachClause | LoopWhileClause | LoopUntilClause .
 
 LoopCheckLast = LoopWhileClause | LoopUntilClause .
 
-LoopTimesClause = TIMES Expression .
+LoopUptoClause = UPTO Expression .
 
 LoopForEachClause = FOR Identifiers .
 
@@ -761,15 +761,15 @@ StepClause = STEP ( Expression | statement ) .
 
 (* ITERATION STATEMENTS *)
 
-IterationStatement = NextSentence 
-                   | RedoSentence
+IterationStatement = RedoSentence
+                   | NextSentence 
                    | BreakSentence .
 
-NextSentence = NEXT [ Label ] .
+RedoSentence = REDO [ Label | Expression ] .
 
-RedoSentence = REDO [ Label ] [ Expression ] .
+NextSentence = NEXT [ Label | Expression ] .
 
-BreakSentence = BREAK [ Label ] .
+BreakSentence = BREAK [ Label | Expression ] .
 
 
 (* CONTROL TRANSFER STATEMENTS *)
