@@ -763,16 +763,13 @@ StepClause = STEP ( Expression | statement ) .
 
 IterationStatement = NextSentence 
                    | RedoSentence
-                   | BreakSentence
-                   | RetrySentence .
+                   | BreakSentence .
 
 NextSentence = NEXT [ Label ] .
 
-RedoSentence = REDO [ Label ] .
+RedoSentence = REDO [ Label ] [ Expression ] .
 
 BreakSentence = BREAK [ Label ] .
-
-RetrySentence = RETRY [ Label ] [ Expression ] .
 
 
 (* CONTROL TRANSFER STATEMENTS *)

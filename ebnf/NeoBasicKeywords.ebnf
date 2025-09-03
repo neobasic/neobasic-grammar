@@ -121,7 +121,6 @@ CASE = "case" .
 FALLTHROUGH = "fallthrough" .
 TRY = "try" .
 CATCH = "catch" .
-RETRY = "retry" .
 OTHERWISE = "otherwise" .
 LOOP = "loop" .
 TIMES = "times" .

@@ -110,7 +110,6 @@ CASE : 'case';
 FALLTHROUGH : 'fallthrough';
 TRY : 'try';
 CATCH : 'catch';
-RETRY : 'retry';
 LOOP : 'loop';
 STEP : 'step';
 TIMES : 'times';
