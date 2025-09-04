@@ -957,7 +957,7 @@ SymbolType = ATOM .
 
 (* META DATA TYPES *)
 
-MetaType = ATOM | AUTO | VOID
+MetaType = ATOM | AUTO | SPAN | VIEW | VOID
          | MODULE | INTERFACE
          | TYPE | FACT | MODIF
          | FUNC | SUB | EVENT 

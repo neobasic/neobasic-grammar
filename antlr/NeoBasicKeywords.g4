@@ -80,7 +80,6 @@ COMPTIME : 'comptime';
 MUTABLE : 'mutable';
 TRANSIENT : 'transient';
 INLINE : 'inline';
-VIEW : 'view';
 SYNCHRO : 'synchro';
 VIRTUAL : 'virtual';
 OVERRIDE : 'override';
@@ -196,6 +195,7 @@ DEL : 'del';
 ATOM : 'atom';
 AUTO : 'auto';
 SPAN : 'span';
+VIEW : 'view';
 VOID : 'void';
 
 // BOOLEAN DATA TYPES

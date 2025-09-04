@@ -557,6 +557,8 @@ compositeType : RANGE | PAIR;
 
 metaType : ATOM
          | AUTO
+         | SPAN
+         | VIEW
          | VOID
          ;
 
