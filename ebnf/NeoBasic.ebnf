@@ -39,7 +39,7 @@ IdentificationStatement = IdentityStatement
                         | CommentedStatement .
 
 IdentityStatement = { DirectiveStatement }
-                    ( ModuleSentence | AlgorithmSentence | NotabeneSentence ) .
+                    ( ModuleSentence | AppletSentence | NotabeneSentence ) .
 
 
 (* UNIT PROCESS PROGRAMS *)
@@ -49,11 +49,11 @@ ModuleSentence = MODULE ModuleName .
 ModuleName = NamespaceIdentifier .
 
 
-(* ALGORITH PROCESS PROGRAMS *)
+(* APPLET PROCESS PROGRAMS *)
 
-AlgorithmSentence = ALGORITHM AlgorithmName .
+AppletSentence = APPLET AppletName .
 
-AlgorithmName = Identifier .
+AppletName = Identifier .
 
 
 (* NOTA BENE PROGRAMS *)

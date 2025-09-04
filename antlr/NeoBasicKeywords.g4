@@ -22,7 +22,7 @@ lexer grammar NeoBasicKeywords;
 // IDENTIFICATION DIVISION
 
 MODULE : 'module';
-ALGORITHM : 'algorithm';
+APPLET : 'applet';
 NOTABENE : 'notabene';
 
 // ENVIRONMENT DIVISION
