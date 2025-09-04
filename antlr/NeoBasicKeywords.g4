@@ -195,6 +195,7 @@ DEL : 'del';
 
 ATOM : 'atom';
 AUTO : 'auto';
+SPAN : 'span';
 VOID : 'void';
 
 // BOOLEAN DATA TYPES
