@@ -821,7 +821,7 @@ DoSequence = Statement [ ( IF | UNLESS ) Expression ] .
 
 (* GO TO STATEMENT *)
 
-GoToSentence = ( ConcurrencySingleProcess | ConcurrencyBatchProcess ) [ ( TO | SET ) Expression ] .
+GoToSentence = ( ConcurrencySingleProcess | ConcurrencyBatchProcess ) [ TO Expression ] .
 
 ConcurrencySingleProcess = GO [ ForksNumber ] ConcurrencyProcess Coroutine .
 
@@ -985,7 +985,7 @@ NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT | BIGINT .
 
 NumericReal = REAL16 | REAL32 | REAL64 | REAL128 | REAL | BIGREAL .
 
-NumericDecimal = DEC1 | DEC2 | DEC3 | DEC4 | DEC5 | DEC6 | DEC7 | DEC8 | DECIMAL | MONEY | BIGDECIMAL .
+NumericDecimal = DECIMAL1 | DECIMAL2 | DECIMAL3 | DECIMAL4 | DECIMAL5 | DECIMAL6 | DECIMAL7 | DECIMAL8 | DECIMAL | MONEY | BIGDECIMAL .
 
 NumericRatio = RATIO8 | RATIO16 | RATIO32 | RATIO64 | RATIO128 | RATIO .
 
@@ -1021,7 +1021,7 @@ CompositeType = RANGE | PAIR | TUPLE .
 
 (* ARRAY DATA TYPES *)
 
-ArrayType = ARRAY | LIST | DICT | CHAN | VEC | MAT | TSET | QUEUE | DEQUE | XML | TABLE | MEMO . 
+ArrayType = ARRAY | LIST | DICT | CHAN | VEC | MAT | SET | QUEUE | DEQUE | XML | TABLE | MEMO . 
 
 
 (* MONAD VALUE CONSTRUCTORS *)

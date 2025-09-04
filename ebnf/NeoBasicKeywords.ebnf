@@ -64,8 +64,8 @@ STRUCT = "struct" .
 PROTO = "proto" .
 TRAIT = "trait" .
 CLASS = "class" .
-GET = "get" .
-SET = "set" .
+GETTER = "getter" .
+SETTER = "setter" .
 FMAP = "fmap" .
 DEF = "def" .
 DEFN = "defn" .
@@ -214,144 +214,144 @@ VOID = "void" .
 
 (* BOOLEAN DATA TYPES *)
 
-BOOL8 = "Bool8" .
-BOOL16 = "Bool16" .
-BOOL32 = "Bool32" .
-BOOL64 = "Bool64" .
-BOOL128 = "Bool128" .
-BOOL = "Bool" .
+BOOL8 = "bool8" .
+BOOL16 = "bool16" .
+BOOL32 = "bool32" .
+BOOL64 = "bool64" .
+BOOL128 = "bool128" .
+BOOL = "bool" .
 
 (* NUMERIC DIGITS *)
 
-DIG = "Dig" .
-BIT = "Bit" .
-OCT = "Oct" .
-HEX = "Hex" .
-ROMAN = "Roman" .
-NIBBLE = "Nibble" .
-BYTE = "Byte" .
-NUMBER = "Number" .
+DIG = "dig" .
+BIT = "bit" .
+OCT = "oct" .
+HEX = "hex" .
+ROMAN = "roman" .
+NIBBLE = "nibble" .
+BYTE = "byte" .
+NUMBER = "number" .
 
 (* NATURAL NUMBERS *)
 
-NAT8 = "Nat8" .
-NAT16 = "Nat16" .
-NAT32 = "Nat32" .
-NAT64 = "Nat64" .
-NAT128 = "Nat128" .
-NAT = "Nat" .
-BIGNAT = "Bignat" .
+NAT8 = "nat8" .
+NAT16 = "nat16" .
+NAT32 = "nat32" .
+NAT64 = "nat64" .
+NAT128 = "nat128" .
+NAT = "nat" .
+BIGNAT = "bignat" .
 
 (* NUMERIC INTEGERS *)
 
-INT8 = "Int8" .
-INT16 = "Int16" .
-INT32 = "Int32" .
-INT64 = "Int64" .
-INT128 = "Int128" .
-INT = "Int" .
-BIGINT = "Bigint" .
+INT8 = "int8" .
+INT16 = "int16" .
+INT32 = "int32" .
+INT64 = "int64" .
+INT128 = "int128" .
+INT = "int" .
+BIGINT = "bigint" .
 
 (* NUMERIC REALS *)
 
-REAL16 = "Real16" .
-REAL32 = "Real32" .
-REAL64 = "Real64" .
-REAL128 = "Real128" .
-REAL = "Real" .
-BIGREAL = "Bigreal" .
+REAL16 = "real16" .
+REAL32 = "real32" .
+REAL64 = "real64" .
+REAL128 = "real128" .
+REAL = "real" .
+BIGREAL = "bigreal" .
 
 (* NUMERIC DECIMALS *)
 
-DEC1 = "Dec1" .
-DEC2 = "Dec2" .
-DEC3 = "Dec3" .
-DEC4 = "Dec4" .
-DEC5 = "Dec5" .
-DEC6 = "Dec6" .
-DEC7 = "Dec7" .
-DEC8 = "Dec8" .
-DECIMAL = "Decimal" .
-MONEY = "Money" .
-BIGDECIMAL = "Bigdecimal" .
+DECIMAL1 = "decimal1" .
+DECIMAL2 = "decimal2" .
+DECIMAL3 = "decimal3" .
+DECIMAL4 = "decimal4" .
+DECIMAL5 = "decimal5" .
+DECIMAL6 = "decimal6" .
+DECIMAL7 = "decimal7" .
+DECIMAL8 = "decimal8" .
+DECIMAL  = "decimal" .
+MONEY    = "money" .
+BIGDECIMAL = "bigdecimal" .
 
 (* NUMERIC RATIOS *)
 
-RATIO8 = "Ratio8" .
-RATIO16 = "Ratio16" .
-RATIO32 = "Ratio32" .
-RATIO64 = "Ratio64" .
-RATIO128 = "Ratio128" .
-RATIO = "Ratio" .
+RATIO8 = "ratio8" .
+RATIO16 = "ratio16" .
+RATIO32 = "ratio32" .
+RATIO64 = "ratio64" .
+RATIO128 = "ratio128" .
+RATIO = "ratio" .
 
 (* NUMERIC COMPLEXES *)
 
-COMPLEX16 = "Complex16" .
-COMPLEX32 = "Complex32" .
-COMPLEX64 = "Complex64" .
-COMPLEX128 = "Complex128" .
-COMPLEX = "Complex" .
+COMPLEX16 = "complex16" .
+COMPLEX32 = "complex32" .
+COMPLEX64 = "complex64" .
+COMPLEX128 = "complex128" .
+COMPLEX = "complex" .
 
 (* NUMERIC QUATERNIONS *)
 
-QUATERN16 = "Quatern16" . 
-QUATERN32 = "Quatern32" .
-QUATERN64 = "Quatern64" .
-QUATERN128 = "Quatern128" .
-QUATERN = "Quatern" .
+QUATERN16 = "quatern16" . 
+QUATERN32 = "quatern32" .
+QUATERN64 = "quatern64" .
+QUATERN128 = "quatern128" .
+QUATERN = "quatern" .
 
 (* TEMPORAL DATA TYPES *)
 
-DATE = "Date" .
-ELAPSE = "Elapse" .
+DATE = "date" .
+ELAPSE = "elapse" .
 
 (* CHARACTER DATA TYPES *)
 
-ASCII = "Ascii" .
-CHAR8 = "Char8" .
-CHAR16 = "Char16" .
-CHAR32 = "Char32" .
-CHAR = "Char" .
+ASCII = "ascii" .
+CHAR8 = "char8" .
+CHAR16 = "char16" .
+CHAR32 = "char32" .
+CHAR = "char" .
 WCHAR = "wchar" .
 
 (* SEQUENCE DATA TYPES *)
 
-ANSI = "Ansi" .
-STR8 = "Str8" .
-STR16 = "Str16" .
-STR32 = "Str32" .
-STR = "Str" .
+ANSI = "ansi" .
+STR8 = "str8" .
+STR16 = "str16" .
+STR32 = "str32" .
+STR = "str" .
 CSTR = "cstr" .
 WSTR = "wstr" .
-REGEX = "Regex" .
-BINARY = "Binary" .
+REGEX = "regex" .
+BINARY = "binary" .
 
 (* SHELL DATA TYPES *)
 
-PATH = "Path" .
-URI = "Uri" .
-INET = "Inet" .
+PATH = "path" .
+URI  = "uri" .
+INET = "inet" .
 
 (* COMPOSITE DATA TYPES *)
 
-RANGE = "Range" .
-PAIR = "Pair" .
-TUPLE = "Tuple" .
+RANGE = "range" .
+PAIR  = "pair" .
+TUPLE = "tuple" .
 
 (* ARRAY DATA TYPES *)
 
-ARRAY = "Array" .
-LIST  = "List" .
-DICT  = "Dict" .
-CHAN  = "Chan" .
-VEC   = "Vec" .
-MAT   = "Mat" .
-TSET  = "Set" .
-QUEUE = "Queue" .
-DEQUE = "Deque" .
-XML   = "Xml" .
-TABLE = "Table" .
-MEMO  = "Memo" .
+ARRAY = "array" .
+LIST  = "list" .
+DICT  = "dict" .
+CHAN  = "chan" .
+VEC   = "vec" .
+MAT   = "mat" .
+SET   = "set" .
+QUEUE = "queue" .
+DEQUE = "deque" .
+XML   = "xml" .
+TABLE = "table" .
+MEMO  = "memo" .
 
 (* MONAD LOGIC VALUE CONSTRUCTORS *)
 
@@ -407,7 +407,7 @@ LINKLINKFILE = "LinkFile" .
 PIPEFILE = "PipeFile" .
 SOCKETFILE = "SocketFile" .
 BLOCKDEVICE = "BlockDevice" .
-CHARDEVICE = "CharDevice" .
+CHARDEVICE = "charDevice" .
 NULLDEVICE = "NullDevice" .
 
 (* MONAD URI VALUE CONSTRUCTORS *)

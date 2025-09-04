@@ -491,14 +491,14 @@ numericReal : REAL16
             | BIGREAL
             ;
 
-numericDecimal : DEC1
-               | DEC2
-               | DEC3
-               | DEC4
-               | DEC5
-               | DEC6
-               | DEC7
-               | DEC8
+numericDecimal : DECIMAL1
+               | DECIMAL2
+               | DECIMAL3
+               | DECIMAL4
+               | DECIMAL5
+               | DECIMAL6
+               | DECIMAL7
+               | DECIMAL8
                | DECIMAL
                | MONEY
                | BIGDECIMAL
