@@ -1392,7 +1392,7 @@ PosfixTypeModifier     = OptionalModifier | ShallowInitialModifier .
 CommandSequence     = "&&" .
 CommandSequenceOkay = "?&" .
 CommandSequenceFail = "!&" .
-CommandBackground   = "|&" .
+CommandBackground   = "||" .
 
 OutputRedirection       = "&>" .
 AppendOutputRedirection = "&>>" .

@@ -232,7 +232,7 @@ COMMAND_SEQUENCE : '&&';
 COMMAND_SEQUENCE_OKAY : '?&';
 COMMAND_SEQUENCE_FAIL : '!&';
 
-COMMAND_BACKGROUND : '|&';
+COMMAND_BACKGROUND : '||';
 
 // Input/Output Redirection Operators
 
