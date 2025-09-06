@@ -158,6 +158,7 @@ NIL : 'nil';
 // EXPRESSIONS
 
 LET : 'let';
+GET : 'get';
 OWN : 'own';
 MUT : 'mut';
 
