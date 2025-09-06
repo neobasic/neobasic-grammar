@@ -1437,7 +1437,7 @@ XmlElement = "<" XmlTagName [ XmlAttributes ] ">" [ XmlChildren ] "</" XmlTagNam
 
 XmlTagName = Identifier .
 
-XmlAttributes = { WSP Identifier [ "=" Expression ] } .
+XmlAttributes = { Identifier [ "=" Expression ] } .
 
 XmlChildren = { XmlElement | StringMultiValue } .
 

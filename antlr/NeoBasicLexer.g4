@@ -48,7 +48,7 @@ SEMICOLON         : ';';    //
 COLON             : ':';    // Pair mapping
 EXCLAMATION       : '!';    // Error
 QUESTION          : '?';    // Optional
-APOSTROPHE        : '\'';   // Character lieral, template string literal
+APOSTROPHE        : '\'';   // Character literal, template string literal
 QUOTE             : '"';    // Verbatim String literal
 BACKTICK          : '`';    // Backtick
 AT                : '@';    // Atoms, Annotations/Decorators
@@ -252,7 +252,7 @@ APPEND_STDERR_REDIRECTION : '&2>>';
 
 DEC_LIT : [+-] DECIMAL_NUMBER [Dd];
 
-DECIMAL_NUMBER
+fragment DECIMAL_NUMBER
     : DEC_DECIMAL
     | HEX_DECIMAL
     ; 
@@ -275,7 +275,7 @@ fragment HEX_MANTISSA
 
 REAL_LIT : [+-] REAL_NUMBER;
 
-REAL_NUMBER
+fragment REAL_NUMBER
     : DEC_REAL
     | HEX_REAL
     ; 
@@ -290,13 +290,13 @@ fragment HEX_EXPONENT : [pP] [+-]? DEC_GROUPS;
 
 RATIO_LIT : [+-] RATIONAL_NUMBER;
 
-RATIONAL_NUMBER : INTEGER_NUMBER '//' INTEGER_NUMBER;
+fragment RATIONAL_NUMBER : INTEGER_NUMBER '//' INTEGER_NUMBER;
 
 // Imaginary literals
 
 IMAGINARY_LIT : [+-] IMAGINARY_NUMBER;
 
-IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
+fragment IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
 
 // Integer literals
 
@@ -304,7 +304,7 @@ NATURAL_LIT : INTEGER_NUMBER [Nn];
 
 INTEGER_LIT : [+-] INTEGER_NUMBER;
 
-INTEGER_NUMBER
+fragment INTEGER_NUMBER
     : DEC_VALUE
     | HEX_VALUE
     | OCT_VALUE
@@ -351,7 +351,7 @@ BINARY_LIT
 
 HEREDOC_LITERAL : '<<' HEREDOC_CONTENT ;
 
-HEREDOC_CONTENT
+fragment HEREDOC_CONTENT
     : IDENTIFIER EOL VERBATIM_STRING_CONTENT EOL IDENTIFIER
     | STRING_PREFIX? '"' EOL VERBATIM_STRING_CONTENT EOL '"'
     | STRING_PREFIX? '"""' EOL VERBATIM_STRING_CONTENT EOL '"""'
@@ -367,7 +367,7 @@ HEREDOC_CONTENT
 
 REGULAR_EXPRESSION_LIT     : '/' REGULAR_EXPRESSION_CONTENT '/' REGEX_FLAG*;
 
-REGULAR_EXPRESSION_CONTENT : REGEX_FIRST_CHAR REGEX_CHAR*;
+fragment REGULAR_EXPRESSION_CONTENT : REGEX_FIRST_CHAR REGEX_CHAR*;
 
 fragment REGEX_FIRST_CHAR
     : ~[\n\r\u0085\u2028\u2029*\\/[]
@@ -394,26 +394,26 @@ fragment REGEX_FLAG : [digmsuvy];
 
 STRING_LIT : STRING_PREFIX? STRING_SEQUENCE;
 
-STRING_PREFIX
+fragment STRING_PREFIX
     : UNICODE_PREFIX
     | ASCII_PREFIX
     ;
 
 WSTRING_LIT : WCHAR_PREFIX? STRING_SEQUENCE;
 
-STRING_SEQUENCE
+fragment STRING_SEQUENCE
     : VERBATIM_STRING
     | TEMPLATE_STRING
     ;
 
-VERBATIM_STRING
+fragment VERBATIM_STRING
     : '"' VERBATIM_STRING_CONTENT '"'
     | '"""' VERBATIM_STRING_CONTENT '"""'
     ;
 
 fragment VERBATIM_STRING_CONTENT : ~["]*;
 
-TEMPLATE_STRING
+fragment TEMPLATE_STRING
     : '\'' TEMPLATE_STRING_CONTENT '\''
     | '\'\'\'' TEMPLATE_STRING_CONTENT '\'\'\''
     ;
@@ -425,7 +425,7 @@ fragment TEMPLATE_STRING_CONTENT
     | ~['] )*
     ; 
 
-PLACEHOLDER_VALUE : ~['}];
+fragment PLACEHOLDER_VALUE : ~['}];
 
 // Character literals
 
@@ -433,9 +433,9 @@ CHAR_LIT : UNICODE_PREFIX? UNICODE_CHAR;
 
 WCHAR_LIT : WCHAR_PREFIX? UNICODE_CHAR;
 
-WCHAR_PREFIX : 'L';
+fragment WCHAR_PREFIX : 'L';
 
-UNICODE_CHAR
+fragment UNICODE_CHAR
     : '\'' UNICODE_ESCAPED_VALUE '\''
     | '\'' ~['] '\''
     | '"' ~["] '"'
@@ -443,9 +443,9 @@ UNICODE_CHAR
 
 ASCII_LIT : ASCII_PREFIX? ASCII_CHAR;
 
-ASCII_PREFIX : 'a';
+fragment ASCII_PREFIX : 'a';
 
-ASCII_CHAR
+fragment ASCII_CHAR
     : '\'' ASCII_ESCAPED_VALUE '\''
     | '\'' UNICODE_ASCII '\''
     | '"' UNICODE_ASCII '"'
@@ -477,7 +477,16 @@ fragment UNICODE_PREFIX
 
 ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
 
-DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
+fragment DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
+
+// MUSICAL ALPHABET
+
+fragment MUSIC_NOTE     : MUSIC_ALPHABET (PITCH_FLAT | PITCH_SHARP)? OCTAVE_DIGIT?;
+
+fragment MUSIC_ALPHABET : [A-G];
+fragment OCTAVE_DIGIT   : [0-8];
+fragment PITCH_FLAT     : 'f';
+fragment PITCH_SHARP    : 's';
 
 // Shell literals (File system files and directories)
 
@@ -488,23 +497,35 @@ SHELL_LIT
     | '$$'
     | SHELL_PATH_LIT
     | SHELL_IDENTIFIER
+    | SHELL_VARIABLE
     ;
 
-SHELL_PATH_LIT : '$' FILESYSTEM_PATH;
+fragment SHELL_PATH_LIT : '$' FILESYSTEM_PATH;
 
-FILESYSTEM_PATH : ABSOLUTE_PATH | RELATIVE_PATH | TILDE_PATH; //  | PATH_NAME;
+fragment FILESYSTEM_PATH : ABSOLUTE_PATH | RELATIVE_PATH | TILDE_PATH; //  | PATH_NAME;
 
-ABSOLUTE_PATH : (DRIVE_LETTER ':')? '/' PATH_NAME?;
+fragment ABSOLUTE_PATH : (DRIVE_LETTER ':')? '/' PATH_NAME?;
 
-RELATIVE_PATH : ('.' | '..') '/' ('..' '/')* PATH_NAME?;
+fragment RELATIVE_PATH : ('.' | '..') '/' ('..' '/')* PATH_NAME?;
 
-TILDE_PATH : '~' '/'? PATH_NAME?;
+fragment TILDE_PATH : '~' '/'? PATH_NAME?;
 
-PATH_NAME : FILE_NAME ('/' FILE_NAME)*;
+fragment PATH_NAME : FILE_NAME ('/' FILE_NAME)*;
 
-FILE_NAME : UNICODE_FILEPATH+;
+fragment FILE_NAME : UNICODE_FILEPATH+;
 
-DRIVE_LETTER : [a-zA-Z];
+fragment DRIVE_LETTER : [a-zA-Z];
+
+
+// --- MAGIC STATEMENTS ---------------------------------------------
+
+// Rubber Duck Debugging
+
+RUBBERDUCK : '@' IDENTIFIER? '=';
+
+// Songbird Logging
+
+SONGBIRD : '@' IDENTIFIER? '>';
 
 
 // --- SYMBOLS ------------------------------------------------------
@@ -513,24 +534,17 @@ DRIVE_LETTER : [a-zA-Z];
 
 //KEYWORD : ALPHA+;
 
-TAG : ALPHANUMERIC+;
-
-IDENTIFIER : ALPHA ALPHANUMERIC*;
-
 ATOM_IDENTIFIER : '@' IDENTIFIER;
 
 ASPECT_IDENTIFIER : '@@' IDENTIFIER;
 
 SHELL_IDENTIFIER : '$' IDENTIFIER;
 
-// MUSICAL ALPHABET
+SHELL_VARIABLE : '$$' IDENTIFIER;
 
-MUSIC_NOTE     : MUSIC_ALPHABET (PITCH_FLAT | PITCH_SHARP)? OCTAVE_DIGIT?;
+IDENTIFIER : ALPHA ALPHANUMERIC*;
 
-MUSIC_ALPHABET : [A-G];
-OCTAVE_DIGIT   : [0-8];
-PITCH_FLAT     : 'f';
-PITCH_SHARP    : 's';
+TAG : ALPHANUMERIC+;
 
 
 // --- MAGIC COMMENTS -----------------------------------------------
@@ -548,26 +562,25 @@ WOODSTOCK : '#?';
 SHERLOCK : '#$';
 
 
-// --- MAGIC STATEMENTS ---------------------------------------------
+// --- SPECIAL TOKENS -----------------------------------------------
 
-// Rubber Duck Debugging
+// End of Sentence (EOS): Emit an EOS token for any newlines, semicolon, 
+// multiline comments or the EOF and return to normal lexing.
 
-RUBBERDUCK : '@' IDENTIFIER? '=';
+EOS : EOL
+    | LINE_COMMENT
+    | EOF
+    ;
 
-// Songbird Logging
+// End of Line (EOL) characters
 
-SONGBIRD : '@' IDENTIFIER? '>';
-
-
-// --- COMMENTS -----------------------------------------------------
-
-LINE_COMMENT  : '#' ~[#!?$] ~[\n\r\u0085\u2028\u2029]* -> channel(COMMENT);
-BLOCK_COMMENT : '##' ~[#?] .*? '##'                    -> channel(COMMENT);
-CELL_COMMENT  : '###' .*? '###'                        -> channel(COMMENT);
-
-// Hashtags
-
-HASHTAG : HASH TAG ('/' TAG)* -> channel(COMMENT);
+EOL : '\n'       // Unix, Linux, macOS
+    | '\r' '\n'  // Windows, DOS
+    | '\r'       // Classic Mac OS (pre-OS X)
+    | '\u0085'   // IBM Mainframes (EBCDIC)
+    | '\u2028'   // Unicode Line Separator
+    | '\u2029'   // Unicode Paragraph Separator
+    ;
 
 
 // --- UNICODE CHARACTERS -------------------------------------------
@@ -600,25 +613,15 @@ fragment UNICODE_ASCII : [\u0020-\u007E];
 fragment UNICODE_FILEPATH : ~[|/\\<>;:?*#$&"'`\p{Cc}\p{Cf}\p{Cs}\p{Co}\p{Cn}] ;
 
 
-// --- SPECIAL TOKENS -----------------------------------------------
+// --- COMMENTS -----------------------------------------------------
 
-// End of Sentence (EOS): Emit an EOS token for any newlines, semicolon, 
-// multiline comments or the EOF and return to normal lexing.
+LINE_COMMENT  : '#' ~[#!?$] ~[\n\r\u0085\u2028\u2029]* -> channel(COMMENT);
+BLOCK_COMMENT : '##' ~[#?] .*? '##'                    -> channel(COMMENT);
+CELL_COMMENT  : '###' .*? '###'                        -> channel(COMMENT);
 
-EOS : EOL
-    | LINE_COMMENT
-    | EOF
-    ;
+// Hashtags
 
-// End of Line (EOL) characters
-
-EOL : '\n'       // Unix, Linux, macOS
-    | '\r' '\n'  // Windows, DOS
-    | '\r'       // Classic Mac OS (pre-OS X)
-    | '\u0085'   // IBM Mainframes (EBCDIC)
-    | '\u2028'   // Unicode Line Separator
-    | '\u2029'   // Unicode Paragraph Separator
-    ;
+HASHTAG : HASH TAG ('/' TAG)* -> channel(COMMENT);
 
 
 // --- HIDDEN TOKENS ------------------------------------------------
@@ -628,9 +631,9 @@ EOL : '\n'       // Unix, Linux, macOS
 
 BOM : (UTF8_BOM | UTF16_BOM | UTF32_BOM) -> channel(HIDDEN);
 
-UTF8_BOM  : '\uEFBBBF';
-UTF16_BOM : '\uFEFF';
-UTF32_BOM : '\u0000FEFF';
+fragment UTF8_BOM  : '\uEFBBBF';
+fragment UTF16_BOM : '\uFEFF';
+fragment UTF32_BOM : '\u0000FEFF';
 
 // White Spaces (WSP) characters
 
