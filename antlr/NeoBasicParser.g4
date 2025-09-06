@@ -752,7 +752,7 @@ eitherLiteral : YEA valueConstruct
               | NAY valueConstruct
               ;
 
-streamLiteral : DATA valueConstruct
+streamLiteral : DATUM valueConstruct
               | EOT
               ;
 

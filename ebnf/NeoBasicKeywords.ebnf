@@ -437,8 +437,8 @@ NAY = "Nay" .
 
 (* MONAD STREAM |> VALUE CONSTRUCTORS *)
 
-DATA = "Data" .
-EOT = "EoT" .
+DATUM = "Datum" .
+EOT   = "EoT" .
 
 (* ------------------------------------------------------------------------- *)
 

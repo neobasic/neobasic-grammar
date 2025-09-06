@@ -1051,7 +1051,7 @@ MaybeOption = SOME | NONE .
 
 EitherOption = YEA | NAY .
 
-StreamOption = DATA | EOT .
+StreamOption = DATUM | EOT .
 
 ResultOption = OKAY | FAIL .
 

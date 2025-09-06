@@ -95,7 +95,6 @@ MEASURE : 'measure';
 INFIX : 'infix';
 EXPLICIT : 'explicit';
 
-
 // STATEMENTS AND BLOCKS
 
 DEFER : 'defer';
@@ -423,8 +422,8 @@ NAY : 'Nay';
 
 // MONAD STREAM |> VALUE CONSTRUCTORS
 
-DATA : 'Data';
-EOT : 'EoT';
+DATUM : 'Datum';
+EOT   : 'EoT';
 
 // -------------------------------------------------------------------------
 
@@ -468,7 +467,7 @@ PANIC : 'panic';
 UNIT : 'unit';
 FROM : 'from';
 ONCE : 'once';
-TDATA : 'data';
+DATA : 'data';
 CALL : 'call';
 HIDE : 'hide';
 SHOW : 'show';
