@@ -570,7 +570,9 @@ TraitMemberDeclare = MixinSentence
                    | CompositeEventDeclare .
 
 
-(* CLASS SENTENCE *)
+(* CLASS & OBJECT SENTENCE *)
+
+ObjectSentence = OBJECT SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
 
 ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
 

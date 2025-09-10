@@ -64,6 +64,7 @@ STRUCT = "struct" .
 PROTO = "proto" .
 TRAIT = "trait" .
 CLASS = "class" .
+OBJECT = "object" .
 GETTER = "getter" .
 SETTER = "setter" .
 EVENT = "event" .
