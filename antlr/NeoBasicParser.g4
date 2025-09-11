@@ -462,7 +462,6 @@ numericDigit : DIG
              | OCT
              | HEX
              | NIBBLE
-             | BYTE
              ;
 
 numericNatural : NAT8
@@ -470,6 +469,7 @@ numericNatural : NAT8
                | NAT32
                | NAT64
                | NAT128
+               | BYTE
                | NAT
                | BIGNAT
                ;

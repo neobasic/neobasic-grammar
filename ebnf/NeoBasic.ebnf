@@ -979,9 +979,9 @@ NumericType = NumericDigit | NumericNatural | NumericInteger
             | NumericDecimal | NumericReal | NumericRatio
             | NumericComplex | NumericQuaternion .
 
-NumericDigit = DIG | BIT | OCT | HEX | NIBBLE | BYTE .
+NumericDigit = DIG | BIT | OCT | HEX | NIBBLE .
 
-NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | NAT | BIGNAT .
+NumericNatural = NAT8 | NAT16 | NAT32 | NAT64 | NAT128 | BYTE | NAT | BIGNAT .
 
 NumericInteger = INT8 | INT16 | INT32 | INT64 | INT128 | INT | BIGINT .
 

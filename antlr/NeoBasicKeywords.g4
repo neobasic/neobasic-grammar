@@ -214,9 +214,8 @@ DIG : 'dig';
 BIT : 'bit';
 OCT : 'oct';
 HEX : 'hex';
-ROMAN : 'roman';
 NIBBLE : 'nibble';
-BYTE : 'byte';
+ROMAN : 'roman';
 NUMBER : 'number';
 
 // NATURAL NUMBERS
@@ -226,6 +225,7 @@ NAT16 : 'nat16';
 NAT32 : 'nat32';
 NAT64 : 'nat64';
 NAT128 : 'nat128';
+BYTE : 'byte';
 NAT : 'nat';
 BIGNAT : 'bignat';
 
