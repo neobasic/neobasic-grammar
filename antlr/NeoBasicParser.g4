@@ -594,7 +594,7 @@ numericLiteral : NATURAL_LIT
                | REAL_LIT
                | RATIO_LIT
                | IMAGINARY_LIT
-               | NONZERO valueConstruct
+               | NONZERO parenthesizedExpression
                | ZERO
                | MINVALUE
                | MAXVALUE
@@ -604,12 +604,12 @@ numericLiteral : NATURAL_LIT
                ;
 
 temporalLiteral : ATOM_DOT_LIT
-                | LOCALDATE valueConstruct?
-                | LOCALDATETIME valueConstruct?
-                | OFFSETDATE valueConstruct?
-                | OFFSETDATETIME valueConstruct?
-                | ZONEDDATE valueConstruct?
-                | ZONEDDATETIME valueConstruct?
+                | LOCALDATE parenthesizedExpression?
+                | LOCALDATETIME parenthesizedExpression?
+                | OFFSETDATE parenthesizedExpression?
+                | OFFSETDATETIME parenthesizedExpression?
+                | ZONEDDATE parenthesizedExpression?
+                | ZONEDDATETIME parenthesizedExpression?
                 | TOMORROW
                 | TODAY
                 | NOW
@@ -621,12 +621,12 @@ temporalLiteral : ATOM_DOT_LIT
 characterLiteral : ASCII_LIT
                  | WCHAR_LIT
                  | CHAR_LIT
-                 | LETTER valueConstruct
-                 | DIGIT valueConstruct
-                 | PUNCTUATION valueConstruct
-                 | SYMBOL valueConstruct
-                 | SEPARATOR valueConstruct
-                 | NONPRINTABLE valueConstruct
+                 | LETTER parenthesizedExpression
+                 | DIGIT parenthesizedExpression
+                 | PUNCTUATION parenthesizedExpression
+                 | SYMBOL parenthesizedExpression
+                 | SEPARATOR parenthesizedExpression
+                 | NONPRINTABLE parenthesizedExpression
                  | NULL
                  ;
 
@@ -638,7 +638,7 @@ sequenceLiteral : HEREDOC_LITERAL
                 | STRING_LIT
                 | ATOM_DOT_LIT
                 | BINARY_LIT
-                | NONBLANK valueConstruct
+                | NONBLANK parenthesizedExpression
                 | BLANK
                 ;
 
@@ -650,19 +650,19 @@ optionLiteral : resultLiteral
               | streamLiteral
               ;
 
-resultLiteral : OKAY valueConstruct
-              | FAIL valueConstruct
+resultLiteral : OKAY parenthesizedExpression
+              | FAIL parenthesizedExpression
               ;
 
-maybeLiteral : SOME valueConstruct
+maybeLiteral : SOME parenthesizedExpression
              | NONE
              ;
 
-eitherLiteral : YEA valueConstruct
-              | NAY valueConstruct
+eitherLiteral : YEA parenthesizedExpression
+              | NAY parenthesizedExpression
               ;
 
-streamLiteral : DATUM valueConstruct
+streamLiteral : DATUM parenthesizedExpression
               | EOT
               ;
 
@@ -671,13 +671,52 @@ streamLiteral : DATUM valueConstruct
 
 expressions : expression (COMMA expression)*;
 
-juxtapositionExpressions : expression expression*;
-
 primaryExpressions : primaryExpression (COMMA primaryExpression)*;
 
+primaryExpression : operand
+                  | parenthesizedExpression
+                  | primaryExpression LEFT_BRACKET expressions RIGHT_BRACKET
+                  | primaryExpression LEFT_BRACKET slicingRange RIGHT_BRACKET
+                  | primaryExpression DOT primaryExpression
+                  | primaryExpression LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+                  | primaryExpression SEMICOLON primaryExpression
+                  | primaryExpression posfixUnaryOperator
+                  | prefixUnaryOperator primaryExpression
+                  | qualifiedIdentifier expression
+                  | factScope BACKTICK qualifiedIdentifier expressions
+                  ;
+
+operand : literal
+        | predeclaredValue
+        | qualifiedIdentifier
+        ;
+
+parenthesizedExpression : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
+
+slicingRange : intervalExpression
+             | sliceExpression
+             ;
+
+intervalExpression : expression INTERVAL expression
+                   | INTERVAL_RIGHT expression
+                   | expression INTERVAL_LEFT
+                   | intervalExpression INTERVAL_INCLUSIVE expression
+                   ;
+
+sliceExpression : expression COLON expression
+                | COLON expression
+                | expression COLON
+                | sliceExpression COLON expression
+                ;
+
+factScope : ALL
+          | ANY
+          | ONE
+          | TWO
+          | NIL
+          ;
+
 expression : primaryExpression
-           | prefixUnaryOperator expression 
-           | expression posfixUnaryOperator
            | expression binaryExponentialOperator expression
            | expression binaryMultiplicativeOperator expression
            | expression binaryAdditiveOperator expression
@@ -697,61 +736,15 @@ expression : primaryExpression
            | macroExpression
            ;
 
-primaryExpression
-    : operand
-    | primaryExpression converter
-    | primaryExpression selector
-    | primaryExpression indexing
-    | primaryExpression slicing
-    | primaryExpression arguments
-    ;
-
-operand : literal
-        | predeclaredValue
-        | qualifiedIdentifier
-        | qualifiedIdentifier expression
-        | factScope BACKTICK qualifiedIdentifier expressions
-        | LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-        ;
-
-factScope : ALL
-          | ANY
-          | ONE
-          | TWO
-          | NIL
-          ;
-
-converter : SEMICOLON qualifiedIdentifier;
-
-selector : DOT IDENTIFIER;
-
-indexing : LEFT_BRACKET expressions RIGHT_BRACKET;
-
-slicing : LEFT_BRACKET slicingRange RIGHT_BRACKET;
-
-slicingRange : rangeExpression
-             | rangeExpression COLON expression
-             ;
-
-rangeExpression : expression INTERVAL expression
-                | expression INTERVAL_LEFT
-                | INTERVAL_RIGHT expression
-                | rangeExpression COLON INTEGER_NUMBER
-                ;
-
-arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
-
 assignmentExpression : primaryExpression assignmentOperator expression;
 
 condicionalExpression : guardsExpression;
 
 guardsExpression : guardClause+ guardDefault?;
 
-guardClause : PIPE expression COLON expression;
+guardClause : PIPE expression MAPPING_ARROW expression;
 
 guardDefault : PIPE expression;
-
-valueConstruct : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
 
 macroExpression : macroCall+;
 

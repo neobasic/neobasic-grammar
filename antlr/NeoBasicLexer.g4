@@ -219,7 +219,7 @@ EXTENDS : '->';
 
 NECK_RULE : ':-';
 
-ONELINER_SUITE : '=>';
+MAPPING_ARROW : '=>';
 
 MONAD_BIND : '=>>';
 
