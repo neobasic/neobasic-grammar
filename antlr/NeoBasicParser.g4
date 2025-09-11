@@ -483,21 +483,14 @@ numericInteger : INT8
                | BIGINT
                ;
 
-numericReal : REAL16
+numericReal : REAL8
+            | REAL16
             | REAL32
             | REAL64
             | REAL128
             | REAL
             | BIGREAL
             ;
-
-numericDecimal : DECIMAL32
-               | DECIMAL64
-               | DECIMAL128
-               | DECIMAL
-               | MONEY
-               | BIGDECIMAL
-               ;
 
 numericRatio : RATIO8
              | RATIO16
@@ -507,15 +500,20 @@ numericRatio : RATIO8
              | RATIO
              ;
 
-numericComplex : COMPLEX16
-               | COMPLEX32
+numericDecimal : DECIMAL32
+               | DECIMAL64
+               | DECIMAL128
+               | DECIMAL
+               | MONEY
+               ;
+
+numericComplex : COMPLEX32
                | COMPLEX64
                | COMPLEX128
                | COMPLEX
                ;
 
-numericQuaternion : QUATERN16
-                  | QUATERN32
+numericQuaternion : QUATERN32
                   | QUATERN64
                   | QUATERN128
                   | QUATERN
@@ -546,7 +544,7 @@ sequenceType : ANSI
 
 // Composite data types
 
-compositeType : RANGE | PAIR;
+compositeType : RANGE | PAIR | TUPLE;
 
 // Meta data types
 

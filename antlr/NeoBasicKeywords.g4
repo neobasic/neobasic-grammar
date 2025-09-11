@@ -241,21 +241,13 @@ BIGINT : 'bigint';
 
 // NUMERIC REALS
 
+REAL8 : 'real8';
 REAL16 : 'real16';
 REAL32 : 'real32';
 REAL64 : 'real64';
 REAL128 : 'real128';
 REAL : 'real';
 BIGREAL : 'bigreal';
-
-// NUMERIC DECIMALS
-
-DECIMAL32 : 'decimal32';
-DECIMAL64 : 'decimal64';
-DECIMAL128 : 'decimal128';
-DECIMAL  : 'decimal';
-MONEY    : 'money';
-BIGDECIMAL : 'bigdecimal';
 
 // NUMERIC RATIOS
 
@@ -266,9 +258,16 @@ RATIO64 : 'ratio64';
 RATIO128 : 'ratio128';
 RATIO : 'ratio';
 
+// NUMERIC DECIMALS
+
+DECIMAL32 : 'decimal32';
+DECIMAL64 : 'decimal64';
+DECIMAL128 : 'decimal128';
+DECIMAL  : 'decimal';
+MONEY    : 'money';
+
 // NUMERIC COMPLEXES
 
-COMPLEX16 : 'complex16';
 COMPLEX32 : 'complex32';
 COMPLEX64 : 'complex64';
 COMPLEX128 : 'complex128';
@@ -276,7 +275,6 @@ COMPLEX : 'complex';
 
 // NUMERIC QUATERNIONS
 
-QUATERN16 : 'quatern16'; 
 QUATERN32 : 'quatern32';
 QUATERN64 : 'quatern64';
 QUATERN128 : 'quatern128';
