@@ -15,11 +15,11 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
  * Developed by : Raul Bras, @teknolista.
  *)
 
-(* SOURCE CODE ORGANIZATION OF NEO PROGRAM *)
+(* SOURCE CODE ORGANIZATION OF NEOBASIC PROGRAM *)
 
-NeoProgram = OneLinerProgram | SourceCodeProgram .
+NeobProgram = OneLinerProgram | AlgorithmProgram .
 
-SourceCodeProgram = ( ProcessProgram | NotabeneProgram ) EOF .
+AlgorithmProgram = ( ProcessProgram | NotabeneProgram ) EOF .
 
 ProcessProgram = IdentificationDivision EnvironmentDivision ProcessingDivision TestingDivision .
 
@@ -945,7 +945,7 @@ FieldValue = Identifier [ FieldType ] ":" Literal .
 
 (* NEOBASIC NATIVE DATA TYPES *)
 
-NeoNativeType = SymbolType | EscalarType | CompoundType | MetaType | ShellType .
+NeobNativeType = SymbolType | EscalarType | CompoundType | MetaType | ShellType .
 
 EscalarType = BooleanType | NumericType | TemporalType | CharacterType | SequenceType .
 

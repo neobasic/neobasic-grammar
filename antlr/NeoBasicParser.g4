@@ -28,11 +28,12 @@ options {
 // --- SOURCE CODE ORGANIZATION OF NEO PROGRAM ----------------------
 
 neoProgram : oneLinerProgram
-           | scriptFileProgram;
+           | algorithmProgram
+           ;
 
 oneLinerProgram : instructionSentence;
 
-scriptFileProgram : (instructionSentence EOS)+;
+algorithmProgram : (instructionSentence EOS)+;
 
 instructionSentence : directive
                     | declaration
