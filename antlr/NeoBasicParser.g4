@@ -182,11 +182,19 @@ assignmentParallel : primaryExpressions (singleAssignmentOperator | multipleAssi
 
 // Compound statements
 
-compoundStatement : conditionalStatement;
+compoundStatement : controlFlowStatement
+                  | conditionalStatement
+                  ;
+
+controlFlowStatement : otherwiseSentence;
 
 conditionalStatement : ifStatement
                      | unlessStatement
                      ;
+
+// Control flow statement otherwise
+
+otherwiseSentence : simpleStatement OTHERWISE statement;
 
 // Conditional statement if
 
@@ -342,7 +350,6 @@ binaryCoalescingOperator : EXCLAMATION
                          | ERROR_PROPAGATION_NONE_COALESCING
                          | QUESTION
                          | DOUBLE_QUESTION
-                         | OTHERWISE
                          ; 
 
 
@@ -556,95 +563,6 @@ metaType : ATOM
          ;
 
 
-// --- EXPRESSION ---------------------------------------------------
-
-expressions : expression (COMMA expression)*;
-
-juxtapositionExpressions : expression expression*;
-
-primaryExpressions : primaryExpression (COMMA primaryExpression)*;
-
-expression : primaryExpression
-           | prefixUnaryOperator expression 
-           | expression posfixUnaryOperator
-           | expression binaryExponentialOperator expression
-           | expression binaryMultiplicativeOperator expression
-           | expression binaryAdditiveOperator expression
-           | expression bitShiftOperator expression
-           | expression bitConjunctionOperator expression
-           | expression bitExclusiveDisjunctionOperator expression
-           | expression bitDisjunctionOperator expression
-           | expression binaryComparisonOperator expression
-           | expression binaryRelationalOperator expression
-           | expression binaryConditionalOperator expression
-           | expression binaryConjunctionOperator expression
-           | expression binaryExclusiveDisjunctionOperator expression
-           | expression binaryDisjunctionOperator expression
-           | expression binaryCoalescingOperator expression?
-           | assignmentExpression
-           | condicionalExpression
-           | macroExpression
-           ;
-
-primaryExpression
-    : operand
-    | primaryExpression converter
-    | primaryExpression selector
-    | primaryExpression indexing
-    | primaryExpression slicing
-    | primaryExpression arguments
-    ;
-
-operand : literal
-        | predeclaredValue
-        | qualifiedIdentifier
-        | qualifiedIdentifier expression
-        | factScope BACKTICK qualifiedIdentifier expressions
-        | LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-        ;
-
-factScope : ALL
-          | ANY
-          | ONE
-          | TWO
-          | NIL
-          ;
-
-converter : SEMICOLON qualifiedIdentifier;
-
-selector : DOT IDENTIFIER;
-
-indexing : LEFT_BRACKET expressions RIGHT_BRACKET;
-
-slicing : LEFT_BRACKET slicingRange RIGHT_BRACKET;
-
-slicingRange : rangeExpression
-             | rangeExpression COLON expression
-             ;
-
-rangeExpression : expression INTERVAL expression
-                | expression INTERVAL_LEFT
-                | INTERVAL_RIGHT expression
-                | rangeExpression COLON INTEGER_NUMBER
-                ;
-
-arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
-
-assignmentExpression : primaryExpression assignmentOperator expression;
-
-condicionalExpression : guardsExpression;
-
-guardsExpression : guardClause+ guardDefault?;
-
-guardClause : PIPE expression COLON expression;
-
-guardDefault : PIPE expression;
-
-macroExpression : macroCall+;
-
-macroCall : qualifiedIdentifier expression*;
-
-
 // LITERALS ---------------------------------------------------------
 
 literal : escalarLiteral
@@ -653,8 +571,6 @@ literal : escalarLiteral
 
 predeclaredValue : THIS
                  | IOTA;
-
-valueConstruct : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
 
 // Escalar literals
 
@@ -749,6 +665,96 @@ streamLiteral : DATUM valueConstruct
               | EOT
               ;
 
+
+// --- EXPRESSION ---------------------------------------------------
+
+expressions : expression (COMMA expression)*;
+
+juxtapositionExpressions : expression expression*;
+
+primaryExpressions : primaryExpression (COMMA primaryExpression)*;
+
+expression : primaryExpression
+           | prefixUnaryOperator expression 
+           | expression posfixUnaryOperator
+           | expression binaryExponentialOperator expression
+           | expression binaryMultiplicativeOperator expression
+           | expression binaryAdditiveOperator expression
+           | expression bitShiftOperator expression
+           | expression bitConjunctionOperator expression
+           | expression bitExclusiveDisjunctionOperator expression
+           | expression bitDisjunctionOperator expression
+           | expression binaryComparisonOperator expression
+           | expression binaryRelationalOperator expression
+           | expression binaryConditionalOperator expression
+           | expression binaryConjunctionOperator expression
+           | expression binaryExclusiveDisjunctionOperator expression
+           | expression binaryDisjunctionOperator expression
+           | expression binaryCoalescingOperator expression?
+           | assignmentExpression
+           | condicionalExpression
+           | macroExpression
+           ;
+
+primaryExpression
+    : operand
+    | primaryExpression converter
+    | primaryExpression selector
+    | primaryExpression indexing
+    | primaryExpression slicing
+    | primaryExpression arguments
+    ;
+
+operand : literal
+        | predeclaredValue
+        | qualifiedIdentifier
+        | qualifiedIdentifier expression
+        | factScope BACKTICK qualifiedIdentifier expressions
+        | LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+        ;
+
+factScope : ALL
+          | ANY
+          | ONE
+          | TWO
+          | NIL
+          ;
+
+converter : SEMICOLON qualifiedIdentifier;
+
+selector : DOT IDENTIFIER;
+
+indexing : LEFT_BRACKET expressions RIGHT_BRACKET;
+
+slicing : LEFT_BRACKET slicingRange RIGHT_BRACKET;
+
+slicingRange : rangeExpression
+             | rangeExpression COLON expression
+             ;
+
+rangeExpression : expression INTERVAL expression
+                | expression INTERVAL_LEFT
+                | INTERVAL_RIGHT expression
+                | rangeExpression COLON INTEGER_NUMBER
+                ;
+
+arguments : LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS;
+
+assignmentExpression : primaryExpression assignmentOperator expression;
+
+condicionalExpression : guardsExpression;
+
+guardsExpression : guardClause+ guardDefault?;
+
+guardClause : PIPE expression COLON expression;
+
+guardDefault : PIPE expression;
+
+valueConstruct : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS;
+
+macroExpression : macroCall+;
+
+macroCall : qualifiedIdentifier expression*;
 
 // Special Tokens
 

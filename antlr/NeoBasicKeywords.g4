@@ -70,17 +70,17 @@ PRIVATE : 'private';
 
 // DECLARATION SPECIFIERS
 
-LAMBDA : 'lambda';
+COMPTIME : 'comptime';
+INLINE : 'inline';
+STATIC : 'static';
 LINEAR : 'linear';
 SHARED : 'shared';
 VOLATILE : 'volatile';
 LOCAL : 'local';
 ATOMIC : 'atomic';
-STATIC : 'static';
-COMPTIME : 'comptime';
+LAMBDA : 'lambda';
 MUTABLE : 'mutable';
 TRANSIENT : 'transient';
-INLINE : 'inline';
 SYNCHRO : 'synchro';
 VIRTUAL : 'virtual';
 OVERRIDE : 'override';
@@ -166,8 +166,8 @@ MUT : 'mut';
 // META OPERATORS'
 
 TYPEOF : 'typeof';
-INSTANCEOF : 'instanceof';
 SIZEOF : 'sizeof';
+INSTANCEOF : 'instanceof';
 
 // CONDITIONAL OPERATORS
 
