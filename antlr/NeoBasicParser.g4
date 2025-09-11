@@ -491,14 +491,9 @@ numericReal : REAL16
             | BIGREAL
             ;
 
-numericDecimal : DECIMAL1
-               | DECIMAL2
-               | DECIMAL3
-               | DECIMAL4
-               | DECIMAL5
-               | DECIMAL6
-               | DECIMAL7
-               | DECIMAL8
+numericDecimal : DECIMAL32
+               | DECIMAL64
+               | DECIMAL128
                | DECIMAL
                | MONEY
                | BIGDECIMAL

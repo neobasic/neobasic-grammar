@@ -250,14 +250,9 @@ BIGREAL : 'bigreal';
 
 // NUMERIC DECIMALS
 
-DECIMAL1 : 'decimal1';
-DECIMAL2 : 'decimal2';
-DECIMAL3 : 'decimal3';
-DECIMAL4 : 'decimal4';
-DECIMAL5 : 'decimal5';
-DECIMAL6 : 'decimal6';
-DECIMAL7 : 'decimal7';
-DECIMAL8 : 'decimal8';
+DECIMAL32 : 'decimal32';
+DECIMAL64 : 'decimal64';
+DECIMAL128 : 'decimal128';
 DECIMAL  : 'decimal';
 MONEY    : 'money';
 BIGDECIMAL : 'bigdecimal';
