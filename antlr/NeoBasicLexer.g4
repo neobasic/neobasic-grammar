@@ -250,9 +250,30 @@ APPEND_STDERR_REDIRECTION : '&2>>';
 
 // --- LITERALS -----------------------------------------------------
 
+// Temporal Literals 
+
+ELAPSE_LIT : [+-] DECIMAL_NUMBER TIME_SUFIX;
+
+TIME_SUFIX : [shdwmy] | 'ns' |  'us' | 'ms' | 'min';
+
 // Decimal literals (Fixed Point Numbers)
 
-DEC_LIT : [+-] DECIMAL_NUMBER [Dd];
+DEC_LIT : [+-] DECIMAL_NUMBER 'D';
+
+// Real literals (Floating Point Numbers)
+
+REAL_LIT : [+-] REAL_NUMBER;
+
+fragment REAL_NUMBER
+    : DEC_REAL
+    | HEX_REAL
+    ; 
+
+DEC_REAL : DEC_DECIMAL DEC_EXPONENT?;
+fragment DEC_EXPONENT : [eE] [+-]? DEC_GROUPS;
+
+HEX_REAL : HEX_DECIMAL HEX_EXPONENT?;
+fragment HEX_EXPONENT : [pP] [+-]? DEC_GROUPS;
 
 fragment DECIMAL_NUMBER
     : DEC_DECIMAL
@@ -273,21 +294,6 @@ fragment HEX_MANTISSA
     | '.' HEX_GROUPS
     ;
 
-// Real literals (Floating Point Numbers)
-
-REAL_LIT : [+-] REAL_NUMBER;
-
-fragment REAL_NUMBER
-    : DEC_REAL
-    | HEX_REAL
-    ; 
-
-DEC_REAL     : DEC_DECIMAL DEC_EXPONENT?;
-fragment DEC_EXPONENT : [eE] [+-]? DEC_GROUPS;
-
-HEX_REAL     : HEX_DECIMAL HEX_EXPONENT?;
-fragment HEX_EXPONENT : [pP] [+-]? DEC_GROUPS;
-
 // Rational literals
 
 RATIO_LIT : [+-] RATIONAL_NUMBER;
@@ -302,7 +308,7 @@ IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
 
 // Integer literals
 
-NATURAL_LIT : INTEGER_NUMBER [Nn];
+NATURAL_LIT : INTEGER_NUMBER 'N';
 
 INTEGER_LIT : [+-] INTEGER_NUMBER;
 

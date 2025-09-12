@@ -577,7 +577,8 @@ predeclaredValue : THIS
 
 escalarLiteral : booleanLiteral
                | numericLiteral
-               | temporalLiteral
+               | elapseLiteral
+               | dateLiteral
                | characterLiteral
                | sequenceLiteral
                ;
@@ -603,20 +604,28 @@ numericLiteral : NATURAL_LIT
                | NEGATIVEINFINITY
                ;
 
-temporalLiteral : ATOM_DOT_LIT
-                | LOCALDATE parenthesizedExpression?
-                | LOCALDATETIME parenthesizedExpression?
-                | OFFSETDATE parenthesizedExpression?
-                | OFFSETDATETIME parenthesizedExpression?
-                | ZONEDDATE parenthesizedExpression?
-                | ZONEDDATETIME parenthesizedExpression?
-                | TOMORROW
-                | TODAY
-                | NOW
-                | YESTERDAY
-                | EON
-                | EPOCH
-                ;
+// Temporal literals
+
+elapseLiteral : ATOM_DOT_LIT
+              | ELAPSE_LIT
+              ;  
+
+dateLiteral : ATOM_DOT_LIT
+            | LOCALDATE parenthesizedExpression?
+            | LOCALDATETIME parenthesizedExpression?
+            | OFFSETDATE parenthesizedExpression?
+            | OFFSETDATETIME parenthesizedExpression?
+            | ZONEDDATE parenthesizedExpression?
+            | ZONEDDATETIME parenthesizedExpression?
+            | TOMORROW
+            | TODAY
+            | NOW
+            | YESTERDAY
+            | EON
+            | EPOCH
+            ;
+
+// Character literal
 
 characterLiteral : ASCII_LIT
                  | WCHAR_LIT

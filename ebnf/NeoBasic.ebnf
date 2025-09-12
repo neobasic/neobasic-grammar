@@ -1461,7 +1461,7 @@ ArithmeticComprehension = BinaryOperator "{" Expressions { ComprehensionClause }
 
 ComprehensionClause = LoopForEachClause [ IF Expression ] .
 
-EscalarLiteral = NumericLiteral | RangeLiteral | PairLiteral | TupleLiteral
+EscalarLiteral = NumericLiteral | RangeLiteral | PairLiteral | TupleLiteral | ElapseLiteral
                | AsciiLiteral | UnicodeLiteral | StringLiteral | VerbatimLiteral | RegexLiteral
                | XmlElement | AtomLiteral | PromptLiteral | ArithmeticComprehension .
 
@@ -1476,7 +1476,7 @@ RomanInteger   = "0" ( "r" | "R" ) [ "_" ] RomanGroups .
 
 NumberLiteral = ( DecimalInteger | BinaryInteger | OctalInteger | HexInteger | RomanInteger ) . 
 
-NaturalLiteral = NumberLiteral ( "N" | "n" ) .
+NaturalLiteral = NumberLiteral "N" .
 
 IntegerLiteral = [ "+" | "-" ] NumberLiteral .
 
@@ -1497,7 +1497,7 @@ HexMantissa     = [ "_" ] HexGroups DecimalPoint [ HexGroups ]
 HexExponent     = ( "p" | "P" ) [ "+" | "-" ] DecimalGroups .
 HexReal         = "0" ( "x" | "X" ) HexMantissa HexExponent .
 
-DecLiteral      = [ "+" | "-" ] DecimalMantissa ( "D" | "d" ) .
+DecLiteral      = [ "+" | "-" ] DecimalMantissa "D" .
 
 RealLiteral     = [ "+" | "-" ] ( DecimalReal | HexReal ) .
 
@@ -1511,6 +1511,13 @@ ImaginaryLiteral = ( IntegerLiteral | RealLiteral ) ImaginaryUnit .
 (* RATIONAL LITERALS *)
 
 RationalLiteral = IntegerLiteral "//" IntegerLiteral .
+
+
+(* TEMPORAL LITERALS *)
+
+TimeSuffix = 'ns' | 'us' | 'ms' | 's' | 'min' | 'h' | 'd' | 'w' | 'm' | 'y' .
+
+ElapseLiteral = [ "+" | "-" ] ( IntegerLiteral | RealLiteral ) TimeSuffix .
 
 
 (* ASCII CHARACTER LITERALS *)
@@ -1627,11 +1634,9 @@ AtomCsiLiteral = UnicodeAtom IntegerLiteral { "." IntegerLiteral } "." AsciiPrin
 
 AtomMusicLiteral = UnicodeAtom MusicAlphabet { "." MusicAlphabet } .
 
-AtomElapseLiteral = UnicodeAtom DotFractionValue { "." DotFractionValue } .
+AtomElapseLiteral = UnicodeAtom ElapseLiteral { "." ElapseLiteral } .
 
-DotFractionValue = IntegerLiteral "." Identifier .
-
-AtomLiteral = AtomDotLiteral | AtomCsiLiteral | AtomElapseLiteral | AtomMusicLiteral .
+AtomLiteral = AtomDotLiteral | AtomCsiLiteral | AtomMusicLiteral | AtomElapseLiteral .
 
 
 (* PROMPT LITERAL *)
