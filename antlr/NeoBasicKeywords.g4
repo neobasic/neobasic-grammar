@@ -321,17 +321,17 @@ TUPLE : 'tuple';
 // ARRAY DATA TYPES
 
 ARRAY : 'array';
-LIST  : 'list';
-DICT  : 'dict';
-CHAN  : 'chan';
-VEC   : 'vec';
-MAT   : 'mat';
-SET   : 'set';
+LIST : 'list';
+MAP : 'map';
+CHANNEL : 'channel';
+VECTOR : 'vector';
+MATRIX : 'matrix';
+SET : 'set';
 QUEUE : 'queue';
 DEQUE : 'deque';
-XML   : 'xml';
+XML : 'xml';
 TABLE : 'table';
-MEMO  : 'memo';
+MEMO : 'memo';
 
 // MONAD LOGIC VALUE CONSTRUCTORS
 

@@ -335,18 +335,18 @@ INET = "inet" .
 
 (* ARRAY DATA TYPES *)
 
-ARRAY = "array" .
-LIST  = "list" .
-DICT  = "dict" .
-CHAN  = "chan" .
-VEC   = "vec" .
-MAT   = "mat" .
-SET   = "set" .
-QUEUE = "queue" .
-DEQUE = "deque" .
-XML   = "xml" .
-TABLE = "table" .
-MEMO  = "memo" .
+ARRAY   = "array" .
+LIST    = "list" .
+MAP     = "map" .
+CHANNEL = "channel" .
+VECTOR  = "vector" .
+MATRIX  = "matrix" .
+SET     = "set" .
+QUEUE   = "queue" .
+DEQUE   = "deque" .
+XML     = "xml" .
+TABLE   = "table" .
+MEMO    = "memo" .
 
 (* MONAD LOGIC VALUE CONSTRUCTORS *)
 
