@@ -811,6 +811,7 @@ InvarSentence = INVAR [ SymbolIdentifier ] GuardsExpressions .
 (* CONCURRENCY STATEMENTS *)
 
 ConcurrencyStatement = DoSentence
+                     | GosubSentence
                      | GoToSentence
                      | AwaitSentence
                      | SwitchSentence .
@@ -820,6 +821,12 @@ ConcurrencyStatement = DoSentence
 DoSentence = DO ClauseStatement .
 
 DoSequence = Statement [ ( IF | UNLESS ) Expression ] .
+
+(* GOSUB TO STATEMENT *)
+
+GosubSentence = GosubClause .
+
+GosubClause = GOSUB ClauseStatement .
 
 (* GO TO STATEMENT *)
 

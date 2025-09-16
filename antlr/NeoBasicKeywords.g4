@@ -126,6 +126,7 @@ BREAK : 'break';
 RETURN : 'return';
 YIELD : 'yield';
 GO : 'go';
+GOSUB : 'gosub';
 TO : 'to';
 AWAIT : 'await';
 SWITCH : 'switch';
