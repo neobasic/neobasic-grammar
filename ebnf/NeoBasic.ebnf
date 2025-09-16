@@ -754,8 +754,8 @@ LoopClause = LOOP ( LoopSequence | LoopBlock ) .
 
 LoopSequence = Statement [ LoopCheckFirst ] .
 
-LoopBlock = [ LoopCheckFirst ] [ UponClause ] ClauseStatement
-          | StatementSuite [ LoopCheckLast ] [ UponClause ] .
+LoopBlock = [ LoopCheckFirst ] [ NextClause ] ClauseStatement
+          | StatementSuite [ LoopCheckLast ] [ NextClause ] .
 
 LoopCheckFirst = [LoopForEachClause] [LoopWhileClause] [LoopUntilClause] [LoopUptoClause] .
 
@@ -769,18 +769,18 @@ LoopUntilClause = UNTIL Expression .
 
 LoopUptoClause = UPTO Expression .
 
-UponClause = UPON ( Expression | statement ) .
+NextClause = NEXT ( Expression | statement ) .
 
 
 (* ITERATION STATEMENTS *)
 
 IterationStatement = RedoSentence
-                   | NextSentence 
+                   | ContinueSentence 
                    | BreakSentence .
 
 RedoSentence = REDO [ Label | Expression ] .
 
-NextSentence = NEXT [ Label | Expression ] .
+ContinueSentence = CONTINUE [ Label | Expression ] .
 
 BreakSentence = BREAK [ Label | Expression ] .
 
@@ -788,13 +788,13 @@ BreakSentence = BREAK [ Label | Expression ] .
 (* CONTROL TRANSFER STATEMENTS *)
 
 ControlTransferStatement = FallthroughSentence
-                         | ContinueSentence
+                         | ResumeSentence
                          | ReturnSentence
                          | YieldSentence .
 
 FallthroughSentence = FALLTHROUGH [ Label ] .
 
-ContinueSentence = CONTINUE [ Label ] .
+ResumeSentence = RESUME [ Label ] .
 
 ReturnSentence = RETURN [ Expressions ] .
 
