@@ -747,21 +747,18 @@ LoopingStatement = LoopSentence .
 
 LoopSentence = LoopClause
                [ ThenClause ]
-               [ ElseClause ] 
                .
 
-LoopClause = LOOP ( LoopSequence | LoopBlock ) .
-
-LoopSequence = Statement [ LoopCheckFirst ] .
+LoopClause = LOOP LoopBlock .
 
 LoopBlock = [ LoopCheckFirst ] [ NextClause ] ClauseStatement
           | StatementSuite [ LoopCheckLast ] [ NextClause ] .
 
-LoopCheckFirst = [LoopForEachClause] [LoopWhileClause] [LoopUntilClause] [LoopUptoClause] .
+LoopCheckFirst = [LoopEachClause] [LoopWhileClause] [LoopUntilClause] [LoopUptoClause] .
 
 LoopCheckLast = [LoopWhileClause] [LoopUntilClause] [LoopUptoClause] .
 
-LoopForEachClause = FOR Identifiers EACH Expressions [ STEP Expression ] .
+LoopEachClause = Identifiers EACH Expressions [ STEP Expression ] .
 
 LoopWhileClause = WHILE Expression .
 
