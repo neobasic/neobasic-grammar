@@ -375,7 +375,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters MappingArrowOperator Expression .
+FactSentence = FACT SymbolIdentifier TypeParameters ( OneLinerSuiteOperator Statement | StatementSuite ) .
 
 
 (* DEF SENTENCE *)
@@ -386,7 +386,7 @@ DefSuite = EOL Indent DefDeclareList Dedent .
 
 DefDeclareList = DefDeclare { EOL DefDeclare } .
 
-DefDeclare = Identifier [ MappingArrowOperator Expression ] .
+DefDeclare = Identifier [ OneLinerSuiteOperator Expression ] .
 
 
 (* DEFN SENTENCE *)
@@ -397,7 +397,7 @@ DefnSuite = EOL Indent DefnDeclareList Dedent .
 
 DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
 
-DefnDeclare = Identifier ProcParameters MappingArrowOperator Expression .
+DefnDeclare = Identifier ProcParameters OneLinerSuiteOperator Expression .
 
 
 (* UNDEF SENTENCE *)
@@ -463,8 +463,7 @@ ResultIdentifiers = Identifiers .
 
 GuardsSuite = EOL GuardsClause .
 
-ProcBody = MappingArrowOperator Expressions
-         | MappingArrowOperator StatementSuite
+ProcBody = OneLinerSuiteOperator Expressions
          | StatementSuite .
 
 
@@ -1165,7 +1164,7 @@ ForGuardExpression = FOR [ Expressions ] GuardsExpressions .
 
 GuardsExpressions = "|" GuardExpression { "|" GuardExpression  } [ "|" Expression ] .
 
-GuardExpression = Expressions MappingArrowOperator Expression .
+GuardExpression = Expressions OneLinerSuiteOperator Expression .
 
 
 (* UNARY OPERATORS *)
@@ -1345,7 +1344,7 @@ MixinOperator = "<>" . (* Mixin, in composition, operator *)
 
 SubtypeOperator = "->" . (* Subtype / Extends operator *)
 
-MappingArrowOperator = "=>" . (* One-Liner Suite operator | Implicit return *)
+OneLinerSuiteOperator = ":" . (* One-Liner Suite operator | Implicit return *)
 
 
 (* PREFIX SYMBOL MODIFIERS *)
@@ -1427,9 +1426,9 @@ CommandThreadOperator = CommandSequence
 
 (* LAMBDA FUNCTION LITERALS *)
 
-LambdaLiteral = "(\\" LambdaBody ")" .
+LambdaLiteral = LAMBDA LambdaBody .
 
-LambdaBody = [ LambdaParmDeclares MappingArrowOperator ] ( Statement | StatementSuite ) . 
+LambdaBody = [ LambdaParmDeclares ] ( OneLinerSuiteOperator Statement | StatementSuite ) . 
 
 LambdaParmDeclares = LambdaParmDeclare { "," LambdaParmDeclare } .
 

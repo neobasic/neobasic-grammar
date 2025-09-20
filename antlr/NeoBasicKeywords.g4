@@ -78,7 +78,6 @@ SHARED : 'shared';
 VOLATILE : 'volatile';
 LOCAL : 'local';
 ATOMIC : 'atomic';
-LAMBDA : 'lambda';
 MUTABLE : 'mutable';
 TRANSIENT : 'transient';
 SYNCHRO : 'synchro';
@@ -163,6 +162,7 @@ LET : 'let';
 GET : 'get';
 OWN : 'own';
 MUT : 'mut';
+LAMBDA : 'lambda';
 
 // META OPERATORS'
 

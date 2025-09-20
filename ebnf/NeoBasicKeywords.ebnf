@@ -80,7 +80,6 @@ PRIVATE = "private" .
 
 (* DECLARATION SPECIFIERS *)
 
-LAMBDA = "lambda" .
 LINEAR = "linear" .
 SHARED = "shared" .
 VOLATILE = "volatile" .
@@ -178,6 +177,7 @@ LET = "let" .
 GET = "get" .
 OWN = "own" .
 MUT = "mut" .
+LAMBDA = "lambda" .
 
 (* META OPERATORS *)
 

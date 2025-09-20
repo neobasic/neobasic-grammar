@@ -751,7 +751,7 @@ condicionalExpression : guardsExpression;
 
 guardsExpression : guardClause+ guardDefault?;
 
-guardClause : PIPE expression MAPPING_ARROW expression;
+guardClause : PIPE expression COLON expression;
 
 guardDefault : PIPE expression;
 
