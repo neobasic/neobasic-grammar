@@ -375,7 +375,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters ( OneLinerSuiteOperator Statement | StatementSuite ) .
+FactSentence = FACT SymbolIdentifier TypeParameters ClauseStatement .
 
 
 (* DEF SENTENCE *)
@@ -647,9 +647,9 @@ ExpressionStatement = Expressions .
 
 EmptyStatement = EllipsisOperator .
 
-OneLinerStatement = "=>" Statement .
-
-ClauseStatement = Statement | OneLinerStatement | StatementSuite .
+ClauseStatement = OneLinerSuiteOperator Statement
+                | StatementSuite
+                .
 
 
 (* CONTROL FLOW STATEMENTS *)
@@ -659,7 +659,7 @@ ControlFlowStatement = DeferSentence
                      | OtherwiseSentence
                      | BeginSentence .
 
-DeferSentence = DEFER ClauseStatement .
+DeferSentence = DEFER Statement .
 
 (* WITH SENTENCE *)
 
@@ -667,7 +667,7 @@ WithSentence = WITH Expressions ClauseStatement.
 
 (* OTHERWISE SENTENCE *)
 
-OtherwiseSentence = Statement OTHERWISE ClauseStatement .
+OtherwiseSentence = Statement OTHERWISE Statement .
 
 (* BEGIN SENTENCE *)
 
@@ -1426,9 +1426,7 @@ CommandThreadOperator = CommandSequence
 
 (* LAMBDA FUNCTION LITERALS *)
 
-LambdaLiteral = LAMBDA LambdaBody .
-
-LambdaBody = [ LambdaParmDeclares ] ( OneLinerSuiteOperator Statement | StatementSuite ) . 
+LambdaLiteral = LAMBDA [ LambdaParmDeclares ] ClauseStatement .
 
 LambdaParmDeclares = LambdaParmDeclare { "," LambdaParmDeclare } .
 
