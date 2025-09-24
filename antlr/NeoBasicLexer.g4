@@ -212,8 +212,9 @@ INTERVAL_RIGHT
 
 // Composite Operators
 
-MIXIN   : '<>';
-EXTENDS : '->';
+DIAMOND   : '<>';
+
+RIGHT_ARROW : '->';
 
 // Imply Operators
 

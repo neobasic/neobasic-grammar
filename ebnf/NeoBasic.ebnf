@@ -134,7 +134,7 @@ InterfaceMemberDeclare = MixinSentence
                        | RpcMethodDeclare
                        | ExternMethodDeclare .
 
-MixinSentence = MixinOperator Types .
+MixinSentence = MIXIN Types .
 
 RpcMethodDeclare = RPROC SymbolIdentifier RpcParameters RpcResult .
 
@@ -358,7 +358,7 @@ TypeSuite = EOL Indent TypeDeclareList Dedent .
 
 TypeDeclareList = TypeDeclare { EOL TypeDeclare } .
 
-TypeDeclare = SymbolIdentifier [ GenericTypes ] [ ":" | AS | SubtypeOperator | MixinOperator ] Type [ "=" TypeName ] [ MonadBody ] .
+TypeDeclare = SymbolIdentifier [ GenericTypes ] [ ":" | AS | SubtypeOperator ] Type [ "=" TypeName ] [ MonadBody ] .
 
 MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
 
@@ -575,9 +575,9 @@ ObjectSentence = OBJECT SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implemen
 
 ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
 
-Extends = SubtypeOperator Type .
+Extends = EXTEND Type .
 
-Implements = SubtypeOperator Types .
+Implements = IMPLEMENT Types .
 
 ClassBody = EOL Indent ClassMemberDeclaresList Dedent
           | ":" ClassMemberDeclares .
@@ -1338,11 +1338,11 @@ AssignmentOperator = SingleAssignmentOperator | CompoundAssignmentOperator .
 
 (* IMPLICATION OPERATORS *)
 
-NeckRule = ":-" .
+NeckRule = ":-" .   (* ??? *)
 
-MixinOperator = "<>" . (* Mixin, in composition, operator *)
+DiamondOperator = "<>" .   (* ??? *)
 
-SubtypeOperator = "->" . (* Subtype / Extends operator *)
+RightArrowOperator = "->" .   (* ??? *)
 
 OneLinerSuiteOperator = ":" . (* One-Liner Suite operator | Implicit return *)
 
