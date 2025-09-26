@@ -1,4 +1,4 @@
-# NeoBASIC Grammar
+# 🔰 NeoBASIC Grammar
 
 This is the grammar for the NeoBASIC programming language, using the notations EBNF (Extended Backus-Naur Form) and G4 from ANTLR (ANother Tool for Language Recognition).
 
