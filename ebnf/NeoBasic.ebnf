@@ -537,7 +537,7 @@ CompositeMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] ProcBod
 
 (* PROTO SENTENCE *)
 
-ProtoSentence = PROTO SymbolIdentifier [ GenericTypes ] [ Implements ] ProtoBody .
+ProtoSentence = PROTO SymbolIdentifier [ GenericTypes ] [ Complies ] ProtoBody .
 
 ProtoBody = EOL Indent ProtoMethodDeclaresList Dedent
           | ProtoMethodDeclares .
@@ -553,7 +553,7 @@ AbstractMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] .
 
 (* TRAIT SENTENCE *)
 
-TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Implements | MixinSentence ] TraitBody .
+TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Complies | MixinSentence ] TraitBody .
 
 TraitBody = EOL Indent TraitMemberDeclaresList Dedent
           | TraitMemberDeclares .
@@ -571,13 +571,13 @@ TraitMemberDeclare = MixinSentence
 
 (* CLASS & OBJECT SENTENCE *)
 
-ObjectSentence = OBJECT SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
+ObjectSentence = OBJECT SymbolIdentifier [ GenericTypes ] [ Extends ] [ Complies ] [ MixinSentence ] ClassBody .
 
-ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
+ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Complies ] [ MixinSentence ] ClassBody .
 
 Extends = EXTEND Type .
 
-Implements = IMPLEMENT Types .
+Complies = COMPLY Types .
 
 ClassBody = EOL Indent ClassMemberDeclaresList Dedent
           | ":" ClassMemberDeclares .
