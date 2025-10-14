@@ -331,11 +331,11 @@ TestStatement = AssertionTest | UnitTest .
 
 TopLevelSentence = StereotypesList TopLevelSentence
                  | TypeSentence
-                 | DefSentence
+                 | DefineSentence
                  | DefnSentence
-                 | UndefSentence
+                 | UnDefineSentence
                  | ConstSentence
-                 | ValSentence
+                 | IvalSentence
                  | VarSentence
                  | FuncSentence
                  | FactSentence
@@ -378,18 +378,18 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 FactSentence = FACT SymbolIdentifier TypeParameters ClauseStatement .
 
 
-(* DEF SENTENCE *)
+(* DEFINE SENTENCE *)
 
-DefSentence = DEF ( DefDeclare | DefSuite ) .
+DefineSentence = DEFINE ( DefineDeclare | DefineSuite ) .
 
-DefSuite = EOL Indent DefDeclareList Dedent .
+DefineSuite = EOL Indent DefineDeclareList Dedent .
 
-DefDeclareList = DefDeclare { EOL DefDeclare } .
+DefineDeclareList = DefineDeclare { EOL DefineDeclare } .
 
-DefDeclare = Identifier [ OneLinerSuiteOperator Expression ] .
+DefineDeclare = Identifier [ OneLinerSuiteOperator Expression ] .
 
 
-(* DEFN SENTENCE *)
+(* ??? DEFN SENTENCE ??? *)
 
 DefnSentence = DEFN ( DefnDeclare | DefnSuite ) .
 
@@ -402,13 +402,13 @@ DefnDeclare = Identifier ProcParameters OneLinerSuiteOperator Expression .
 
 (* UNDEF SENTENCE *)
 
-UndefSentence = UNDEF ( UndefDeclare | UndefSuite ) .
+UnDefineSentence = UNDEF ( UnDefineDeclare | UnDefineSuite ) .
 
-UndefSuite = EOL Indent UndefDeclareList Dedent .
+UnDefineSuite = EOL Indent UnDefineDeclareList Dedent .
 
-UndefDeclareList = UndefDeclare { EOL UndefDeclare } . 
+UnDefineDeclareList = UnDefineDeclare { EOL UnDefineDeclare } . 
 
-UndefDeclare = Identifier .
+UnDefineDeclare = Identifier .
 
 
 (* CONST SENTENCE *)
@@ -416,9 +416,9 @@ UndefDeclare = Identifier .
 ConstSentence = CONST ( VarDeclares | VarSuite ) .
 
 
-(* VAL SENTENCE *)
+(* IVAL SENTENCE *)
 
-ValSentence = VAL ( VarDeclares | VarSuite ) . 
+IvalSentence = IVAL ( VarDeclares | VarSuite ) . 
 
 
 (* VAR SENTENCE *)

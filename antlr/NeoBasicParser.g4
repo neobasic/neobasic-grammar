@@ -65,7 +65,7 @@ canaryTestingDirective : WOODSTOCK expression (EXCLAMATION | EXCLAMATION express
 
 declaration : accessSpecifier declaration
             | constSentence
-            | valSentence
+            | ivalSentence
             | varSentence
             ;
 
@@ -97,26 +97,26 @@ constDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
 // Value declaration
 
-valSentence : valSpecifier* valClause;
+ivalSentence : ivalSpecifier* ivalClause;
 
-valSpecifier : COMPTIME
-             | STATIC
-             | LINEAR
-             | INLINE
-             ;
+ivalSpecifier : COMPTIME
+              | STATIC
+              | LINEAR
+              | INLINE
+              ;
 
-valClause : VAL varDeclare;
+ivalClause : IVAL ivalDeclare;
 
-valDeclare : valDeclareSingle
-           | valDeclareMultiple
-           | valDeclareParallel
-           ;
+ivalDeclare : ivalDeclareSingle
+            | ivalDeclareMultiple
+            | ivalDeclareParallel
+            ;
 
-valDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?;
+ivalDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?;
 
-valDeclareMultiple : valDeclareSingle (COMMA valDeclareSingle)+;
+ivalDeclareMultiple : ivalDeclareSingle (COMMA ivalDeclareSingle)+;
 
-valDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
+ivalDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
 // Variable declaration
 

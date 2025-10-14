@@ -39,7 +39,7 @@ FOREIGN : 'foreign';
 // TOP LEVEL SENTENCES
 
 CONST : 'const';
-VAL : 'val';
+IVAL : 'ival';
 VAR : 'var';
 TYPE : 'type';
 DIM : 'dim';
@@ -58,7 +58,7 @@ OBJECT : 'object';
 GETTER : 'getter';
 SETTER : 'setter';
 EVENT : 'event';
-DEF : 'def';
+DEFINE : 'define';
 DEFN : 'defn';
 UNDEF : 'undef';
 
