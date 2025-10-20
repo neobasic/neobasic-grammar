@@ -447,7 +447,8 @@ ProcParameters = "(" [ ParmDeclares ] ")"
 
 ParmDeclares = ParmDeclare { "," ParmDeclare } .
 
-ParmDeclare = [ ParmIdentifiers ] Type [ "=" Expression ] .
+ParmDeclare = [ VAR ] [ ParmIdentifiers ] Type 
+            | [ ParmIdentifiers ] Type [ "=" Expression ] .
 
 ParmIdentifiers = ParmIdentifier { "," ParmIdentifier } .
 
