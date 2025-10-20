@@ -461,6 +461,11 @@ CHGRP : 'chgrp';
 RAISE : 'raise';
 PANIC : 'panic';
 
+// BUILT-IN CLONE MACROS
+
+CLONE : 'clone';  // Deep copy
+DUPLE : 'duple';  // Shallow copy
+
 // MAGIC COMMENT: TEST
 
 UNIT : 'unit';
