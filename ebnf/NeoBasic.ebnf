@@ -386,7 +386,7 @@ DefineSuite = EOL Indent DefineDeclareList Dedent .
 
 DefineDeclareList = DefineDeclare { EOL DefineDeclare } .
 
-DefineDeclare = Identifier [ OneLinerSuiteOperator Expression ] .
+DefineDeclare = Identifier [ ExpressionDeclarator Expression ] .
 
 
 (* ??? DEFN SENTENCE ??? *)
@@ -397,7 +397,7 @@ DefnSuite = EOL Indent DefnDeclareList Dedent .
 
 DefnDeclareList = DefnDeclare { EOL DefnDeclare } .
 
-DefnDeclare = Identifier ProcParameters OneLinerSuiteOperator Expression .
+DefnDeclare = Identifier ProcParameters ExpressionDeclarator Expression .
 
 
 (* UNDEF SENTENCE *)
@@ -464,7 +464,7 @@ ResultIdentifiers = Identifiers .
 
 GuardsSuite = EOL GuardsClause .
 
-ProcBody = OneLinerSuiteOperator Expressions
+ProcBody = ExpressionDeclarator Expressions
          | StatementSuite .
 
 
@@ -648,7 +648,7 @@ ExpressionStatement = Expressions .
 
 EmptyStatement = EllipsisOperator .
 
-ClauseStatement = OneLinerSuiteOperator Statement
+ClauseStatement = ExpressionDeclarator Statement
                 | StatementSuite
                 .
 
@@ -1165,7 +1165,7 @@ ForGuardExpression = FOR [ Expressions ] GuardsExpressions .
 
 GuardsExpressions = "|" GuardExpression { "|" GuardExpression  } [ "|" Expression ] .
 
-GuardExpression = Expressions OneLinerSuiteOperator Expression .
+GuardExpression = Expressions ExpressionDeclarator Expression .
 
 
 (* UNARY OPERATORS *)
@@ -1307,7 +1307,7 @@ BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAdd
 (* ASSIGNMENT OPERATORS *)
 
 SingleAssignmentOperator = "="   /* Simple assignment */
-                         | ":="  /* Destructuring assignment  */
+                         | ":="  /* Derived declaration assignment  */
                          | "<-"  /* Pop-one assignment */
                          | "<<-" /* Pull-all assignment */
                          | "<|"  /* Pipe assignment */
@@ -1345,7 +1345,7 @@ DiamondOperator = "<>" .   (* ??? *)
 
 RightArrowOperator = "->" .   (* ??? *)
 
-OneLinerSuiteOperator = ":" . (* One-Liner Suite operator | Implicit return *)
+ExpressionDeclarator = ":" . (* One-Liner Suite operator | Implicit return *)
 
 
 (* PREFIX SYMBOL MODIFIERS *)
