@@ -152,7 +152,6 @@ statement : labelIdentifier COLON
           | labelIdentifier COLON statement
           | RUBBERDUCK statement
           | SONGBIRD statement
-          | LEFT_PARENTHESIS statement RIGHT_PARENTHESIS
           | simpleStatement 
           | compoundStatement
           ;
@@ -743,7 +742,10 @@ expression : primaryExpression
            | assignmentExpression
            | condicionalExpression
            | macroExpression
+           | s_Expression
            ;
+
+s_Expression : LEFT_PARENTHESIS statement RIGHT_PARENTHESIS;
 
 assignmentExpression : primaryExpression assignmentOperator expression;
 
