@@ -375,7 +375,7 @@ MonadicValueDeclare = SymbolIdentifier [ "(" TypeParameter ")" ] [ "=" Expressio
 
 (* FACT SENTENCE *)
 
-FactSentence = FACT SymbolIdentifier TypeParameters ClauseStatement .
+FactSentence = FACT SymbolIdentifier TypeParameters ProcBody .
 
 
 (* DEFINE SENTENCE *)
@@ -618,14 +618,11 @@ TracingStatement = SongBird [ Statement ] .
 
 (* STATEMENTS AND BLOCKS *)
 
-StatementSuite = "(" StatementSuite ")"
-               | EOL Indent StatementBlock Dedent
-               | ":" Statement .
+StatementSuite = EOL Indent StatementBlock Dedent .
 
 StatementBlock = Statement { EOL Statement } .
 
-Statement      = "(" Statement ")"
-               | AtomStereotypes Statement
+Statement      = AtomStereotypes Statement
                | Statement CommandThreadOperator Statement 
                | Label Statement
                | ExpressionStatement
@@ -648,7 +645,7 @@ ExpressionStatement = Expressions .
 
 EmptyStatement = EllipsisOperator .
 
-ClauseStatement = ExpressionDeclarator Statement
+ClauseStatement = DO Statement
                 | StatementSuite
                 .
 
@@ -807,23 +804,17 @@ InvarSentence = INVAR [ SymbolIdentifier ] GuardsExpressions .
 
 (* CONCURRENCY STATEMENTS *)
 
-ConcurrencyStatement = DoSentence
-                     | GosubSentence
+ConcurrencyStatement = GosubSentence
                      | GoToSentence
                      | AwaitSentence
                      | SwitchSentence .
 
-(* DO SENTENCE *)
 
-DoSentence = DO ClauseStatement .
-
-DoSequence = Statement [ ( IF | UNLESS ) Expression ] .
-
-(* GOSUB TO STATEMENT *)
+(* GOSUB STATEMENT *)
 
 GosubSentence = GosubClause .
 
-GosubClause = GOSUB ClauseStatement .
+GosubClause = GOSUB StatementSuite .
 
 (* GO TO STATEMENT *)
 
@@ -1068,7 +1059,10 @@ ResultOption = OKAY | FAIL .
 (* EXPRESSIONS *)
 
 Expression = UnaryExpression | BinaryExpression | LetExpression | GetExpression | FactExpression
-           | EagerEvaluateExpression | CondicionalExpression | FunctorExpression .
+           | EagerEvaluateExpression | CondicionalExpression | FunctorExpression 
+           | S_Expression .
+
+S_Expression = "(" Statement ")" .
 
 Expressions = Expression { "," Expression } .
 
@@ -1427,7 +1421,7 @@ CommandThreadOperator = CommandSequence
 
 (* LAMBDA FUNCTION LITERALS *)
 
-LambdaLiteral = LAMBDA [ LambdaParmDeclares ] ClauseStatement .
+LambdaLiteral = LAMBDA [ LambdaParmDeclares ] ExpressionDeclarator Expressions .
 
 LambdaParmDeclares = LambdaParmDeclare { "," LambdaParmDeclare } .
 
