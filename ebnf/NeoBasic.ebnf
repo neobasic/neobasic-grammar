@@ -1062,7 +1062,7 @@ Expression = UnaryExpression | BinaryExpression | LetExpression | GetExpression 
            | EagerEvaluateExpression | CondicionalExpression | FunctorExpression 
            | S_Expression .
 
-S_Expression = "(" Statement ")" .
+S_Expression = "(" [ Statement | StatementSuite ] ")" .
 
 Expressions = Expression { "," Expression } .
 
