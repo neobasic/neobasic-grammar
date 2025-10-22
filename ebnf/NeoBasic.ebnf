@@ -1083,8 +1083,8 @@ LetExpression = LET Expression .
 
 GetExpression = GET Expression Expression .
 
-FactExpression = [ FactScope "`" ] Identifier Expressions
-               | Expression IS [NOT] [ FactScope "`" ] Identifier .
+FactExpression = [ FactScope "->" ] Identifier Expressions
+               | Expression IS [NOT] [ FactScope "->" ] Identifier .
 
 EagerEvaluateExpression = UnaryEvaluate "(" Expression ")" .
 
