@@ -1070,7 +1070,7 @@ JuxtapositionExpression = Expression { Expression } .
 
 PredeclaredValue = THIS | IOTA | NTH | TOP | END | IT | SELF | SUPER.
 
-FactScope = ALL | ANY | ONE | TWO | NIL .
+FactScope = ALL | ANY | LOT | NIL | ONE | TWO .
 
 Literal = EscalarLiteral | CompoundLiteral | LambdaLiteral .
 

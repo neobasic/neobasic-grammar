@@ -155,9 +155,10 @@ PARENT : 'parent';
 
 ALL : 'all';
 ANY : 'any';
+LOT : 'lot';
+NIL : 'nil';
 ONE : 'one';
 TWO : 'two';
-NIL : 'nil';
 
 // EXPRESSIONS
 

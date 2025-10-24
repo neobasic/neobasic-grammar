@@ -719,9 +719,10 @@ sliceExpression : expression COLON expression
 
 factScope : ALL
           | ANY
+          | LOT
+          | NIL
           | ONE
           | TWO
-          | NIL
           ;
 
 expression : primaryExpression
