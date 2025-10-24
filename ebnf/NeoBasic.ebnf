@@ -358,7 +358,7 @@ TypeSuite = EOL Indent TypeDeclareList Dedent .
 
 TypeDeclareList = TypeDeclare { EOL TypeDeclare } .
 
-TypeDeclare = SymbolIdentifier [ GenericTypes ] [ ":" | AS | SubtypeOperator ] Type [ "=" TypeName ] [ MonadBody ] .
+TypeDeclare = SymbolIdentifier [ GenericTypes ] [ ":" | AS | EXTEND ] Type [ "=" TypeName ] [ MonadBody ] .
 
 MonadBody = EOL Indent MonadMemberDeclaresList Dedent .
 
@@ -440,7 +440,7 @@ DeclareAssignment = SingleAssignmentOperator Expressions .
 
 FuncSentence = FUNC FunctionName [ GenericTypes ] ProcParameters ProcResults ( GuardsSuite | ProcBody ) .
 
-FunctionName = SymbolIdentifier [ SubtypeOperator Identifier ] .
+FunctionName = SymbolIdentifier [ "." Identifier ] .
 
 ProcParameters = "(" [ ParmDeclares ] ")"
                | ParmDeclare "=>" { ParmDeclare "=>" } .
@@ -538,7 +538,7 @@ CompositeMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] ProcBod
 
 (* PROTO SENTENCE *)
 
-ProtoSentence = PROTO SymbolIdentifier [ GenericTypes ] [ Complies ] ProtoBody .
+ProtoSentence = PROTO SymbolIdentifier [ GenericTypes ] [ Implements ] ProtoBody .
 
 ProtoBody = EOL Indent ProtoMethodDeclaresList Dedent
           | ProtoMethodDeclares .
@@ -554,7 +554,7 @@ AbstractMethodDeclare = SymbolIdentifier ProcParameters [ ProcResults ] .
 
 (* TRAIT SENTENCE *)
 
-TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Complies | MixinSentence ] TraitBody .
+TraitSentence = TRAIT SymbolIdentifier [ GenericTypes ] [ Implements | MixinSentence ] TraitBody .
 
 TraitBody = EOL Indent TraitMemberDeclaresList Dedent
           | TraitMemberDeclares .
@@ -572,13 +572,13 @@ TraitMemberDeclare = MixinSentence
 
 (* CLASS & OBJECT SENTENCE *)
 
-ObjectSentence = OBJECT SymbolIdentifier [ GenericTypes ] [ Extends ] [ Complies ] [ MixinSentence ] ClassBody .
+ObjectSentence = OBJECT SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
 
-ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Complies ] [ MixinSentence ] ClassBody .
+ClassSentence = CLASS SymbolIdentifier [ GenericTypes ] [ Extends ] [ Implements ] [ MixinSentence ] ClassBody .
 
 Extends = EXTEND Type .
 
-Complies = COMPLY Types .
+Implements = IMPLEMENT Types .
 
 ClassBody = EOL Indent ClassMemberDeclaresList Dedent
           | ":" ClassMemberDeclares .
@@ -1060,9 +1060,9 @@ ResultOption = OKAY | FAIL .
 
 Expression = UnaryExpression | BinaryExpression | LetExpression | GetExpression | FactExpression
            | EagerEvaluateExpression | CondicionalExpression | FunctorExpression 
-           | S_Expression .
+           | SoS_Expression .
 
-S_Expression = "(" [ Statement | StatementSuite ] ")" .
+SoS_Expression = "(" [ Statement | StatementSuite ] ")" .
 
 Expressions = Expression { "," Expression } .
 

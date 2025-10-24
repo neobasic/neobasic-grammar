@@ -742,10 +742,10 @@ expression : primaryExpression
            | assignmentExpression
            | condicionalExpression
            | macroExpression
-           | s_Expression
+           | sos_Expression
            ;
 
-s_Expression : LEFT_PARENTHESIS statement RIGHT_PARENTHESIS;
+sos_Expression : LEFT_PARENTHESIS statement RIGHT_PARENTHESIS;
 
 assignmentExpression : primaryExpression assignmentOperator expression;
 

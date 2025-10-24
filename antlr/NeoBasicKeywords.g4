@@ -91,7 +91,7 @@ SEALED : 'sealed';
 SINGLETON : 'singleton';
 RECORD : 'record';
 EXTEND : 'extend';
-COMPLY : 'comply';
+IMPLEMENT : 'implement';
 MIXIN : 'mixin';
 MONAD : 'monad';
 MEASURE : 'measure';
