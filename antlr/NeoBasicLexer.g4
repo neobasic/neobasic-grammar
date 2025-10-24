@@ -214,15 +214,13 @@ INTERVAL_RIGHT
 
 DIAMOND   : '<>';
 
-RIGHT_ARROW : '->';
-
 // Imply Operators
 
 NECK_RULE : ':-';
 
-MAPPING_ARROW : '=>';
+FUNCTOR : '->';
 
-MONAD_BIND : '=>>';
+MONAD_BIND : '=>';
 
 // Pipeline Operator
 

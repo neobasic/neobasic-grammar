@@ -475,7 +475,7 @@ FeedSentence = FEED FunctionName [ GenericTypes ] ProcParameters ( GuardsSuite |
 
 (* FMAP SENTENCE *) 
 
-FmapSentence = FMAP FunctionName [ GenericTypes ] ProcParameters [ "=>>" ProcResults ] ( GuardsSuite | ProcBody ) .
+FmapSentence = FMAP FunctionName [ GenericTypes ] ProcParameters [ "=>" ProcResults ] ( GuardsSuite | ProcBody ) .
 
 
 (* SUB SENTENCE *)
@@ -1285,7 +1285,7 @@ CoalescingOperator = "!!" /* Error coalescing */
 
 PipelineOperator = "|>" . (* Pipeline sequence *)
 
-MonadBindOperador = "=>>" .
+MonadBindOperador = "=>" .
 
 FunctorInfixOperador = "`" .
 
