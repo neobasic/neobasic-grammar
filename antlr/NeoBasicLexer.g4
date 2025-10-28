@@ -19,9 +19,9 @@ lexer grammar NeoBasicLexer;
 
 import NeoBasicKeywords;
 
-options {
-    superClass = NeoBasicLexerBase;
-}
+// options {
+//     superClass = NeoBasicLexerBase;
+// }
 
 channels {
     COMMENT,
