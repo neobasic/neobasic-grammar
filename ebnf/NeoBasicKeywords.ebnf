@@ -198,13 +198,14 @@ LIKE = "like" .
 
 (* LOGICAL OPERATORS *)
 
-NOT = "not" .
 AND = "and" .
+ANDN = "andn" .
 NAND = "nand" .
 OR = "or" .
 NOR = "nor" .
 XOR = "xor" .
 NXOR = "nxor" .
+NOT = "not" .
 
 (* ARRAY OPERATORS *)
 

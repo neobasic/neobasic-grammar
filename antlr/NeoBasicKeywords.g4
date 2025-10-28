@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 lexer grammar NeoBasicKeywords;
 
+
 // --- KEYWORDS -----------------------------------------------------
 
 // IDENTIFICATION DIVISION
@@ -183,13 +184,14 @@ LIKE : 'like';
 
 // LOGICAL OPERATORS
 
-NOT : 'not';
 AND : 'and';
-OR : 'or';
-XOR : 'xor';
+ANDN : 'andn';
 NAND : 'nand';
+OR : 'or';
 NOR : 'nor';
+XOR : 'xor';
 NXOR : 'nxor';
+NOT : 'not';
 
 // ARRAY OPERATORS
 

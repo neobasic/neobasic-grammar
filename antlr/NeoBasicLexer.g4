@@ -32,6 +32,7 @@ channels {
  *  Default Lexer Mode
  */
 
+
 // --- PUNCTUATION --------------------------------------------------
 
 LEFT_PARENTHESIS  : '(';    // 
@@ -95,13 +96,8 @@ SPECIAL_ASSIGNMENT   : '~=';   //
 
 INCREMENT     : '++';
 DECREMENT     : '--';
-SQUARE_POWER  : '**';
-SQUARE_ROOT   : '*/';
+SQUARE_ROOT   : '^/';
 FACTORIAL     : '*!';
-
-// Bitwise Operators
-
-BIT_NEGATION  : '~~';
 
 // Miscellaneous Operators
 
@@ -126,7 +122,6 @@ PERCENTAGE_VARIATION : '%^';
 
 // Bitwise Operators
 
-BIT_CLEAR            : '&~';
 UNSIGNED_RIGHT_SHIFT : '>>>';
 
 // Conditional Operators
@@ -168,17 +163,13 @@ REAL_DIVISION_ASSIGNMENT        : '/=';
 INTEGER_DIVISION_ASSIGNMENT     : '÷=';
 QUOTIENT_ASSIGNMENT             : '%%=';
 MODULO_ASSIGNMENT               : '%=';
-NTH_POWER_ASSIGNMENT            : '**=';
-NTH_ROOT_ASSIGNMENT             : '*/=';
+NTH_POWER_ASSIGNMENT            : '^=';
+NTH_ROOT_ASSIGNMENT             : '^/=';
 PERCENTAGE_RATE_ASSIGNMENT      : '%/=';
 PERCENTAGE_AMOUNT_ASSIGNMENT    : '%*=';
 PERCENTAGE_INCREASE_ASSIGNMENT  : '%+=';
 PERCENTAGE_DECREASE_ASSIGNMENT  : '%-=';
-PERCENTAGE_VARIATION_ASSIGNMENT : '%^⁼';
-BIT_AND_ASSIGNMENT              : '&=';
-BIT_OR_ASSIGNMENT               : '|=';
-BIT_XOR_ASSIGNMENT              : '^=';
-BIT_CLEAR_ASSIGNMENT            : '&^=';
+PERCENTAGE_VARIATION_ASSIGNMENT : '%^=';
 LEFT_SHIFT_ASSIGNMENT           : '<<=';
 SIGNED_RIGHT_SHIFT_ASSIGNMENT   : '>>=';
 UNSIGNED_RIGHT_SHIFT_ASSIGNMENT : '>>>=';

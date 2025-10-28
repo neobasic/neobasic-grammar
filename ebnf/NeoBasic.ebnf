@@ -627,6 +627,7 @@ Statement      = AtomStereotypes Statement
                | Label Statement
                | ExpressionStatement
                | EmptyStatement
+               | ConsoleStatement
                | ControlFlowStatement
                | ConditionalStatement
                | LoopingStatement
@@ -648,6 +649,15 @@ EmptyStatement = EllipsisOperator .
 ClauseStatement = DO Statement
                 | StatementSuite
                 .
+
+
+(* CONSOLE STATEMENTS *)
+
+ConsoleStatement = EchoCommand | ScanCommand .
+
+EchoCommand = ECHO [ Expression ]  [ "," ] .
+
+ScanCommand = SCAN [ EscalarType ] [ Expression ] [ "," ] .
 
 
 (* CONTROL FLOW STATEMENTS *)
@@ -1170,19 +1180,14 @@ UnaryEvaluate   = "&" . (* Eager Expression or Memory address of a var *)
 
 UnaryArithmetic = "+"  /* Plus sign */
                 | "-"  /* Minus sign */
-                | "**" /* Square power */
-                | "*/" /* Square root */
+                | "^"  /* Square power */
+                | "^/" /* Square root */
                 | "*!" /* Factorial */
                 | "++" /* Increment of a var */
                 | "--" /* Decrement of a var */ 
                 .
 
-UnaryBitwise    = "~"  /* Bitwise negation */
-                | "~~" /* Bitwise negation of a var */
-                .
-
-UnarySort       = "^"  /* Sort ascending or descending a data structure */
-                | "^^" /* Sort ascending or descending a var */
+UnarySort       = "^^" /* Sort ascending or descending a data structure */
                 .
 
 UnarySpread     = "..." . (* Spread *)
@@ -1203,7 +1208,7 @@ UnaryArray = EACH       /* Generate an iterator of a iterable var (for loops),
            | DEL        /* Delete an item of a data structure or a char of a string */
            .
 
-PrefixUnaryOperator  = UnaryBoolean | UnaryEvaluate | UnaryArithmetic | UnaryBitwise
+PrefixUnaryOperator  = UnaryBoolean | UnaryEvaluate | UnaryArithmetic
                      | UnarySort | UnarySpread | UnaryMeta | UnaryArray .
 
 PosfixUnaryOperator = UnarySort | UnaryClone .
@@ -1239,14 +1244,6 @@ BitwiseShiftOperator = "<<"  /* Left shift */
                      | ">>>" /* Unsigned right shift */
                      .
 
-BitwiseMultOperator = "&"  /* Bitwise AND */
-                    | "&~" /* Bitwise bitclear (AND NOT) */
-                    .
-
-BitwiseAddOperator = "|" /* Bitwise OR */
-                   | "^" /* Bitwise XOR */
-                   .
-
 ComparisonOperator = "<=>" /* Three-way comparison */
                    | "?:"  /* Elvis comparison */
                    .
@@ -1264,10 +1261,11 @@ RelationalOperator = "=="  /* Strict Equality (test type and value) */
                    .
 
 BinaryBoolean   = AND   /* Logical AND */
-                | OR    /* Logical OR */
-                | XOR   /* Logical XOR */
+                | ANDN  /* Logical AND NOT (Bit clear) */
                 | NAND  /* Logical NAND */
+                | OR    /* Logical OR */
                 | NOR   /* Logical NOR */
+                | XOR   /* Logical XOR */
                 | NXOR  /* Logical NXOR */ 
                 .
 
@@ -1290,8 +1288,7 @@ MonadBindOperador = "=>" .
 FunctorInfixOperador = "`" .
 
 BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAddOperator
-                | PercentageOperator | EllipsisOperator
-                | BitwiseShiftOperator | BitwiseMultOperator | BitwiseAddOperator
+                | PercentageOperator | EllipsisOperator | BitwiseShiftOperator
                 | ComparisonOperator | ConcatenationOperator
                 | RelationalOperator | BinaryBoolean   | ConditionalOperator
                 | CoalescingOperator | PipelineOperator
@@ -1307,25 +1304,20 @@ SingleAssignmentOperator = "="   /* Simple assignment */
                          | "<|"  /* Pipe assignment */
                          .
 
-CompoundAssignmentOperator = "**="  /* Nth power Compound assignment */
-                           | "*/="  /* Nth root Compound assignment */
+CompoundAssignmentOperator = "^="   /* Nth power Compound assignment */
+                           | "^/="  /* Nth root Compound assignment */
                            | "*="   /* Multiplication Compound assignment */
                            | "/="   /* Real Division Compound assignment */
                            | "%%="  /* Quotient Compound assignment */
                            | "÷="   /* Quotient Compound assignment */
                            | "%="   /* Remainder Compound assignment */
-                           | "+="   /* Addition Compound assignment */
+                           | "+="   /* Addition / String concatenation Compound assignment */
                            | "-="   /* Subtraction Compound assignment */
                            | "%+="  /* Percentage Increase Compound assignment */
                            | "%-="  /* Percentage Decrease Compound assignment */
                            | "<<="  /* Left shift Compound assignment */
                            | ">>="  /* Right shift Compound assignment */
                            | ">>>=" /* Unsigned right shift Compound assignment */
-                           | "&="   /* Bitwise AND Compound assignment */
-                           | "&^="  /* Bitwise bit Cancel (AND NOT) Compound assignment */
-                           | "^="   /* Bitwise XOR Compound assignment */
-                           | "|="   /* Bitwise OR Compound assignment */
-                           | ".="   /* String concatenation Compound assignment */
                            .
 
 AssignmentOperator = SingleAssignmentOperator | CompoundAssignmentOperator .

@@ -21,7 +21,7 @@ parser grammar NeoBasicParser;
 
 options {
     tokenVocab = NeoBasicLexer;
-    superClass = NeoBasicParserBase;
+//     superClass = NeoBasicParserBase;
 }
 
 
@@ -161,6 +161,7 @@ statement : labelIdentifier COLON
 simpleStatement : emptyStatement
                 | expressionStatement
                 | assignmentStatement
+                | consoleStatement
                 ;
 
 emptyStatement : ELLIPSIS;
@@ -179,6 +180,16 @@ assignmentSingle : primaryExpression singleAssignmentOperator expression;
 assignmentMultiple : assignmentSingle (COMMA assignmentSingle)+;
 
 assignmentParallel : primaryExpressions (singleAssignmentOperator | multipleAssignmentOperator) expressions;
+
+// Console statements
+
+consoleStatement : echoCommand
+                 | scanCommand
+                 ;
+
+echoCommand : ECHO expression? COMMA?;
+
+scanCommand : SCAN escalarType? expression? COMMA?;
 
 // Compound statements
 
@@ -212,7 +223,6 @@ unlessClause : simpleStatement UNLESS expression;
 // --- UNARY OPERATORS ----------------------------------------------
 
 prefixUnaryOperator : unaryArithmeticOperator
-                    | unaryBitwiseOperator
                     | unaryLogicalOperator
                     | unarySpreadOperator
                     | unarySortOperator
@@ -229,16 +239,12 @@ unaryArithmeticOperator : PLUS
                         | MINUS
                         | INCREMENT
                         | DECREMENT
-                        | SQUARE_POWER
+                        | CARET
                         | SQUARE_ROOT
                         | FACTORIAL
                         ;
 
 //  Bitwise and Logical Operators
-
-unaryBitwiseOperator : TILDE
-                     | BIT_NEGATION
-                     ;
 
 unaryLogicalOperator : NOT;
 
@@ -246,8 +252,7 @@ unaryLogicalOperator : NOT;
 
 unarySpreadOperator : ELLIPSIS;
 
-unarySortOperator : CARET    // Sort ascending or descending a data structure
-                  | SORTING  // Sort ascending or descending a var
+unarySortOperator : SORTING    // Sort ascending or descending a data structure
                   ;
 
 unaryCloneOperator : EQUAL         // Shallow copy
@@ -262,7 +267,7 @@ unaryMetaOperator : TYPEOF
 
 // Arithmetic Operators (Infix Notation)
 
-binaryExponentialOperator : SQUARE_POWER
+binaryExponentialOperator : CARET
                           | SQUARE_ROOT
                           ;
 
@@ -288,14 +293,6 @@ bitShiftOperator : DOUBLE_LEFT_ANGLE
                  | DOUBLE_RIGHT_ANGLE
                  | UNSIGNED_RIGHT_SHIFT
                  ;
-
-bitConjunctionOperator : AMPERSAND
-                       | BIT_CLEAR
-                       ;
-
-bitExclusiveDisjunctionOperator : CARET;
-
-bitDisjunctionOperator : PIPE;
 
 // Comparison Operators
 
@@ -332,6 +329,7 @@ binaryConditionalOperator : IS
 // Logical Operators (Non-Strict Evaluation = Short-circuit Evaluation)
 
 binaryConjunctionOperator : AND
+                          | ANDN
                           | NAND
                           ;
 
@@ -383,10 +381,6 @@ compoundAssignmentOperator : ADDITION_ASSIGNMENT
                            | PERCENTAGE_INCREASE_ASSIGNMENT
                            | PERCENTAGE_DECREASE_ASSIGNMENT
                            | PERCENTAGE_VARIATION_ASSIGNMENT
-                           | BIT_AND_ASSIGNMENT
-                           | BIT_CLEAR_ASSIGNMENT
-                           | BIT_XOR_ASSIGNMENT
-                           | BIT_OR_ASSIGNMENT
                            | LEFT_SHIFT_ASSIGNMENT
                            | SIGNED_RIGHT_SHIFT_ASSIGNMENT
                            | UNSIGNED_RIGHT_SHIFT_ASSIGNMENT
@@ -730,9 +724,6 @@ expression : primaryExpression
            | expression binaryMultiplicativeOperator expression
            | expression binaryAdditiveOperator expression
            | expression bitShiftOperator expression
-           | expression bitConjunctionOperator expression
-           | expression bitExclusiveDisjunctionOperator expression
-           | expression bitDisjunctionOperator expression
            | expression binaryComparisonOperator expression
            | expression binaryRelationalOperator expression
            | expression binaryConditionalOperator expression
