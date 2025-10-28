@@ -359,13 +359,13 @@ assignmentOperator : singleAssignmentOperator
                    ;
 
 singleAssignmentOperator : EQUAL
+                         | DERIVED_ASSIGNMENT
                          | POP_ONE_ASSIGNMENT
                          | PULL_ALL_ASSIGNMENT
                          | PIPE_ASSIGNMENT
                          ;
 
 multipleAssignmentOperator : EQUAL
-                           | DESTRUCTURING_ASSIGNMENT
                            ;
 
 compoundAssignmentOperator : ADDITION_ASSIGNMENT

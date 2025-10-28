@@ -149,10 +149,10 @@ ERROR_PROPAGATION_NONE_COALESCING : '!?';
 
 // Single Assignment Operators
 
-POP_ONE_ASSIGNMENT       : '<-';
-PULL_ALL_ASSIGNMENT      : '<<-'; 
-PIPE_ASSIGNMENT          : '<|'; 
-DESTRUCTURING_ASSIGNMENT : ':=';
+POP_ONE_ASSIGNMENT  : '<-';
+PULL_ALL_ASSIGNMENT : '<<-'; 
+PIPE_ASSIGNMENT     : '<|'; 
+DERIVED_ASSIGNMENT  : ':=';
 
 // Compound Assignment Operators
 
