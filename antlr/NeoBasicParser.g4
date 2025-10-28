@@ -25,15 +25,15 @@ options {
 }
 
 
-// --- SOURCE CODE ORGANIZATION OF NEO PROGRAM ----------------------
+// --- SOURCE CODE ORGANIZATION OF NEOBASIC PROGRAM -----------------
 
-neoProgram : oneLinerProgram
-           | algorithmProgram
-           ;
+neoBasic : oneLinerProgram
+         | sourceCodeProgram
+         ;
 
 oneLinerProgram : instructionSentence;
 
-algorithmProgram : (instructionSentence EOS)+;
+sourceCodeProgram : (instructionSentence EOS)+;
 
 instructionSentence : directive
                     | declaration
