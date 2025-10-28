@@ -179,7 +179,7 @@ assignmentSingle : primaryExpression singleAssignmentOperator expression;
 
 assignmentMultiple : assignmentSingle (COMMA assignmentSingle)+;
 
-assignmentParallel : primaryExpressions (singleAssignmentOperator | multipleAssignmentOperator) expressions;
+assignmentParallel : primaryExpressions multipleAssignmentOperator expressions;
 
 // Console statements
 
