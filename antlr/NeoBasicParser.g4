@@ -405,7 +405,7 @@ qualifiedIdentifier : IDENTIFIER (DOT IDENTIFIER)*;
 
 identifiers : IDENTIFIER (COMMA IDENTIFIER)*;
 
-symbolIdentifiers : symbolIdentifier (COMMA symbolIdentifier)* ;
+symbolIdentifiers : symbolIdentifier (COMMA symbolIdentifier)*;
 
 qualifiedIdentifiers : qualifiedIdentifier (COMMA qualifiedIdentifier)*;
 
@@ -688,7 +688,7 @@ primaryExpression : operand
                   | primaryExpression posfixUnaryOperator
                   | prefixUnaryOperator primaryExpression
                   | qualifiedIdentifier expression
-                  | factScope BACKTICK qualifiedIdentifier expressions
+                  | factScope FUNCTOR qualifiedIdentifier expressions
                   ;
 
 operand : literal
