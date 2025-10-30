@@ -1239,10 +1239,9 @@ PercentageOperator = "%/" /* Percentage Calculation */
 
 EllipsisOperator = "..." .
 
-BitwiseShiftOperator = "<<"  /* Left shift */
-                     | ">>"  /* Right shift */
-                     | ">>>" /* Unsigned right shift */
-                     .
+BitwiseShiftOperator = "<<"  /* (shl)  Left shift */
+                     | ">>"  /* (shr)  Right shift */
+                     | ">>>" /* (ushr) Unsigned right shift */
 
 ComparisonOperator = "<=>" /* Three-way comparison */
                    | "?:"  /* Elvis comparison */
