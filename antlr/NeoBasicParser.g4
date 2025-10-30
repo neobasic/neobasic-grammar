@@ -288,6 +288,9 @@ binaryAdditiveOperator : PLUS
                        ;
 
 // Bitwise Operators (Non-Strict Evaluation = Short-circuit Evaluation)
+// shl  <<  shift left 
+// shr  >>  signed shift right
+// ushr >>> unsigned shift right
 
 bitShiftOperator : DOUBLE_LEFT_ANGLE
                  | DOUBLE_RIGHT_ANGLE

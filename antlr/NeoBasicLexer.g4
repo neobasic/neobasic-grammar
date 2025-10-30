@@ -121,6 +121,9 @@ PERCENTAGE_DECREASE  : '%-';
 PERCENTAGE_VARIATION : '%^';
 
 // Bitwise Operators
+// shl  <<  shift left 
+// shr  >>  signed shift right
+// ushr >>> unsigned shift right
 
 UNSIGNED_RIGHT_SHIFT : '>>>';
 
