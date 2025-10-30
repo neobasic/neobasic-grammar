@@ -95,7 +95,7 @@ constDeclareMultiple : constDeclareSingle (COMMA constDeclareSingle)+;
 
 constDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
 
-// Value declaration
+// Immutable Value declaration
 
 ivalSentence : ivalSpecifier* ivalClause;
 
