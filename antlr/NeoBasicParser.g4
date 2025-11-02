@@ -116,7 +116,7 @@ ivalDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)
 
 ivalDeclareMultiple : ivalDeclareSingle (COMMA ivalDeclareSingle)+;
 
-ivalDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
+ivalDeclareParallel : symbolIdentifiers singleAssignmentOperator expressions;
 
 // Variable declaration
 
@@ -143,7 +143,7 @@ varDeclareSingle : symbolIdentifier type? (singleAssignmentOperator expression)?
 
 varDeclareMultiple : varDeclareSingle (COMMA varDeclareSingle)+;
 
-varDeclareParallel : symbolIdentifiers multipleAssignmentOperator expressions;
+varDeclareParallel : symbolIdentifiers singleAssignmentOperator expressions;
 
 
 // --- INSTRUCTION SENTENCE: STATEMENT ------------------------------

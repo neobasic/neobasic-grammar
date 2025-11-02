@@ -245,17 +245,17 @@ APPEND_STDERR_REDIRECTION : '&2>>';
 
 // Temporal Literals 
 
-ELAPSE_LIT : [+-] DECIMAL_NUMBER TIME_SUFIX;
+ELAPSE_LIT : [+-]? DECIMAL_NUMBER TIME_SUFIX;
 
 TIME_SUFIX : [shdwmy] | 'ns' |  'us' | 'ms' | 'min';
 
 // Decimal literals (Fixed Point Numbers)
 
-DEC_LIT : [+-] DECIMAL_NUMBER 'D';
+DEC_LIT : [+-]? DECIMAL_NUMBER 'D';
 
 // Real literals (Floating Point Numbers)
 
-REAL_LIT : [+-] REAL_NUMBER;
+REAL_LIT : [+-]? REAL_NUMBER;
 
 fragment REAL_NUMBER
     : DEC_REAL
@@ -289,13 +289,13 @@ fragment HEX_MANTISSA
 
 // Rational literals
 
-RATIO_LIT : [+-] RATIONAL_NUMBER;
+RATIO_LIT : [+-]? RATIONAL_NUMBER;
 
 RATIONAL_NUMBER : INTEGER_NUMBER '//' INTEGER_NUMBER;
 
 // Imaginary literals
 
-IMAGINARY_LIT : [+-] IMAGINARY_NUMBER;
+IMAGINARY_LIT : [+-]? IMAGINARY_NUMBER;
 
 IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
 
@@ -303,7 +303,7 @@ IMAGINARY_NUMBER : ( INTEGER_NUMBER | REAL_NUMBER ) [ijk];
 
 NATURAL_LIT : INTEGER_NUMBER 'N';
 
-INTEGER_LIT : [+-] INTEGER_NUMBER;
+INTEGER_LIT : [+-]? INTEGER_NUMBER;
 
 INTEGER_NUMBER
     : DEC_VALUE
@@ -478,7 +478,7 @@ UNICODE_PREFIX
 
 ATOM_DOT_LIT : '@' DOT_FRACTION ('.' DOT_FRACTION)*;
 
-DOT_FRACTION : [+-] (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
+DOT_FRACTION : [+-]? (INTEGER_NUMBER | MUSIC_NOTE | IDENTIFIER);
 
 // MUSICAL ALPHABET
 
@@ -548,17 +548,6 @@ fragment FILE_NAME : UNICODE_FILEPATH+;
 fragment DRIVE_LETTER : [a-zA-Z];
 
 
-// --- MAGIC STATEMENTS ---------------------------------------------
-
-// Rubber Duck Debugging
-
-RUBBERDUCK : '@' IDENTIFIER? '=';
-
-// Songbird Logging
-
-SONGBIRD : '@' IDENTIFIER? '>';
-
-
 // --- SYMBOLS ------------------------------------------------------
 
 // Identifier Names
@@ -572,6 +561,21 @@ ASPECT_IDENTIFIER : '@@' IDENTIFIER;
 IDENTIFIER : ALPHA ALPHANUMERIC*;
 
 TAG : ALPHANUMERIC+;
+
+
+// --- MAGIC STATEMENTS ---------------------------------------------
+
+// Rubber Duck Debugging
+
+RUBBERDUCK : '@' IDENTIFIER? '=';
+
+// Songbird Logging
+
+SONGBIRD : '@' (LOGGING_LEVEL | IDENTIFIER)? '>';
+
+// Special Tokens
+
+LOGGING_LEVEL : TRACE | DEBUG | INFO | WARN | ERROR | FATAL;
 
 
 // --- MAGIC COMMENTS -----------------------------------------------
@@ -608,6 +612,10 @@ EOL : '\n'       // Unix, Linux, macOS
     | '\u2028'   // Unicode Line Separator
     | '\u2029'   // Unicode Paragraph Separator
     ;
+
+// Explicit Line Continuation (ELC) character
+
+ELC : '\\' EOL;
 
 
 // --- UNICODE CHARACTERS -------------------------------------------
@@ -665,10 +673,6 @@ fragment UTF32_BOM : '\u0000FEFF';
 // White Spaces (WSP) characters
 
 WSP : [\u0009\u000B\u000C\u0020\u00A0\p{Zs}]+ -> channel(HIDDEN);
-
-// Two or more physical lines may be joined into logical lines,
-// But can cause conflict with \\ character.
-//EXPLICIT_LINE_JOINING : '\\' EOL -> channel(HIDDEN);
 
 
 // --- ERROR HANDLING -----------------------------------------------

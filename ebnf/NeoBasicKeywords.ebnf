@@ -186,8 +186,9 @@ LAMBDA = "lambda" .
 (* META OPERATORS *)
 
 TYPEOF = "typeof" .
-INSTANCEOF = "instanceof" .
 SIZEOF = "sizeof" .
+ANCESTOROF = "ancestorof" .
+INSTANCEOF = "instanceof" .
 
 (* CONDITIONAL OPERATORS *)
 
@@ -241,12 +242,12 @@ NUMBER = "number" .
 
 (* NATURAL NUMBERS *)
 
+BYTE = "byte" .
 NAT8 = "nat8" .
 NAT16 = "nat16" .
 NAT32 = "nat32" .
 NAT64 = "nat64" .
 NAT128 = "nat128" .
-BYTE = "byte" .
 NAT = "nat" .
 BIGNAT = "bignat" .
 

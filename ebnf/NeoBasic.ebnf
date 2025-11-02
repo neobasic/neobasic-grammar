@@ -1198,7 +1198,6 @@ UnaryClone      = "="   /* Shallow copy */
 
 UnaryMeta = TYPEOF     /* Type (string) of a var */
           | SIZEOF     /* Number of bytes required for a var or data structure */
-          | INSTANCEOF /* Check if an object is an instance of a class */
           .
 
 UnaryArray = EACH       /* Generate an iterator of a iterable var (for loops),
@@ -1268,12 +1267,14 @@ BinaryBoolean   = AND   /* Logical AND */
                 | NXOR  /* Logical NXOR */ 
                 .
 
-ConditionalOperator = IS        /* Identity Operator */
-                    | IN        /* Membership Operator */
-                    | BETWEEN   /* Range Operator */
-                    | LIKE      /* Pattern Match Operator */
-                    | "?%"      /* Evenly Divisible comparison */
-                    | "!%"      /* Not Divisible comparison */
+ConditionalOperator = ANCESTOROF /* Check if a type is the super class of a class */
+                    | INSTANCEOF /* Check if an object is an instance of a class */
+                    | IS         /* Identity Operator */
+                    | IN         /* Membership Operator */
+                    | BETWEEN    /* Range Operator */
+                    | LIKE       /* Pattern Match Operator */
+                    | "?%"       /* Evenly Divisible comparison */
+                    | "!%"       /* Not Divisible comparison */
                     .
 
 CoalescingOperator = "!!" /* Error coalescing */
