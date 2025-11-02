@@ -256,6 +256,14 @@ REAL128 : 'real128';
 REAL : 'real';
 BIGREAL : 'bigreal';
 
+// NUMERIC DECIMALS
+
+DECIMAL32 : 'decimal32';
+DECIMAL64 : 'decimal64';
+DECIMAL128 : 'decimal128';
+DECIMAL  : 'decimal';
+MONEY    : 'money';
+
 // NUMERIC RATIOS
 
 RATIO8 : 'ratio8';
@@ -264,14 +272,6 @@ RATIO32 : 'ratio32';
 RATIO64 : 'ratio64';
 RATIO128 : 'ratio128';
 RATIO : 'ratio';
-
-// NUMERIC DECIMALS
-
-DECIMAL32 : 'decimal32';
-DECIMAL64 : 'decimal64';
-DECIMAL128 : 'decimal128';
-DECIMAL  : 'decimal';
-MONEY    : 'money';
 
 // NUMERIC COMPLEXES
 
