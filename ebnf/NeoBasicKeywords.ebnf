@@ -64,6 +64,9 @@ STRUCT = "struct" .
 PROTO = "proto" .
 TRAIT = "trait" .
 CLASS = "class" .
+FIELD = "field" .
+GETTER = "getter" . 
+SETTER = "setter" .
 OBJECT = "object" .
 GETTER = "getter" .
 SETTER = "setter" .
@@ -90,16 +93,20 @@ COMPTIME = "comptime" .
 MUTABLE = "mutable" .
 TRANSIENT = "transient" .
 INLINE = "inline" .
+CURRY = "curry" .
 SYNCHRO = "synchro" .
-VIRTUAL = "virtual" .
+METHOD = "method" .
 OVERRIDE = "override" .
 FINAL = "final" .
 OFF = "off" .
 ASYNC = "async" .
+UNIQUE = "unique" .
 ABSTRACT = "abstract" .
 SEALED = "sealed" .
 SINGLETON = "singleton" .
 RECORD = "record" .
+DYNAMIC = "dynamic" .
+CALLBACK = "callback" .
 EXTEND = "extend" .
 IMPLEMENT = "implement" .
 MIXIN = "mixin" .
@@ -137,9 +144,12 @@ CONTINUE = "continue" .
 BREAK = "break" .
 RETURN = "return" .
 YIELD = "yield" .
+RAISE = "raise" .
+PANIC = "panic" .
 GO = "go" .
 GOSUB = "gosub" .
-TO = "to" .
+FORK = "fork" .
+INTO = "into" .
 ASYNC = "async" .
 THREAD = "thread" .
 TASK = "task" .
@@ -208,10 +218,17 @@ XOR = "xor" .
 NXOR = "nxor" .
 NOT = "not" .
 
-(* ARRAY OPERATORS *)
+(* CLONE OPERATOR *)
 
 NEW = "new" .
+
+(* ARRAY OPERATORS *)
+
 DEL = "del" .
+UNION = "union" .
+UNITE = "unite" .
+INTER = "inter" .
+MINUS = "minus" .
 
 (* META DATA TYPES *)
 
@@ -474,11 +491,6 @@ CHMOD = "chmod" .
 CHOWN = "chown" .
 CHGRP = "chgrp" .
 
-(* BUILT-IN ERROR-HANDLING MACROS *)
-
-RAISE = "raise" .
-PANIC = "panic" .
-
 (* BUILT-IN CLONE MACROS *)
 
 CLONE = "clone" . /* Deep copy */
@@ -493,7 +505,7 @@ DATA = "data" .
 CALL = "call" .
 HIDE = "hide" .
 SHOW = "show" .
-INTO = "into" .
+STAY = "stay" .
 PASS = "pass" .
 PAST = "past" .
 FAIL = "fail" .

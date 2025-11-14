@@ -414,8 +414,9 @@ qualifiedIdentifiers : qualifiedIdentifier (COMMA qualifiedIdentifier)*;
 
 type : nativeType
      | nativeType posfixTypeWrapper
-     | nativeType AMPERSAND nativeType
-     | nativeType PIPE type
+     | nativeType AND nativeType
+     | nativeType XOR type
+     | nativeType OR type
      | nativeType
      ;
 

@@ -288,7 +288,7 @@ TestSentence = [ TestDiretives ]
                [ CallClause ]
                [ HideClause ]
                [ ShowClause ]
-               [ IntoClause ]
+               [ StayClause ]
                [ PassClause ]
                [ PastClause ]
                [ FailClause ] .
@@ -313,7 +313,7 @@ HideClause = HIDE [ Expressions | StatementSuite ] EOL .
 
 ShowClause = SHOW [ Expressions | StatementSuite ] EOL .
 
-IntoClause = INTO [ Expressions | StatementSuite ] EOL .
+StayClause = STAY [ Expressions | StatementSuite ] EOL .
 
 PassClause = PASS [ Expressions | StatementSuite ] EOL .
 
@@ -492,7 +492,7 @@ EventParameters = "[" [ ParmDeclares ] "]" .
 
 (* ENUM SENTENCE *)
 
-EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] [ GenericTypes ] ProcParameters [ MixinSentence ] EnumBody .
+EnumSentence = ENUM SymbolIdentifier [ GenericTypes ] ProcParameters [ MixinSentence ] EnumBody .
 
 EnumBody = EOL Indent EnumMemberDeclaresList Dedent
          | ":" EnumMemberDeclares .
@@ -680,14 +680,14 @@ OtherwiseSentence = Statement OTHERWISE Statement .
 (* BEGIN SENTENCE *)
 
 BeginSentence = BeginClause 
-                FinallyClause
-              { CatchClause } .
+              { CatchClause }
+                EndClause .
 
 BeginClause = BEGIN ClauseStatement .
 
-FinallyClause = FINALLY ClauseStatement .
-
 CatchClause = CATCH [ VarDeclares ] ClauseStatement . 
+
+EndClause = END ClauseStatement .
 
 
 (* CONDITIONAL STATEMENTS *)
@@ -719,7 +719,7 @@ UnlessSentence = UnlessClause .
 
 UnlessClause = Statement UNLESS Expression .
 
-(* MATCH-LIKE-ELSE SENTENCE *)
+(* MATCH-CASE-ELSE SENTENCE *)
 
 MatchSentence = MatchClause
                 CaseClauses
@@ -794,7 +794,10 @@ BreakSentence = BREAK [ Label | Expression ] .
 ControlTransferStatement = FallthroughSentence
                          | ResumeSentence
                          | ReturnSentence
-                         | YieldSentence .
+                         | YieldSentence
+                         | RaiseSentence
+                         | PanicSentence
+                         .
 
 FallthroughSentence = FALLTHROUGH [ Label ] .
 
@@ -803,6 +806,10 @@ ResumeSentence = RESUME [ Label ] .
 ReturnSentence = RETURN [ Expressions ] .
 
 YieldSentence = YIELD Expressions .
+
+RaiseSentence = RAISE Expression .
+
+PanicSentence = PANIC Expression .
 
 
 (* ERROR HANDLING STATEMENTS *)
@@ -822,13 +829,16 @@ ConcurrencyStatement = GosubSentence
 
 (* GOSUB STATEMENT *)
 
-GosubSentence = GosubClause .
+GosubSentence = GosubClause [ ForkClause ].
 
 GosubClause = GOSUB StatementSuite .
 
+ForkClause = FORK Expression .
+
+
 (* GO TO STATEMENT *)
 
-GoToSentence = ( ConcurrencySingleProcess | ConcurrencyBatchProcess ) [ TO Expression ] .
+GoToSentence = ( ConcurrencySingleProcess | ConcurrencyBatchProcess ) [ INTO PrimaryExpressions ] .
 
 ConcurrencySingleProcess = GO [ ForksNumber ] ConcurrencyProcess Coroutine .
 
@@ -1114,6 +1124,8 @@ PrimaryExpression = Operand
                   | PrimaryExpression FunctionArguments [ ErrorHandling ]
                   | PrimaryExpression [ FunctionArguments ] LambdaLiteral [ ErrorHandling ] .
 
+PrimaryExpressions = PrimaryExpression { "," PrimaryExpression } .
+
 Operand = Literal | PredeclaredValue | OperandName [ GenericTypes ] | ShellExpression | "(" Expression ")" .
 
 OperandName = Identifier | NamespaceIdentifier .
@@ -1135,8 +1147,6 @@ Indexing = "[" Expression [ "," ] "]" .
 Slicing = "[" SlicingRange [ ";" Expression ] "]" .
 
 SlicingRange = [ Expression [ ">" ] ] ".." [ [ "<" ] Expression ] [ ":" Expression ] .
-
-FunctionArguments = "(" [].
 
 FunctionArguments = "(" [ NamedExpressionList [ "," ] ] ")" .
 
@@ -1198,13 +1208,17 @@ UnaryClone      = "="   /* Shallow copy */
 
 UnaryMeta = TYPEOF     /* Type (string) of a var */
           | SIZEOF     /* Number of bytes required for a var or data structure */
+          | NEW        /* Create a clone of an object, deep or shallow copy */
           .
 
-UnaryArray = EACH       /* Generate an iterator of a iterable var (for loops),
-                           or a value converted to text, if not iterable,
-                           Generate pipeline with itens of an array */
-           | NEW        /* Insert a new item (before other) in a data structure or space in a string */
-           | DEL        /* Delete an item of a data structure or a char of a string */
+UnaryArray = EACH      /* Generate an iterator of a iterable var (for loops),
+                          or a value converted to text, if not iterable,
+                          Generate pipeline with itens of an array */
+           | DEL       /* Delete an item of a data structure or a char of a string */
+           | UNION     /* Combines the results of two queries and removes duplicates */
+           | UNITE     /* Combines the results but keeps duplicates; same as 'UNION ALL'. */
+           | INTER     /* Returns only the records common to both queries */
+           | MINUS     /* Returns the records that are in the first query but not in the second */
            .
 
 PrefixUnaryOperator  = UnaryBoolean | UnaryEvaluate | UnaryArithmetic
@@ -1215,8 +1229,8 @@ PosfixUnaryOperator = UnarySort | UnaryClone .
 
 (* BINARY OPERATORS *)
 
-ArithmeticExpOperator = "**" /* Nth power */
-                      | "*/" /* Nth root */
+ArithmeticExpOperator = "^"  /* Nth power */
+                      | "^/" /* Nth root */
                       .
 
 ArithmeticMultOperator = "*"  /* Multiplication of numbers and strings */
@@ -1283,9 +1297,9 @@ CoalescingOperator = "!!" /* Error coalescing */
 
 PipelineOperator = "|>" . (* Pipeline sequence *)
 
-MonadBindOperador = "=>" .
+MonadBindOperador = "=>>" .
 
-FunctorInfixOperador = "`" .
+FunctorInfixOperador = "->" .
 
 BinaryOperator  = ArithmeticExpOperator | ArithmeticMultOperator | ArithmeticAddOperator
                 | PercentageOperator | EllipsisOperator | BitwiseShiftOperator
@@ -1329,15 +1343,13 @@ NeckRule = ":-" .   (* ??? *)
 
 DiamondOperator = "<>" .   (* ??? *)
 
-RightArrowOperator = "->" .   (* ??? *)
-
-ExpressionDeclarator = ":" . (* One-Liner Suite operator | Implicit return *)
+ExpressionDeclarator = ":" . (* One-Liner Semantic Expression Declarator *)
 
 
 (* PREFIX SYMBOL MODIFIERS *)
 
 VisibilityModifier   = "+" /* Public visibility */
-                     | "~" /* Package (or default) visibility */
+                     | "^" /* Package (or default) visibility */
                      | "-" /* Private visibility */
                      .
 
@@ -1448,6 +1460,8 @@ TupleLiteral = "(" Expressions [ "," ] ")" .
 ArithmeticComprehension = BinaryOperator "{" Expressions { ComprehensionClause } "}" .
 
 ComprehensionClause = LoopForEachClause [ IF Expression ] .
+
+LoopForEachClause =  .
 
 EscalarLiteral = NumericLiteral | RangeLiteral | PairLiteral | TupleLiteral | ElapseLiteral
                | AsciiLiteral | UnicodeLiteral | StringLiteral | VerbatimLiteral | RegexLiteral
