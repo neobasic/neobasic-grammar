@@ -105,6 +105,7 @@ OTHERWISE : 'otherwise';
 UNLESS : 'unless';
 TILL  : 'till';
 DEFER : 'defer';
+EXIT : 'exit';
 WITH : 'with';
 DO : 'do';
 LOOP : 'loop';
@@ -226,6 +227,7 @@ NAT32 : 'nat32';
 NAT64 : 'nat64';
 NAT128 : 'nat128';
 NATURAL : 'natural';
+NSIZE : 'nsized';
 BIGNATURAL : 'bignatural';
 
 // NUMERIC INTEGERS
@@ -236,6 +238,7 @@ INT32 : 'int32';
 INT64 : 'int64';
 INT128 : 'int128';
 INT : 'int';
+ISIZE : 'isized';
 BIGINT : 'bigint';
 
 // NUMERIC REALS
@@ -445,22 +448,22 @@ TFAIL  : 'fail';
 
 // Arithmetic Operators
 
-CARET         : '^';    // 
-SQUARE_ROOT   : '^/';
-FACTORIAL     : '*!';
-INCREMENT     : '++';
-DECREMENT     : '--';
+SQUARE_POWER  : '**';   // 
+SQUARE_ROOT   : '*/';   // 
+FACTORIAL     : '*!';   // 
+FACTORIZATION : '*?';   // 
+INCREMENT     : '++';   // 
+DECREMENT     : '--';   // 
 PLUS          : '+';    // 
 HYPHEN        : '-';    // 
 
 // Miscellaneous operators
 
-ELLIPSIS      : '...';   // 
+ELLIPSIS      : '...';  // 
 
 LIFETIME      : '::';   // 
 
-NAMED_ARGUMENTS : '**';  //
-NAMED_OPTIONS   : '~~';  //
+NAMED_ARGUMENTS : '~~'; //
 
 
 // --- BINARY OPERATORS ---------------------------------------------
@@ -471,8 +474,7 @@ ASTERISK   : '*';    // Multiplication
 SLASH      : '/';    // Real Division, Regular expression literal
 DIVISION   : '÷';    // Integer Division
 PERCENT    : '%';    // Modulo, Integer Division, Percentage
-QUOTIENT   : '%%';
-
+QUOTIENT   : '%%';   // Integer Division
 
 // Financial Operators
 
@@ -486,19 +488,18 @@ PERCENTAGE_VARIATION : '%^';
 
 DOUBLE_LEFT_ANGLE    : '<<';   // 
 DOUBLE_RIGHT_ANGLE   : '>>';   // 
-UNSIGNED_RIGHT_SHIFT : '>>>';
+UNSIGNED_RIGHT_SHIFT : '>>>';  //
 
 // Comparison Operators
 
-ELVIS_TEST            : '?:';
-THREE_WAY_TEST        : '<=>';
+ELVIS_TEST        : '?:';
+THREE_WAY_TEST    : '<=>';
 
 // Relational Operators
 
+LOOSE_EQUALITY    : '?=';   // ignore data type and char case
 STRICT_EQUALITY   : '==';
 STRICT_INEQUALITY : '!=';
-LOOSE_EQUALITY    : '~==';  // ???
-LOOSE_INEQUALITY  : '~!=';  // ???
 LEFT_ANGLE        : '<';    // Less Than
 LESS_OR_EQUALS    : '<=';
 RIGHT_ANGLE       : '>';    // Greater Than
@@ -580,8 +581,8 @@ PIPE_ASSIGNMENT     : '<|';
 
 // Compound Assignment Operators
 
-NTH_POWER_ASSIGNMENT            : '^=';
-NTH_ROOT_ASSIGNMENT             : '^/=';
+NTH_POWER_ASSIGNMENT            : '**=';
+NTH_ROOT_ASSIGNMENT             : '*/=';
 MULTIPLICATION_ASSIGNMENT       : '*=';
 REAL_DIVISION_ASSIGNMENT        : '/=';
 INTEGER_DIVISION_ASSIGNMENT     : '÷=';

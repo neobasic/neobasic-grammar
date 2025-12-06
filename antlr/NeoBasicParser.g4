@@ -302,8 +302,7 @@ modeParameterSpecifier : VAR                // reference variable parameter
                        | REF                // in and out parâmeter, can be pointer
                        ;
 
-prefixParameterName : NAMED_ARGUMENTS       // **  dict: named-parameter arguments
-                    | NAMED_OPTIONS         // ~~  dict: named macro-options
+prefixParameterName : NAMED_ARGUMENTS       // ~~  dict: named macro-options / function parameter arguments
                     | TILDE                 // ~   lazy call-by-name (evaluated only when used as a zero-argument function: recomputed every time it is accessed)()
                     ;
 
@@ -687,11 +686,10 @@ simpleStatement : simpleStatement executionFlowOperator statementSentence
 expressionStatement : expressions;
 
 emptyStatement : ELLIPSIS;
-                  
+
 // Assignment statements
 
-assignmentStatement : LET assignmentStatement
-                    | assignmentSingle
+assignmentStatement : assignmentSingle
                     | assignmentMultiple
                     | assignmentParallel
                     ;
@@ -726,15 +724,24 @@ playCommand : PLAY expressions;
 
 // Deterministic statements
 
-deterministicStatement : continueSentence
-                       | breakSentence
-                       | fallthroughSentence
-                       | deferSentence
-                       | returnSentence
-                       | yieldSentence
+deterministicStatement : deferSentence
                        | raiseSentence
                        | panicSentence
+                       | exitSentence
+                       | continueSentence
+                       | breakSentence
+                       | fallthroughSentence
+                       | returnSentence
+                       | yieldSentence
                        ;
+
+deferSentence : DEFER statementSentence;
+
+raiseSentence : RAISE expression;
+
+panicSentence : PANIC expression;
+
+exitSentence : EXIT expression;
 
 continueSentence : CONTINUE ( labelIdentifier | INTEGER_LIT )?;
 
@@ -742,15 +749,9 @@ breakSentence : BREAK ( labelIdentifier | INTEGER_LIT )?;
 
 fallthroughSentence : FALLTHROUGH ( labelIdentifier | INTEGER_LIT )?;
 
-deferSentence : DEFER statementSentence;
-
 returnSentence : RETURN expressions?;
 
 yieldSentence : YIELD expressions;
-
-raiseSentence : RAISE expression;
-
-panicSentence : PANIC expression;
 
 // Non-deterministic statements
 
@@ -964,9 +965,10 @@ prefixUnaryOperator : unaryArithmeticOperator
 
 // Arithmetic Operators (Prefix Notation)
 
-unaryArithmeticOperator : CARET
+unaryArithmeticOperator : SQUARE_POWER
                         | SQUARE_ROOT
                         | FACTORIAL
+                        | FACTORIZATION
                         | INCREMENT
                         | DECREMENT
                         | PLUS
@@ -1009,7 +1011,7 @@ binaryArithmeticOperator : binaryExponentialOperator
                          | binaryDisjunctionOperator
                          ;
 
-binaryExponentialOperator : CARET
+binaryExponentialOperator : SQUARE_POWER
                           | SQUARE_ROOT
                           ;
 
@@ -1067,10 +1069,9 @@ binaryComparisonOperator : ELVIS_TEST
 
 // Relational Operators
 
-binaryRelationalOperator : STRICT_EQUALITY
+binaryRelationalOperator : LOOSE_EQUALITY
+                         | STRICT_EQUALITY
                          | STRICT_INEQUALITY
-                         | LOOSE_EQUALITY
-                         | LOOSE_INEQUALITY
                          | LEFT_ANGLE
                          | LESS_OR_EQUALS
                          | RIGHT_ANGLE
@@ -1302,6 +1303,7 @@ numericNatural : BYTE
                | NAT64
                | NAT128
                | NATURAL
+               | NSIZE
                | BIGNATURAL
                ;
 
@@ -1311,6 +1313,7 @@ numericInteger : INT8
                | INT64
                | INT128
                | INT
+               | ISIZE
                | BIGINT
                ;
 

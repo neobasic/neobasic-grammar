@@ -607,13 +607,13 @@ RubberDuck = UnicodeAtom { Alphanumeric } "=" .
 DebuggingStatement = RubberDuck [ Statement ] .
 
 
-(* SONGBIRD TRACING *)
+(* SONGBIRD MONITORING *)
 
 SongBird = UnicodeAtom [ LoggingLevel | { Alphanumeric } ] ">" .
 
 LoggingLevel = TRACE | DEBUG | INFO | WARN | ERROR | FATAL .
 
-TracingStatement = SongBird [ Statement ] .
+MonitoringStatement = SongBird [ Statement ] .
 
 
 (* STATEMENTS AND BLOCKS *)
@@ -637,7 +637,7 @@ Statement      = AtomStereotypes Statement
                | ConcurrencyStatement
                | TopLevelSentence
                | DebuggingStatement
-               | TracingStatement
+               | MonitoringStatement
                | CommentedStatement .
 
 Label = Identifier ":" .
