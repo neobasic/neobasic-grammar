@@ -129,10 +129,9 @@ inferredDecoratedIdentifiers : inferredDecoratedIdentifier (COMMA inferredDecora
 // --- INSTRUCTION SENTENCE: TOP LEVEL DIVISIONS --------------------
 
 topLevelSentence : identificationSentence
-                 | deflagSentence
                  | useSentence
-                 | interfaceSentence
                  | includeSentence
+                 | interfaceSentence
                  ;
 
 // Identification-division declaration (translation unit programs)
@@ -147,42 +146,6 @@ appletClause : APPLET qualifiedIdentifier?;
 moduleClause: MODULE qualifiedIdentifier;
 
 notabeneClause : NOTABENE qualifiedIdentifier;
-
-// Defined Flag (deflag) declarations
-
-deflagSentence : defineClause
-               | undefClause
-               ;
-
-// DEFINE
-defineClause : DEFINE ( defineSuite | defineDeclare );
-
-defineSuite : EOS INDENT defineDeclareBlock DEDENT;
-
-defineDeclareBlock : defineDeclare (EOS defineDeclare)*;
-
-defineDeclare : defineDeclareSingle
-              | defineDeclareMultiple
-              ;
-
-defineDeclareSingle : defAtom literal?;
-
-defineDeclareMultiple: defineDeclareSingle (COMMA defineDeclareSingle)+;
-
-// UNDEF
-undefClause : UNDEF ( undefSuite | undefDeclare );
-
-undefSuite : EOS INDENT undefDeclareBlock DEDENT;
-
-undefDeclareBlock : undefDeclare (EOS undefDeclare)*;
-
-undefDeclare : defAtoms;
-
-defAtom : IDENTIFIER
-        | ATOM_IDENTIFIER
-        ;
-
-defAtoms : defAtom (COMMA defAtom)*;
 
 // Use declaration
 
@@ -208,14 +171,6 @@ useDeclareAs : qualifiedIdentifier AS IDENTIFIER;
 
 useDeclareOf : qualifiedIdentifiers OF qualifiedIdentifier;
 
-// Interface declaration
-
-interfaceSentence : interfaceClause;
-
-interfaceClause : INTERFACE declarationIdentifier mixesClause? interfaceBody;
-
-interfaceBody : logicalInstructionSuite;
-
 // Include declaration
 
 includeSentence : includeClause;
@@ -236,6 +191,14 @@ includeDeclareSingle : shellPathLiteral;
 includeDeclareMultiple: includeDeclareSingle (COMMA includeDeclareSingle)+;
 
 includeDeclareAs : shellPathLiterals AS inferredDecoratedIdentifier;
+
+// Interface declaration
+
+interfaceSentence : interfaceClause;
+
+interfaceClause : INTERFACE declarationIdentifier mixesClause? interfaceBody;
+
+interfaceBody : logicalInstructionSuite;
 
 // --- INSTRUCTION SENTENCE: DECLARATION ----------------------------
 
@@ -340,7 +303,8 @@ guardElseClause : EOS PIPE ( ELSE COLON )? expression;
 
 // Outer declarations
 
-outerDeclareSentence : typeSentence
+outerDeclareSentence : deflagSentence
+                     | typeSentence
                      | constSentence
                      | letSentence
                      | varSentence
@@ -359,6 +323,42 @@ outerDeclareSentence : typeSentence
                      | classSentence
                      | objectSentence
                      ;
+
+// Defined Flag (deflag) declarations
+
+deflagSentence : defineClause
+               | undefClause
+               ;
+
+// DEFINE
+defineClause : DEFINE ( defineSuite | defineDeclare );
+
+defineSuite : EOS INDENT defineDeclareBlock DEDENT;
+
+defineDeclareBlock : defineDeclare (EOS defineDeclare)*;
+
+defineDeclare : defineDeclareSingle
+              | defineDeclareMultiple
+              ;
+
+defineDeclareSingle : defAtom literal?;
+
+defineDeclareMultiple: defineDeclareSingle (COMMA defineDeclareSingle)+;
+
+// UNDEF
+undefClause : UNDEF ( undefSuite | undefDeclare );
+
+undefSuite : EOS INDENT undefDeclareBlock DEDENT;
+
+undefDeclareBlock : undefDeclare (EOS undefDeclare)*;
+
+undefDeclare : defAtoms;
+
+defAtom : IDENTIFIER
+        | ATOM_IDENTIFIER
+        ;
+
+defAtoms : defAtom (COMMA defAtom)*;
 
 // Type declaration
 
