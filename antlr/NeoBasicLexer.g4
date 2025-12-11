@@ -493,7 +493,7 @@ UNSIGNED_RIGHT_SHIFT : '>>>';  //
 // Comparison Operators
 
 ELVIS_TEST        : '?:';
-THREE_WAY_TEST    : '<=>';
+THREE_WAY_TEST    : '<=>';  // Spaceship
 
 // Relational Operators
 
